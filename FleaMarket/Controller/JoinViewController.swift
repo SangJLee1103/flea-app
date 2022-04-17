@@ -12,14 +12,16 @@ class JoinViewController: UIViewController {
     //이미 계정이 있으신가요? 버튼
     @IBOutlet var btnForLoginViewController: UIButton!
     
-    
     @IBOutlet var emailField: UITextField!
-    
     @IBOutlet var pwField: UITextField!
-    
     @IBOutlet var nicknameField: UITextField!
-    
     @IBOutlet var phoneField: UITextField!
+    
+    
+    @IBOutlet var emailError: UILabel!
+    @IBOutlet var pwError: UILabel!
+    @IBOutlet var nicknameError: UILabel!
+    @IBOutlet var phoneError: UILabel!
     
     //회원가입 버튼
     @IBOutlet var btnForJoin: UIButton!
@@ -32,13 +34,25 @@ class JoinViewController: UIViewController {
     }
     
     @IBAction func onLoginViewControllerClicked(_ sender: UIButton) {
-        print("click")
         
         //네비게이션 뷰 컨트롤러 POP
         self.navigationController?.popViewController(animated: true)
     }
     
+    //회원가입 다음 로직 -> 로그인
+    func clearJoinField(){
+        emailField.text = ""
+        pwField.text = ""
+        nicknameField.text = ""
+        phoneField.text = ""
+    }
     
+    func clearLabel(){
+        emailError.text = ""
+        pwError.text = ""
+        nicknameError.text = ""
+        phoneError.text = ""
+    }
     
     //회원가입 기능 액션 함수
     @IBAction func onJoinBtn(_ sender: UIButton) {
@@ -75,30 +89,64 @@ class JoinViewController: UIViewController {
                     do {
                         let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                         guard let jsonObject = object else { return }
+                        
+                        //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
                         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
                        
                         // JSON 결과값을 추출
-                        let message = jsonObject["message"] as? String
-//                        let timestamp = jsonObject["timestamp"] as? String
-//                        let userId = jsonObject["userId"] as? String
-//                        let name = jsonObject["name"] as? String
-//
+                        let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
+                        let error = jsonObject["message"] as? Array<NSDictionary>
+                        let duplication = jsonObject["message"] as? String
+                        
                         if status == 201 {
+                            self.clearLabel()
                             print("성공")
-                            print((message!))
+                            let joinAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
                             
+                            let action = UIAlertAction(title: "OK", style: .default, handler: { _ in self.navigationController?.popViewController(animated: true)})
+                            joinAlert.addAction(action)
+                            self.present(joinAlert, animated: true, completion: nil)
+                            self.clearJoinField()
+                        }else if status == 403{
+                            self.clearLabel()
+                            let duplicationAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
+                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                            duplicationAlert.addAction(action)
+                            self.present(duplicationAlert, animated: true, completion: nil)
                         }else {
+                            self.clearLabel()
                             print("데이터 검사해!")
-                            print((message!))
+                            print(((((error?[0])!)["msg"]!) as? String)!)
+                            
+                            
+                            for i in 0 ..< (error?.count)! {
+                                if(((error?[i])!)["param"]! as? String == "id"){
+                                    self.emailError.text = ((((error?[i])!)["msg"]!) as? String)!
+                                    break;
+                                }
+                            }
+                            
+                            for i in 0 ..< (error?.count)! {
+                                if(((error?[i])!)["param"]! as? String == "password"){
+                                    self.pwError.text = ((((error?[i])!)["msg"]!) as? String)!
+                                    break
+                                }
+                            }
+                            
+                            for i in 0 ..< (error?.count)! {
+                                if(((error?[i])!)["param"]! as? String == "nickname"){
+                                    self.nicknameError.text = ((((error?[i])!)["msg"]!) as? String)!
+                                    break
+                                }
+                            }
+                            
+                            for i in 0 ..< (error?.count)! {
+                                if(((error?[i])!)["param"]! as? String == "phone"){
+                                    self.phoneError.text = ((((error?[i])!)["msg"]!) as? String)!
+                                    break
+                                }
+                            }
                         }
-//                        // 결과가 성공일 경우
-//                        if result == "SUCCESS" {
-//                            self.responseView.text = "아이디: \(userId!)" + "\n"
-//                            + "이름: \(name!)" + "\n"
-//                            + "응답결과: \(result!)" + "\n"
-//                            + "응답시간: \(timestamp!)" + "\n"
-//                            + "요청방식: x-www-form-urlencoded"
-//                        }
                     } catch let e as NSError {
                         print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                     }
