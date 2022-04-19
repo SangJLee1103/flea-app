@@ -25,7 +25,7 @@ class LoginViewController: UIViewController {
     }
     
     //로그인 액션 함수
-    @IBAction func onLoginBtn(_ sender: Any) {
+    @IBAction func onLoginBtn(_ sender: UIButton) {
         
         do{
             let id = self.emailField.text!
@@ -70,6 +70,7 @@ class LoginViewController: UIViewController {
                             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                             loginAlert.addAction(action)
                             self.present(loginAlert, animated: true, completion: nil)
+                            self.performSegue(withIdentifier: "mainSegue", sender: self)
                         } else {
                             let checkAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
                             

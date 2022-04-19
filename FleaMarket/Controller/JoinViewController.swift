@@ -96,7 +96,6 @@ class JoinViewController: UIViewController {
                         // JSON 결과값을 추출
                         let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
                         let error = jsonObject["message"] as? Array<NSDictionary>
-                        let duplication = jsonObject["message"] as? String
                         
                         if status == 201 {
                             self.clearLabel()
@@ -109,10 +108,15 @@ class JoinViewController: UIViewController {
                             self.clearJoinField()
                         }else if status == 403{
                             self.clearLabel()
-                            let duplicationAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
-                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-                            duplicationAlert.addAction(action)
-                            self.present(duplicationAlert, animated: true, completion: nil)
+                            if(message == "이미 등록된 아이디 혹은 이메일입니다.") {
+                                self.emailError.text = message
+                            }else if(message == "이미 등록된 닉네임입니다.") {
+                                self.nicknameError.text = message
+                            }else {
+                                self.phoneError.text = message
+                            }
+                            
+                            
                         }else {
                             self.clearLabel()
                             print("데이터 검사해!")

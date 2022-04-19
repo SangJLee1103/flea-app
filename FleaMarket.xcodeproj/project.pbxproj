@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F407D029280EBB2C00E36491 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D028280EBB2C00E36491 /* MyTabBarController.swift */; };
+		F407D02B280EBBD900E36491 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02A280EBBD900E36491 /* WriteViewController.swift */; };
+		F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02C280EBF6E00E36491 /* MyPageViewController.swift */; };
+		F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02E280EC39E00E36491 /* MainViewController.swift */; };
 		F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */; };
 		F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */; };
 		F4D5E7B328087E5A001A97AD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B228087E5A001A97AD /* LoginViewController.swift */; };
@@ -18,6 +22,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F407D028280EBB2C00E36491 /* MyTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
+		F407D02A280EBBD900E36491 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
+		F407D02C280EBF6E00E36491 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		F407D02E280EC39E00E36491 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F4D5E7AB28087E5A001A97AD /* FleaMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FleaMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +85,10 @@
 			children = (
 				F4D5E7B228087E5A001A97AD /* LoginViewController.swift */,
 				F4D5E7C3280885FE001A97AD /* JoinViewController.swift */,
+				F407D028280EBB2C00E36491 /* MyTabBarController.swift */,
+				F407D02A280EBBD900E36491 /* WriteViewController.swift */,
+				F407D02C280EBF6E00E36491 /* MyPageViewController.swift */,
+				F407D02E280EC39E00E36491 /* MainViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -171,8 +183,12 @@
 				F4D5E7B328087E5A001A97AD /* LoginViewController.swift in Sources */,
 				F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */,
 				F4D5E7C4280885FE001A97AD /* JoinViewController.swift in Sources */,
+				F407D029280EBB2C00E36491 /* MyTabBarController.swift in Sources */,
 				F4D5E7C8280891DE001A97AD /* UserData.swift in Sources */,
 				F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */,
+				F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */,
+				F407D02B280EBBD900E36491 /* WriteViewController.swift in Sources */,
+				F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,7 +354,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -366,7 +382,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
