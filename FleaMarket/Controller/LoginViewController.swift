@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import WebKit
 
 class LoginViewController: UIViewController {
    
@@ -63,14 +64,18 @@ class LoginViewController: UIViewController {
                        
                         // JSON 결과값을 추출
                         let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
+                        let accessToken = jsonObject["accessToken"] as? String
                         
-                        if status == 200 {
+                        if (status == 200) {
+                            print(accessToken!)
                             let loginAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
-                            
-                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+
+                            let action = UIAlertAction(title: "OK", style: .default, handler: { _ in
+                                self.performSegue(withIdentifier: "mainSegue", sender: self)
+                            })
                             loginAlert.addAction(action)
+                           
                             self.present(loginAlert, animated: true, completion: nil)
-                            self.performSegue(withIdentifier: "mainSegue", sender: self)
                         } else {
                             let checkAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
                             

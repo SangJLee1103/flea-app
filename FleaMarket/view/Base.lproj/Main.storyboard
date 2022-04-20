@@ -76,7 +76,7 @@
                         <outlet property="btnForLogin" destination="Edk-bK-9iH" id="agb-f2-37S"/>
                         <outlet property="emailField" destination="jru-6j-3PZ" id="Y8M-Kb-9by"/>
                         <outlet property="pwField" destination="i3r-ya-ZmH" id="qcY-xH-Mt2"/>
-                        <segue destination="ASt-P5-GAj" kind="show" identifier="mainSegue" id="3HS-o1-Pgk"/>
+                        <segue destination="wYC-8y-396" kind="show" identifier="mainSegue" id="6qP-ao-1Qs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -155,8 +155,6 @@
         <!--Join View Controller-->
         <scene sceneID="dpy-oR-G7F">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0Uw-iV-fqA" sceneMemberID="firstResponder"/>
-                <exit id="DlV-zU-xbP" userLabel="Exit" sceneMemberID="exit"/>
                 <viewController id="buM-0z-4uW" customClass="JoinViewController" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dnR-S2-q93">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
@@ -275,6 +273,8 @@
                         <outlet property="pwField" destination="IlC-px-Sig" id="0Ec-Ua-pLc"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Uw-iV-fqA" sceneMemberID="firstResponder"/>
+                <exit id="DlV-zU-xbP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="667.69230769230762" y="91.706161137440759"/>
         </scene>
@@ -295,9 +295,6 @@
             <point key="canvasLocation" x="-967" y="93"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="3HS-o1-Pgk"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="person.circle.fill" catalog="system" width="128" height="121"/>
