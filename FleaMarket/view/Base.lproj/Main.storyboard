@@ -83,10 +83,10 @@
             </objects>
             <point key="canvasLocation" x="-148" y="92"/>
         </scene>
-        <!--View Controller-->
+        <!--My Page View Controller-->
         <scene sceneID="Ihp-WM-Yrw">
             <objects>
-                <viewController id="tvI-v0-acb" sceneMemberID="viewController">
+                <viewController id="tvI-v0-acb" customClass="MyPageViewController" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fMB-Ds-sew">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -106,19 +106,76 @@
                     <view key="view" contentMode="scaleToFill" id="ctE-Qd-iEw">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="49" translatesAutoresizingMaskIntoConstraints="NO" id="8Q1-yV-4U6">
+                                <rect key="frame" x="40" y="235" width="310" height="390"/>
+                                <subviews>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="fEl-1D-Ttp">
+                                        <rect key="frame" x="0.0" y="0.0" width="310" height="50"/>
+                                        <locale key="locale" localeIdentifier="ko_KR"/>
+                                        <connections>
+                                            <action selector="selectDate:" destination="A8P-JV-NYq" eventType="valueChanged" id="VzU-uW-ok7"/>
+                                        </connections>
+                                    </datePicker>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5di-Bm-PYt">
+                                        <rect key="frame" x="0.0" y="99" width="310" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="NwT-qr-iBA">
+                                        <rect key="frame" x="0.0" y="182" width="310" height="128"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <color key="textColor" systemColor="labelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n8q-dC-Ndm">
+                                        <rect key="frame" x="0.0" y="359" width="310" height="31"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                                        <connections>
+                                            <action selector="onWriteBtn:" destination="A8P-JV-NYq" eventType="touchUpInside" id="PEp-Xl-Opg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="n8q-dC-Ndm" secondAttribute="trailing" id="6oY-Ih-wt8"/>
+                                    <constraint firstAttribute="trailing" secondItem="5di-Bm-PYt" secondAttribute="trailing" id="DF2-gx-qkU"/>
+                                    <constraint firstItem="fEl-1D-Ttp" firstAttribute="leading" secondItem="8Q1-yV-4U6" secondAttribute="leading" id="JUC-V3-nKo"/>
+                                    <constraint firstItem="NwT-qr-iBA" firstAttribute="leading" secondItem="8Q1-yV-4U6" secondAttribute="leading" id="LTN-8i-BQY"/>
+                                    <constraint firstAttribute="trailing" secondItem="fEl-1D-Ttp" secondAttribute="trailing" id="UuS-XH-bfm"/>
+                                    <constraint firstAttribute="trailing" secondItem="NwT-qr-iBA" secondAttribute="trailing" id="Wwt-Co-UTH"/>
+                                    <constraint firstItem="5di-Bm-PYt" firstAttribute="leading" secondItem="8Q1-yV-4U6" secondAttribute="leading" id="daA-Bo-dIJ"/>
+                                    <constraint firstItem="n8q-dC-Ndm" firstAttribute="leading" secondItem="8Q1-yV-4U6" secondAttribute="leading" id="hmy-Sd-FUj"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="blB-fu-rwP"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="blB-fu-rwP" firstAttribute="bottom" secondItem="8Q1-yV-4U6" secondAttribute="bottom" constant="136" id="HfI-HR-1m5"/>
+                            <constraint firstItem="8Q1-yV-4U6" firstAttribute="leading" secondItem="blB-fu-rwP" secondAttribute="leading" constant="40" id="MmV-UF-17k"/>
+                            <constraint firstItem="8Q1-yV-4U6" firstAttribute="top" secondItem="blB-fu-rwP" secondAttribute="top" constant="147" id="ilr-23-rgS"/>
+                            <constraint firstItem="blB-fu-rwP" firstAttribute="trailing" secondItem="8Q1-yV-4U6" secondAttribute="trailing" constant="40" id="n7g-78-2Tn"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="plus.circle.fill" catalog="system" id="5zp-jb-vH4"/>
+                    <connections>
+                        <outlet property="btnForWrite" destination="n8q-dC-Ndm" id="U8B-H8-vfs"/>
+                        <outlet property="descriptionField" destination="NwT-qr-iBA" id="Fr6-Qe-9Gg"/>
+                        <outlet property="startField" destination="fEl-1D-Ttp" id="O2E-MV-jXd"/>
+                        <outlet property="titleField" destination="5di-Bm-PYt" id="Gae-l0-cev"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecs-DJ-nL9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-185" y="1636"/>
+            <point key="canvasLocation" x="-190.76923076923077" y="1632.9383886255923"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="Tki-Tf-I1v">
             <objects>
-                <viewController id="ASt-P5-GAj" customClass="MainViewController" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" id="ASt-P5-GAj" customClass="MainViewController" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="iQo-ag-31r">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -130,7 +187,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uoe-vg-aiw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1032" y="1636"/>
+            <point key="canvasLocation" x="-1033.8461538461538" y="1635.7819905213269"/>
         </scene>
         <!--My Tab Bar Controller-->
         <scene sceneID="fdd-au-QE2">
@@ -143,9 +200,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="ASt-P5-GAj" kind="relationship" relationship="viewControllers" id="imI-dw-QXU"/>
-                        <segue destination="A8P-JV-NYq" kind="relationship" relationship="viewControllers" id="xy2-j3-pVH"/>
-                        <segue destination="tvI-v0-acb" kind="relationship" relationship="viewControllers" id="MSL-lH-fkR"/>
+                        <segue destination="ASt-P5-GAj" kind="relationship" relationship="viewControllers" destinationCreationSelector="homeSegue" id="5fh-mH-rl8"/>
+                        <segue destination="A8P-JV-NYq" kind="relationship" relationship="viewControllers" id="tje-oI-A0x"/>
+                        <segue destination="tvI-v0-acb" kind="relationship" relationship="viewControllers" id="KRN-YJ-Vra"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1H8-6m-mPP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -299,6 +356,9 @@
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="person.circle.fill" catalog="system" width="128" height="121"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="121"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

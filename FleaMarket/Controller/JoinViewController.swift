@@ -58,15 +58,14 @@ class JoinViewController: UIViewController {
     @IBAction func onJoinBtn(_ sender: UIButton) {
         
         do{
-            let id = self.emailField.text!
-            let pw = self.pwField.text!
-            let nickname = self.nicknameField.text!
-            let phone = self.phoneField.text!
+            let id = self.emailField?.text
+            let pw = self.pwField?.text
+            let nickname = self.nicknameField?.text
+            let phone = self.phoneField?.text
             
             //Json 객체로 전송할 딕셔너리
             let body = ["id" : id, "password" : pw, "nickname" : nickname, "phone" : phone]
             let bodyData = try! JSONSerialization.data(withJSONObject: body, options: [])
-            
             let url = URL(string: "http://localhost:3000/member/join")
             
             //URLRequest 객체를 정의
@@ -96,7 +95,7 @@ class JoinViewController: UIViewController {
                         // JSON 결과값을 추출
                         let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
                         let error = jsonObject["message"] as? Array<NSDictionary>
-                        
+                      
                         if status == 201 {
                             self.clearLabel()
                             print("성공")
@@ -106,7 +105,7 @@ class JoinViewController: UIViewController {
                             joinAlert.addAction(action)
                             self.present(joinAlert, animated: true, completion: nil)
                             self.clearJoinField()
-                        }else if status == 403{
+                        }else if status == 403 {
                             self.clearLabel()
                             if(message == "이미 등록된 아이디 혹은 이메일입니다.") {
                                 self.emailError.text = message
@@ -116,37 +115,33 @@ class JoinViewController: UIViewController {
                                 self.phoneError.text = message
                             }
                             
-                            
                         }else {
                             self.clearLabel()
-                            print("데이터 검사해!")
-                            print(((((error?[0])!)["msg"]!) as? String)!)
-                            
                             
                             for i in 0 ..< (error?.count)! {
-                                if(((error?[i])!)["param"]! as? String == "id"){
-                                    self.emailError.text = ((((error?[i])!)["msg"]!) as? String)!
+                                if((error?[i])?["param"] as? String == "id"){
+                                    self.emailError.text = (((error?[i])?["msg"]) as? String)
                                     break;
                                 }
                             }
                             
                             for i in 0 ..< (error?.count)! {
-                                if(((error?[i])!)["param"]! as? String == "password"){
-                                    self.pwError.text = ((((error?[i])!)["msg"]!) as? String)!
+                                if((error?[i])?["param"] as? String == "password"){
+                                    self.pwError.text = (((error?[i])?["msg"]) as? String)
                                     break
                                 }
                             }
                             
                             for i in 0 ..< (error?.count)! {
-                                if(((error?[i])!)["param"]! as? String == "nickname"){
-                                    self.nicknameError.text = ((((error?[i])!)["msg"]!) as? String)!
+                                if((error?[i])?["param"] as? String == "nickname"){
+                                    self.nicknameError.text = (((error?[i])?["msg"]) as? String)
                                     break
                                 }
                             }
                             
                             for i in 0 ..< (error?.count)! {
-                                if(((error?[i])!)["param"]! as? String == "phone"){
-                                    self.phoneError.text = ((((error?[i])!)["msg"]!) as? String)!
+                                if((error?[i])?["param"] as? String == "phone"){
+                                    self.phoneError.text = (((error?[i])?["msg"]) as? String)
                                     break
                                 }
                             }

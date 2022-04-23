@@ -10,5 +10,7 @@ import UIKit
 class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        let token = Keychain.read(key: "accessToken")
+        print("MainViewController: \(token!)")
     }
 }

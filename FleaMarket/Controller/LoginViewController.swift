@@ -17,6 +17,8 @@ class LoginViewController: UIViewController {
     //로그인 버튼
     @IBOutlet var btnForLogin: UIButton!
     
+    var get: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -25,12 +27,13 @@ class LoginViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
     }
     
+    
     //로그인 액션 함수
     @IBAction func onLoginBtn(_ sender: UIButton) {
         
         do{
-            let id = self.emailField.text!
-            let pw = self.pwField.text!
+            let id = self.emailField?.text
+            let pw = self.pwField?.text
            
             //Json 객체로 전송할 딕셔너리
             let body = ["id" : id, "password" : pw]
@@ -67,14 +70,14 @@ class LoginViewController: UIViewController {
                         let accessToken = jsonObject["accessToken"] as? String
                         
                         if (status == 200) {
-                            print(accessToken!)
                             let loginAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
 
                             let action = UIAlertAction(title: "OK", style: .default, handler: { _ in
                                 self.performSegue(withIdentifier: "mainSegue", sender: self)
                             })
                             loginAlert.addAction(action)
-                           
+                            Keychain.create(key: "accessToken", token: accessToken!)
+                            UserDefaults.standard.set(accessToken!, forKey: "accessToken")
                             self.present(loginAlert, animated: true, completion: nil)
                         } else {
                             let checkAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
