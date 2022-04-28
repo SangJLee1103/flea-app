@@ -11,6 +11,7 @@
 		F407D02B280EBBD900E36491 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02A280EBBD900E36491 /* WriteViewController.swift */; };
 		F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02C280EBF6E00E36491 /* MyPageViewController.swift */; };
 		F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02E280EC39E00E36491 /* MainViewController.swift */; };
+		F41B61182818E01E00EC3C12 /* MainSceneBoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */; };
 		F42D2B122812AD4100564B26 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D2B112812AD4100564B26 /* Keychain.swift */; };
 		F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */; };
 		F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */; };
@@ -22,11 +23,25 @@
 		F4D5E7C8280891DE001A97AD /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7C7280891DE001A97AD /* UserData.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		F42587FF2813B06400B16782 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		F407D028280EBB2C00E36491 /* MyTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
 		F407D02A280EBBD900E36491 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		F407D02C280EBF6E00E36491 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		F407D02E280EC39E00E36491 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneBoardCell.swift; sourceTree = "<group>"; };
 		F42D2B112812AD4100564B26 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		F4D5E7AB28087E5A001A97AD /* FleaMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FleaMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +66,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F41B61162818E00000EC3C12 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */,
+			);
+			path = cell;
+			sourceTree = "<group>";
+		};
 		F42D2B102812AD2C00564B26 /* security */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +101,7 @@
 		F4D5E7AD28087E5A001A97AD /* FleaMarket */ = {
 			isa = PBXGroup;
 			children = (
+				F41B61162818E00000EC3C12 /* cell */,
 				F42D2B102812AD2C00564B26 /* security */,
 				F4D5E7C6280891A2001A97AD /* view */,
 				F4D5E7C52808919A001A97AD /* Model */,
@@ -130,6 +154,7 @@
 				F4D5E7A728087E5A001A97AD /* Sources */,
 				F4D5E7A828087E5A001A97AD /* Frameworks */,
 				F4D5E7A928087E5A001A97AD /* Resources */,
+				F42587FF2813B06400B16782 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -191,6 +216,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F41B61182818E01E00EC3C12 /* MainSceneBoardCell.swift in Sources */,
 				F4D5E7B328087E5A001A97AD /* LoginViewController.swift in Sources */,
 				F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */,
 				F4D5E7C4280885FE001A97AD /* JoinViewController.swift in Sources */,

@@ -43,7 +43,6 @@ class WriteViewController: UIViewController, UITextViewDelegate {
             descriptionField.text = placeholder
             descriptionField.textColor = .lightGray
         }
-            
     }
     
     
