@@ -2,20 +2,21 @@
 //  WriteViewController.swift
 //  FleaMarket
 //
-//  Created by 이상준 on 2022/04/19.
+//  Created by 이상준 on 2022/05/07.
 //
 
 import UIKit
 
 class WriteViewController: UIViewController, UITextViewDelegate {
     
-    let placeholder = " 자세한 내용을 적어주세요!!"
+    let placeholder = " 상세 내용을 적어주세요!!"
     
-    @IBOutlet var startField: UIDatePicker!
     @IBOutlet var titleField: UITextField!
     @IBOutlet var descriptionField: UITextView!
-    
-    @IBOutlet var btnForWrite: UIButton!
+    @IBOutlet var startField: UIDatePicker!
+
+    @IBOutlet var btnForWrite: UIBarButtonItem!
+
     
     let token = Keychain.read(key: "accessToken")
     var startTime: String? = ""
@@ -24,8 +25,6 @@ class WriteViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         startField.contentHorizontalAlignment = .center
         
-        descriptionField.layer.borderWidth = 1.0
-        descriptionField.layer.borderColor = UIColor.black.cgColor
         descriptionField.delegate = self
         descriptionField.text = placeholder
         descriptionField.textColor = .lightGray
@@ -37,6 +36,7 @@ class WriteViewController: UIViewController, UITextViewDelegate {
             descriptionField.textColor = .black
         }
     }
+    
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if descriptionField.text == "" {
@@ -55,7 +55,19 @@ class WriteViewController: UIViewController, UITextViewDelegate {
         startTime = formatter.string(from: datePickerView.date)
     }
     
-    @IBAction func onWriteBtn(_ sender: UIButton) {
+    
+    @IBAction func onExitBtn(_ sender: Any) {
+        let alert = UIAlertController(title: "FleaMarket", message: "작성을 취소하시겠습니까?", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let ok = UIAlertAction(title: "확인", style: .default) { (_) in self.navigationController?.popToRootViewController(animated: true)
+        }
+        alert.addAction(cancel)
+        alert.addAction(ok)
+        self.present(alert, animated: false)
+    }
+    
+    
+    @IBAction func onWriteBtn(_ sender: Any) {
         do{
             let start = startTime!
             let topic = self.titleField?.text
@@ -100,7 +112,9 @@ class WriteViewController: UIViewController, UITextViewDelegate {
                         if (status == 201) {
                             let writeAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
 
-                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                            let action = UIAlertAction(title: "OK", style: .default){ (_) in self.navigationController?.popToRootViewController(animated: true)
+                            }
+                            
                             writeAlert.addAction(action)
                             self.present(writeAlert, animated: true, completion: nil)
                         } else {

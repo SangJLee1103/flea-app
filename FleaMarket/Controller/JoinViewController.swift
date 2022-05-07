@@ -7,7 +7,7 @@
 
 import UIKit
 
-class JoinViewController: UIViewController {
+class JoinViewController: UIViewController, UITextFieldDelegate {
     
     //이미 계정이 있으신가요? 버튼
     @IBOutlet var btnForLoginViewController: UIButton!

@@ -12,7 +12,6 @@ class MainViewController: UIViewController {
     
     @IBOutlet var boardCollection: UICollectionView!
     
-    
     let token = Keychain.read(key: "accessToken")
     var startTime: String? = ""
     var count = 0
@@ -21,7 +20,6 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let token = Keychain.read(key: "accessToken")
         
         getBoardAll { [weak self] datas in
             self?.data = datas
@@ -35,10 +33,9 @@ class MainViewController: UIViewController {
     
     func getBoardAll(callBack: @escaping ((Array<NSDictionary>) -> Void)) {
         do{
-            let url = URL(string: "http://localhost:3000/board/read-all")
-            
+            guard let url =  URL(string: "http://localhost:3000/board/read-all") else { return }
             //URLRequest 객체를 정의
-            var request = URLRequest(url: url!)
+            var request = URLRequest(url: url)
             request.httpMethod = "GET"
             
             //HTTP 메시지 헤더
@@ -91,6 +88,8 @@ class MainViewController: UIViewController {
     
 }
 
+    
+
 
 //// 데이터 소스 설정: 데이터 관련된 것들
 extension MainViewController: UICollectionViewDataSource {
@@ -106,15 +105,12 @@ extension MainViewController: UICollectionViewDataSource {
         
         let cellId = String(describing: MainSceneBoardCell.self)
         print(cellId)
-        print(data)
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MainSceneBoardCell
         
-        let writer: NSDictionary = self.data?[indexPath.item]["User"] as! NSDictionary
-        print(writer["nickname"])
+        let writer: NSDictionary? = self.data?[indexPath.item]["User"] as? NSDictionary
         
-        
-        cell.writer.text = writer["nickname"] as? String
+        cell.writer.text = writer?["nickname"] as? String
         cell.topic.text = self.data?[indexPath.item]["topic"] as? String
         cell.date.text = self.data?[indexPath.item]["start"] as? String
         cell.contentView.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
@@ -123,6 +119,12 @@ extension MainViewController: UICollectionViewDataSource {
         cell.contentView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
         return cell
+    }
+    
+    //클릭
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(self.data?[indexPath.item]["id"] as? Int)
+        
     }
 }
 

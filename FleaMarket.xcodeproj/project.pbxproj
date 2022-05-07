@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		F407D029280EBB2C00E36491 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D028280EBB2C00E36491 /* MyTabBarController.swift */; };
-		F407D02B280EBBD900E36491 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02A280EBBD900E36491 /* WriteViewController.swift */; };
+		F407D02B280EBBD900E36491 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02A280EBBD900E36491 /* AlarmViewController.swift */; };
 		F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02C280EBF6E00E36491 /* MyPageViewController.swift */; };
 		F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02E280EC39E00E36491 /* MainViewController.swift */; };
+		F414AE09281CEAB6002D9221 /* BoardElementVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414AE08281CEAB6002D9221 /* BoardElementVC.swift */; };
 		F41B61182818E01E00EC3C12 /* MainSceneBoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */; };
 		F42D2B122812AD4100564B26 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D2B112812AD4100564B26 /* Keychain.swift */; };
+		F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AB0282661300081FF12 /* WriteViewController.swift */; };
 		F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */; };
 		F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */; };
 		F4D5E7B328087E5A001A97AD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B228087E5A001A97AD /* LoginViewController.swift */; };
@@ -38,11 +40,13 @@
 
 /* Begin PBXFileReference section */
 		F407D028280EBB2C00E36491 /* MyTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
-		F407D02A280EBBD900E36491 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
+		F407D02A280EBBD900E36491 /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		F407D02C280EBF6E00E36491 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		F407D02E280EC39E00E36491 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		F414AE08281CEAB6002D9221 /* BoardElementVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardElementVC.swift; sourceTree = "<group>"; };
 		F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneBoardCell.swift; sourceTree = "<group>"; };
 		F42D2B112812AD4100564B26 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		F42D5AB0282661300081FF12 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		F4D5E7AB28087E5A001A97AD /* FleaMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FleaMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,9 +125,11 @@
 				F4D5E7B228087E5A001A97AD /* LoginViewController.swift */,
 				F4D5E7C3280885FE001A97AD /* JoinViewController.swift */,
 				F407D028280EBB2C00E36491 /* MyTabBarController.swift */,
-				F407D02A280EBBD900E36491 /* WriteViewController.swift */,
+				F407D02A280EBBD900E36491 /* AlarmViewController.swift */,
 				F407D02C280EBF6E00E36491 /* MyPageViewController.swift */,
 				F407D02E280EC39E00E36491 /* MainViewController.swift */,
+				F414AE08281CEAB6002D9221 /* BoardElementVC.swift */,
+				F42D5AB0282661300081FF12 /* WriteViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -218,14 +224,16 @@
 			files = (
 				F41B61182818E01E00EC3C12 /* MainSceneBoardCell.swift in Sources */,
 				F4D5E7B328087E5A001A97AD /* LoginViewController.swift in Sources */,
+				F414AE09281CEAB6002D9221 /* BoardElementVC.swift in Sources */,
 				F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */,
 				F4D5E7C4280885FE001A97AD /* JoinViewController.swift in Sources */,
+				F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */,
 				F407D029280EBB2C00E36491 /* MyTabBarController.swift in Sources */,
 				F4D5E7C8280891DE001A97AD /* UserData.swift in Sources */,
 				F42D2B122812AD4100564B26 /* Keychain.swift in Sources */,
 				F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */,
 				F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */,
-				F407D02B280EBBD900E36491 /* WriteViewController.swift in Sources */,
+				F407D02B280EBBD900E36491 /* AlarmViewController.swift in Sources */,
 				F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 
+
 class MainSceneBoardCell: UICollectionViewCell{
+    
     
     @IBOutlet var writer: UILabel!
     @IBOutlet var topic: UILabel!
