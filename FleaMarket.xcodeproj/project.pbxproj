@@ -15,6 +15,7 @@
 		F41B61182818E01E00EC3C12 /* MainSceneBoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */; };
 		F42D2B122812AD4100564B26 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D2B112812AD4100564B26 /* Keychain.swift */; };
 		F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AB0282661300081FF12 /* WriteViewController.swift */; };
+		F42D5AC72827EC210081FF12 /* TopLankingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AC62827EC210081FF12 /* TopLankingCell.swift */; };
 		F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */; };
 		F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */; };
 		F4D5E7B328087E5A001A97AD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B228087E5A001A97AD /* LoginViewController.swift */; };
@@ -47,6 +48,7 @@
 		F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneBoardCell.swift; sourceTree = "<group>"; };
 		F42D2B112812AD4100564B26 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		F42D5AB0282661300081FF12 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
+		F42D5AC62827EC210081FF12 /* TopLankingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLankingCell.swift; sourceTree = "<group>"; };
 		F4D5E7AB28087E5A001A97AD /* FleaMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FleaMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */,
+				F42D5AC62827EC210081FF12 /* TopLankingCell.swift */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */,
 				F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */,
 				F407D02B280EBBD900E36491 /* AlarmViewController.swift in Sources */,
+				F42D5AC72827EC210081FF12 /* TopLankingCell.swift in Sources */,
 				F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

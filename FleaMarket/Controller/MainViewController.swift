@@ -96,7 +96,6 @@ extension MainViewController: UICollectionViewDataSource {
 
     // 각 섹션에 들어가는 아이템 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(self.count)
         return self.count
     }
 
@@ -104,8 +103,6 @@ extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cellId = String(describing: MainSceneBoardCell.self)
-        print(cellId)
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MainSceneBoardCell
         
         let writer: NSDictionary? = self.data?[indexPath.item]["User"] as? NSDictionary
@@ -123,10 +120,15 @@ extension MainViewController: UICollectionViewDataSource {
     
     //클릭
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(self.data?[indexPath.item]["id"] as? Int)
-        
+        //게시글 아이디
+        guard let id = self.data?[indexPath.item]["id"] as? Int else { return }
+        //게시글 아이디 전달
+        guard let boardElement = self.storyboard?.instantiateViewController(withIdentifier: "boardElement") as? BoardElementVC else { return }
+        boardElement.boardId = id
+        self.navigationController?.pushViewController(boardElement, animated: true)
     }
 }
+
 
 // 컬렉션 뷰 델리게이트 - 액션과 관련된 것들
 extension MainViewController: UICollectionViewDelegate {

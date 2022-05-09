@@ -62,7 +62,6 @@ class LoginViewController: UIViewController {
                         let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                         guard let jsonObject = object else { return }
                         
-                        //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
                         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
                        
                         // JSON 결과값을 추출
