@@ -14,8 +14,7 @@ class MainViewController: UIViewController {
     
     let token = Keychain.read(key: "accessToken")
     var startTime: String? = ""
-    var count = 0
-    var data : Array<NSDictionary>?
+    var data : Array<NSDictionary> = []
 
     
     override func viewDidLoad() {
@@ -56,7 +55,6 @@ class MainViewController: UIViewController {
                     // JSON 결과값을 추출
                     guard let data = jsonObject["data"] as? Array<NSDictionary> else { return  print("") }
                     callBack(data)
-                    self.count = data.count
                     
                 } catch let e as NSError {
                     print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
@@ -96,7 +94,7 @@ extension MainViewController: UICollectionViewDataSource {
 
     // 각 섹션에 들어가는 아이템 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.count
+        return data.count
     }
 
     //각 컬렉션 뷰 셀에 대한 설정
@@ -105,11 +103,11 @@ extension MainViewController: UICollectionViewDataSource {
         let cellId = String(describing: MainSceneBoardCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MainSceneBoardCell
         
-        let writer: NSDictionary? = self.data?[indexPath.item]["User"] as? NSDictionary
+        let writer: NSDictionary? = self.data[indexPath.item]["User"] as? NSDictionary
         
         cell.writer.text = writer?["nickname"] as? String
-        cell.topic.text = self.data?[indexPath.item]["topic"] as? String
-        cell.date.text = self.data?[indexPath.item]["start"] as? String
+        cell.topic.text = self.data[indexPath.item]["topic"] as? String
+        cell.date.text = self.data[indexPath.item]["start"] as? String
         cell.contentView.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
         cell.contentView.layer.cornerRadius = 8
         cell.contentView.layer.borderWidth = 1
@@ -121,7 +119,7 @@ extension MainViewController: UICollectionViewDataSource {
     //클릭
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //게시글 아이디
-        guard let id = self.data?[indexPath.item]["id"] as? Int else { return }
+        guard let id = self.data[indexPath.item]["id"] as? Int else { return }
         //게시글 아이디 전달
         guard let boardElement = self.storyboard?.instantiateViewController(withIdentifier: "boardElement") as? BoardElementVC else { return }
         boardElement.boardId = id
