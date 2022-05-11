@@ -9,19 +9,20 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    
     @IBOutlet var boardCollection: UICollectionView!
     
     let token = Keychain.read(key: "accessToken")
     var startTime: String? = ""
     var data : Array<NSDictionary> = []
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         getBoardAll { [weak self] datas in
             self?.data = datas
+            DispatchQueue.main.async {
+                self?.boardCollection.reloadData()
+            }
         }
         
         boardCollection.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -77,9 +78,6 @@ class MainViewController: UIViewController {
     }
     
     @objc func updateUI(refresh: UIRefreshControl){
-        getBoardAll { [weak self] datas in
-            self?.data = datas
-        }
         refresh.endRefreshing() //refresh 종료
         boardCollection.reloadData() // 컬렉션 뷰 로드
     }
@@ -104,7 +102,7 @@ extension MainViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MainSceneBoardCell
         
         let writer: NSDictionary? = self.data[indexPath.item]["User"] as? NSDictionary
-        
+
         cell.writer.text = writer?["nickname"] as? String
         cell.topic.text = self.data[indexPath.item]["topic"] as? String
         cell.date.text = self.data[indexPath.item]["start"] as? String

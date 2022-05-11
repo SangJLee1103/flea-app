@@ -16,5 +16,8 @@ class MainSceneBoardCell: UICollectionViewCell{
     @IBOutlet var topic: UILabel!
     @IBOutlet var date: UILabel!
     
+    public func configureCell(with model: NSDictionary) {
+        
+    }
 }
 

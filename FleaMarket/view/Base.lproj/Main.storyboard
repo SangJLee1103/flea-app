@@ -464,9 +464,12 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S16-rX-9Gn">
-                                                <rect key="frame" x="243" y="705" width="75" height="131"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S16-rX-9Gn">
+                                                <rect key="frame" x="233.66666666666666" y="705" width="84.333333333333343" height="131"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="131" id="M4J-78-aXG"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="ZZH-PQ-hIX"/>
+                                                </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain">
                                                     <imageReference key="image" image="plus.circle.fill" catalog="system" symbolScale="large"/>
@@ -476,6 +479,9 @@
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
+                                            <constraint firstItem="S16-rX-9Gn" firstAttribute="top" secondItem="RFj-wC-6Nr" secondAttribute="top" constant="705" id="7WD-wH-axS"/>
+                                            <constraint firstItem="S16-rX-9Gn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="RFj-wC-6Nr" secondAttribute="leading" constant="20" symbolic="YES" id="8s8-ls-yrA"/>
+                                            <constraint firstAttribute="trailing" secondItem="S16-rX-9Gn" secondAttribute="trailing" constant="72" id="EGK-oG-00O"/>
                                             <constraint firstItem="K4K-ph-WYJ" firstAttribute="leading" secondItem="RFj-wC-6Nr" secondAttribute="leadingMargin" id="GoD-Xd-WzD"/>
                                             <constraint firstItem="K4K-ph-WYJ" firstAttribute="leading" secondItem="fxE-kB-7tc" secondAttribute="leading" id="PZs-tk-q68"/>
                                             <constraint firstAttribute="height" constant="1600" id="bhI-eI-2NL"/>
