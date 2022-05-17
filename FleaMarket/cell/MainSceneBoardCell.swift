@@ -12,12 +12,12 @@ import UIKit
 class MainSceneBoardCell: UICollectionViewCell{
     
     
+    @IBOutlet var image: UIImageView!
     @IBOutlet var writer: UILabel!
-    @IBOutlet var topic: UILabel!
     @IBOutlet var date: UILabel!
+    @IBOutlet var topic: UILabel!
     
     public func configureCell(with model: NSDictionary) {
-        
     }
 }
 
