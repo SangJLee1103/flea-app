@@ -138,7 +138,7 @@ extension BoardElementVC {
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .estimated(270.0))
             
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 1)
+            item.contentInsets = NSDirectionalEdgeInsets(top: CGFloat(1.0), leading: CGFloat(1.0), bottom: CGFloat(1.0), trailing: CGFloat(1.0))
             
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: itemSize.heightDimension)
             
@@ -193,8 +193,9 @@ extension BoardElementVC: UICollectionViewDataSource {
             return cell
         } else if collectionView == productView{
             
-            productNumber.text = "총 \(productData.count)건"
-            
+            if productData.count > 0 {
+                productNumber.text = "총 \(productData.count)건"
+            }
             let cellId = String(describing: ProductCell.self)
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProductCell
             
