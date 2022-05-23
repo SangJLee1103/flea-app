@@ -16,6 +16,8 @@
 		F42D2B122812AD4100564B26 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D2B112812AD4100564B26 /* Keychain.swift */; };
 		F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AB0282661300081FF12 /* WriteViewController.swift */; };
 		F42D5AC72827EC210081FF12 /* TopLankingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AC62827EC210081FF12 /* TopLankingCell.swift */; };
+		F449FD1B283A861B00DAACB0 /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F449FD1A283A861B00DAACB0 /* BSImagePicker */; };
+		F449FD1D283B79D900DAACB0 /* SelectedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */; };
 		F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1C2833E370004BA7FE /* ProductCell.swift */; };
 		F49CAF1F28360EC3004BA7FE /* ProductRegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1E28360EC2004BA7FE /* ProductRegisterVC.swift */; };
 		F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */; };
@@ -51,6 +53,7 @@
 		F42D2B112812AD4100564B26 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		F42D5AB0282661300081FF12 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		F42D5AC62827EC210081FF12 /* TopLankingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLankingCell.swift; sourceTree = "<group>"; };
+		F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageCell.swift; sourceTree = "<group>"; };
 		F49CAF1C2833E370004BA7FE /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		F49CAF1E28360EC2004BA7FE /* ProductRegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegisterVC.swift; sourceTree = "<group>"; };
 		F4D5E7AB28087E5A001A97AD /* FleaMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FleaMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F449FD1B283A861B00DAACB0 /* BSImagePicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +86,7 @@
 				F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */,
 				F42D5AC62827EC210081FF12 /* TopLankingCell.swift */,
 				F49CAF1C2833E370004BA7FE /* ProductCell.swift */,
+				F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -176,6 +181,9 @@
 			dependencies = (
 			);
 			name = FleaMarket;
+			packageProductDependencies = (
+				F449FD1A283A861B00DAACB0 /* BSImagePicker */,
+			);
 			productName = FleaMarket;
 			productReference = F4D5E7AB28087E5A001A97AD /* FleaMarket.app */;
 			productType = "com.apple.product-type.application";
@@ -204,6 +212,9 @@
 				Base,
 			);
 			mainGroup = F4D5E7A228087E5A001A97AD;
+			packageReferences = (
+				F449FD19283A861B00DAACB0 /* XCRemoteSwiftPackageReference "BSImagePicker" */,
+			);
 			productRefGroup = F4D5E7AC28087E5A001A97AD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -245,6 +256,7 @@
 				F407D02B280EBBD900E36491 /* AlarmViewController.swift in Sources */,
 				F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */,
 				F49CAF1F28360EC3004BA7FE /* ProductRegisterVC.swift in Sources */,
+				F449FD1D283B79D900DAACB0 /* SelectedImageCell.swift in Sources */,
 				F42D5AC72827EC210081FF12 /* TopLankingCell.swift in Sources */,
 				F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */,
 			);
@@ -466,6 +478,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F449FD19283A861B00DAACB0 /* XCRemoteSwiftPackageReference "BSImagePicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mikaoj/BSImagePicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F449FD1A283A861B00DAACB0 /* BSImagePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F449FD19283A861B00DAACB0 /* XCRemoteSwiftPackageReference "BSImagePicker" */;
+			productName = BSImagePicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F4D5E7A328087E5A001A97AD /* Project object */;
 }
