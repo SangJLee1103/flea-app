@@ -25,6 +25,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate {
     var selectedData:[Data]! = [Data]()
     var selectedAssets = [PHAsset]()
     var userSelectedImages = [UIImage]()
+    var selectedCount = 0
     
     
     override func viewDidLoad() {
@@ -58,7 +59,17 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate {
     // 이미지 선택
     @IBAction func openGalary(_ sender: UIButton) {
         // 이미지 피커 컨트롤러 인스턴스 생성
+        
         let picker = ImagePickerController()
+        
+        if selectedCount == 5 {
+            let alert = UIAlertController(title: "FleaMarket", message: "사진은 5개까지 등록 가능합니다", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+            alert.addAction(action)
+            self.present(alert, animated: false)
+        }
+        
         picker.settings.selection.max = 5
         picker.settings.fetch.assets.supportedMediaTypes = [.image]
                 
@@ -72,7 +83,9 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate {
             // User finished selection assets.
         for i in 0..<assets.count {
             self.selectedAssets.append(assets[i])
+            self.selectedCount += 1
         }
+            print("올라간 사진: ", self.selectedCount)
             self.convertAssetToImages()
         })
     }
@@ -103,9 +116,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate {
                     self.selectedData.append(data!)
                 }
                 
-                DispatchQueue.main.async {
-                    self.productImgView.reloadData()
-                }
+                self.productImgView.reloadData()
             }
         }
 }
@@ -114,7 +125,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate {
 
 extension ProductRegisterVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return selectedData.count
+        selectedData.count
     }
     
     // 컬렉션 뷰 셀에 대한 설정
@@ -123,9 +134,36 @@ extension ProductRegisterVC: UICollectionViewDataSource {
         let cellId = String(describing: "SelectedImageCell")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SelectedImageCell
         
+        cell.cancelImgBtn.tag = indexPath.row
+        cell.cancelImgBtn.addTarget(self, action: #selector(cancelImg(sender: )), for: .touchUpInside)
         cell.selectedImg.image = self.userSelectedImages[indexPath.row]
         
         return cell
+    }
+    
+    //선택된 이미지취소(x) 버튼 클릭시 이벤트
+    @objc func cancelImg(sender: UIButton){
+        let alert = UIAlertController(title: "FleaMarket", message: "이미지를 삭제하시겠습니까?", preferredStyle: .alert)
+
+        let confirm = UIAlertAction(title: "확인", style: .default, handler: { (_) in
+            self.productImgView.performBatchUpdates({
+                self.productImgView.deleteItems(at: [IndexPath.init(row: sender.tag, section: 0)])
+                self.selectedData.remove(at: sender.tag)
+                print(sender.tag, "번째 사진 삭제")
+                self.selectedCount -= 1
+            }, completion: { (_) in
+                self.productImgView.reloadData()
+            }
+            )}
+        )
+        
+
+        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+
+        alert.addAction(confirm)
+        alert.addAction(cancel)
+
+        self.present(alert, animated: false)
     }
 }
 

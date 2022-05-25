@@ -13,11 +13,6 @@ class SelectedImageCell: UICollectionViewCell {
     
     
     @IBOutlet var selectedImg: UIImageView!
+    @IBOutlet var cancelImgBtn: UIButton!
     
-    @IBAction func cancelImgBtn(_ sender: Any) {
-    }
- 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
 }
