@@ -9,7 +9,7 @@ import UIKit
 import Photos
 import BSImagePicker
 
-class ProductRegisterVC: UIViewController, UITextViewDelegate {
+class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewDelegate {
     
     let placeholder = "상품에 대해서 설명을 적어주세요(상품 사용 기간, 상품의 흠집 여부 및 특징 등)"
     
@@ -22,7 +22,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate {
     @IBOutlet var descriptionField: UITextView!
     
     
-    var selectedData:[Data]! = [Data]()
+    var selectedData: [Data] = [Data]()
     var selectedAssets = [PHAsset]()
     var userSelectedImages = [UIImage]()
     var selectedCount = 0
@@ -90,6 +90,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate {
         })
     }
     
+    // asset 타입을 image 타입으로 변환
     func convertAssetToImages() {
             if selectedAssets.count != 0 {
 //                self.selectedData.removeAll()
@@ -134,9 +135,9 @@ extension ProductRegisterVC: UICollectionViewDataSource {
         let cellId = String(describing: "SelectedImageCell")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SelectedImageCell
         
-        cell.cancelImgBtn.tag = indexPath.row
-        cell.cancelImgBtn.addTarget(self, action: #selector(cancelImg(sender: )), for: .touchUpInside)
         cell.selectedImg.image = self.userSelectedImages[indexPath.row]
+//        print("indexpath = \(indexPath.row)")
+//        cell.cancelImgBtn.tag = indexPath.row
         
         return cell
     }
@@ -144,17 +145,19 @@ extension ProductRegisterVC: UICollectionViewDataSource {
     //선택된 이미지취소(x) 버튼 클릭시 이벤트
     @objc func cancelImg(sender: UIButton){
         let alert = UIAlertController(title: "FleaMarket", message: "이미지를 삭제하시겠습니까?", preferredStyle: .alert)
-
+        
         let confirm = UIAlertAction(title: "확인", style: .default, handler: { (_) in
-            self.productImgView.performBatchUpdates({
-                self.productImgView.deleteItems(at: [IndexPath.init(row: sender.tag, section: 0)])
-                self.selectedData.remove(at: sender.tag)
+            
+                print("tag = \(sender.tag)")
+                print("selectedData = \(self.selectedData)")
+            self.productImgView.deleteItems(at: [IndexPath.init(row: sender.tag, section: 0)])
+            self.selectedData.remove(at: sender.tag)
                 print(sender.tag, "번째 사진 삭제")
                 self.selectedCount -= 1
-            }, completion: { (_) in
+            
                 self.productImgView.reloadData()
+            
             }
-            )}
         )
         
 
@@ -167,7 +170,3 @@ extension ProductRegisterVC: UICollectionViewDataSource {
     }
 }
 
-// 액션 관련
-extension ProductRegisterVC: UICollectionViewDelegate {
-    
-}

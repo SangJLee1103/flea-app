@@ -80,7 +80,13 @@ class MainViewController: UIViewController {
     
     @objc func updateUI(refresh: UIRefreshControl){
         refresh.endRefreshing() //refresh 종료
-        boardCollection.reloadData() // 컬렉션 뷰 로드
+        getBoardAll { [weak self] datas in
+            self?.data = datas
+            DispatchQueue.main.async {
+                self?.boardCollection.reloadData()
+            }
+        }
+        self.boardCollection.reloadData() // 컬렉션 뷰 로드
     }
     
 }
