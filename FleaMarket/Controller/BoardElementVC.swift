@@ -53,8 +53,11 @@ class BoardElementVC: UIViewController {
     }
 
     @objc func goProductRegisterVC(){
+        
         guard let productRegister = self.storyboard?.instantiateViewController(withIdentifier: "productRegister") as? ProductRegisterVC else { return }
+        productRegister.boardId = boardId
         self.navigationController?.pushViewController(productRegister, animated: true)
+        
     }
     
     // 상품 Top10 정보 가져오기

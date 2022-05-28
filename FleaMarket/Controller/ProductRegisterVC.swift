@@ -13,7 +13,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
     
     let placeholder = "상품에 대해서 설명을 적어주세요(상품 사용 기간, 상품의 흠집 여부 및 특징 등)"
     
-    
+    var boardId: Int?
     
     @IBOutlet var productImgView: UICollectionView!
     @IBOutlet var productName: UITextField!
@@ -21,6 +21,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
     @IBOutlet var costPrice: UITextField!
     @IBOutlet var descriptionField: UITextView!
     
+    let token = Keychain.read(key: "accessToken")
     
     var selectedData: [Data] = [Data]()
     var selectedAssets = [PHAsset]()
@@ -31,6 +32,10 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationItem.title = "상품 등록하기"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(productRegist))
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.systemYellow
+        
         descriptionField.delegate = self
         descriptionField.text = placeholder
         descriptionField.textColor = .lightGray
@@ -40,6 +45,8 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
         productImgView.delegate = self
         
     }
+    
+    
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         if descriptionField.textColor == .lightGray {
@@ -54,6 +61,95 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
             descriptionField.text = placeholder
             descriptionField.textColor = .lightGray
         }
+    }
+    
+    @objc func productRegist(){
+        
+        do{
+            
+            let name = self.productName.text// 상품명
+            let selling_price = self.sellingPrice.text // 판매가격
+            let cost_price = self.costPrice.text// 구매 당시 가격
+            let description = self.descriptionField.text // 상품 상세
+            
+
+            let url = URL(string: "http://localhost:3000/product/\(boardId!)/register")
+
+            var reqestParam : Dictionary<String, Any> = [String : Any]()
+            let boundary = "Boundary-\(UUID().uuidString)"
+            
+            //URLRequest 객체를 정의
+            var request = URLRequest(url: url!)
+            request.httpMethod = "POST"
+            request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+
+            var uploadData = Data()
+            let boundaryPrefix = "--\(boundary)\r\n"
+            
+            let file = "file"
+            
+            for (key, value) in reqestParam {
+                if "\(key)" == "\(file)" { // MARK: [사진 파일 인 경우]
+                    uploadData.append(boundaryPrefix.data(using: .utf8)!)
+                    uploadData.append("Content-Disposition: form-data; name=\"\(file)\"; filename=\"\(file)\"\r\n".data(using: .utf8)!) // [파라미터 key 지정]
+                    uploadData.append("Content-Type: \("image/jpg")\r\n\r\n".data(using: .utf8)!) // [전체 이미지 타입 설정]
+                    uploadData.append(value as! Data) // [사진 파일 삽입]
+                    uploadData.append("\r\n".data(using: .utf8)!)
+                    uploadData.append("--\(boundary)--".data(using: .utf8)!)
+                } else { // MARK: [일반 파라미터인 경우]
+                    uploadData.append(boundaryPrefix.data(using: .utf8)!)
+                    uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!) // [파라미터 key 지정]
+                    uploadData.append("\(value)\r\n".data(using: .utf8)!) // [value 삽입]
+                }
+            }
+            
+            
+            //URLSession 객체를 통해 전송, 응답값 처리
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let e = error{
+                    NSLog("An error has occured: \(e.localizedDescription)")
+                    return
+                }
+                DispatchQueue.main.async() {
+                    // 서버로부터 응답된 스트링 표시
+                    do {
+                        let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+                        guard let jsonObject = object else { return }
+
+                        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+
+                        // JSON 결과값을 추출
+                        let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
+                        let accessToken = jsonObject["accessToken"] as? String
+
+                        if (status == 200) {
+                            let loginAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
+
+                            let action = UIAlertAction(title: "OK", style: .default, handler: { _ in
+                                self.performSegue(withIdentifier: "mainSegue", sender: self)
+                            })
+                            loginAlert.addAction(action)
+                            Keychain.create(key: "accessToken", token: accessToken!)
+                            UserDefaults.standard.set(accessToken!, forKey: "accessToken")
+                            self.present(loginAlert, animated: true, completion: nil)
+                        } else {
+                            let checkAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
+
+                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                            checkAlert.addAction(action)
+                            self.present(checkAlert, animated: true, completion: nil)
+                        }
+                    } catch let e as NSError {
+                        print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+                    }
+                }
+            }
+            task.resume()
+        }
+        
+//        guard let productRegister = self.storyboard?.instantiateViewController(withIdentifier: "productRegister") as? ProductRegisterVC else { return }
+//        self.navigationController?.pushViewController(productRegister, animated: true)
     }
     
     // 이미지 선택
@@ -85,8 +181,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
             self.selectedAssets.append(assets[i])
             self.selectedCount += 1
         }
-            print("올라간 사진: ", self.selectedCount)
-            self.convertAssetToImages()
+            self.convertAssetToImages() // image 타입으로 변환하는 함수 실행
         })
     }
     
@@ -139,6 +234,8 @@ extension ProductRegisterVC: UICollectionViewDataSource {
 //        print("indexpath = \(indexPath.row)")
 //        cell.cancelImgBtn.tag = indexPath.row
         
+        
+        
         return cell
     }
     
@@ -160,7 +257,6 @@ extension ProductRegisterVC: UICollectionViewDataSource {
             }
         )
         
-
         let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
 
         alert.addAction(confirm)
