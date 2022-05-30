@@ -7,13 +7,16 @@
 
 import UIKit
 import Foundation
+import BSImagePicker
 
 class BoardElementVC: UIViewController {
     
     var boardId: Int?
     let token = Keychain.read(key: "accessToken")
-    var data : Array<NSDictionary> = []
+    var lankData : Array<NSDictionary> = []
     var productData: Array<NSDictionary> = []
+    var likeData: Array<NSDictionary> = []
+    var likeList: Array? = []
     // 상품 랭킹 컬렉션 뷰
     @IBOutlet var lankingView: UICollectionView!
     // 전체 상품 컬렉션 뷰
@@ -26,8 +29,9 @@ class BoardElementVC: UIViewController {
         self.navigationItem.title = "상품"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(goProductRegisterVC))
         
+        
         getTopLanking { [weak self] datas in
-            self?.data = datas
+            self?.lankData = datas
             DispatchQueue.main.async {
                 self?.lankingView.reloadData()
             }
@@ -39,7 +43,7 @@ class BoardElementVC: UIViewController {
                 self?.productView.reloadData()
             }
         }
-            
+        
         lankingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         lankingView.dataSource = self
         lankingView.delegate = self
@@ -52,13 +56,14 @@ class BoardElementVC: UIViewController {
         
     }
 
+    // 상품 등록 페이지 이동 함수
     @objc func goProductRegisterVC(){
         
         guard let productRegister = self.storyboard?.instantiateViewController(withIdentifier: "productRegister") as? ProductRegisterVC else { return }
         productRegister.boardId = boardId
         self.navigationController?.pushViewController(productRegister, animated: true)
-        
     }
+    
     
     // 상품 Top10 정보 가져오기
     func getTopLanking(callBack: @escaping ((Array<NSDictionary>) -> Void)){
@@ -71,7 +76,6 @@ class BoardElementVC: UIViewController {
             
             //HTTP 메시지 헤더
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
             
             //URLSession 객체를 통해 전송, 응답값 처리
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -132,6 +136,7 @@ class BoardElementVC: UIViewController {
 }
 
 
+
 // 컴포지셔널 레이아웃 관련
 extension BoardElementVC {
     fileprivate func createCompositional() -> UICollectionViewLayout {
@@ -164,7 +169,7 @@ extension BoardElementVC: UICollectionViewDataSource {
     //아이템 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == lankingView {
-            return data.count
+            return lankData.count
         }else if collectionView == productView {
             return productData.count
         }
@@ -174,6 +179,7 @@ extension BoardElementVC: UICollectionViewDataSource {
     //각 컬렉션뷰 셀에 대한 설정
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        // top 10 뷰
         if collectionView == lankingView {
             let cellId = String(describing: TopLankingCell.self)
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TopLankingCell
@@ -181,17 +187,15 @@ extension BoardElementVC: UICollectionViewDataSource {
             cell.contentView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             
             // top 10 상품 이미지 출력 부분
-            let lankImage = (data[indexPath.item]["img"] as! String).split(separator:",")
+            let lankImage = (lankData[indexPath.row]["img"] as! String).split(separator:",")
             let url: URL! = URL(string: "http://localhost:3000/\(lankImage[0])")
-            //print(url)
             let imageData = try! Data(contentsOf: url)
             cell.productImg.image = UIImage(data:imageData)
             
+            let sellerName = self.lankData[indexPath.row]["nickname"] as! String
+            cell.sellerName.text = sellerName
             
-            let sellerName: NSDictionary? = self.data[indexPath.item]["User"] as? NSDictionary
-            cell.sellerName.text = sellerName?["nickname"] as? String
-            
-            let price = self.data[indexPath.item]["selling_price"] as! Int
+            let price = self.lankData[indexPath.row]["selling_price"] as! Int
             cell.sellingPrice.text = String (price) + "원"
             return cell
         } else if collectionView == productView{
@@ -199,22 +203,39 @@ extension BoardElementVC: UICollectionViewDataSource {
             if productData.count > 0 {
                 productNumber.text = "총 \(productData.count)건"
             }
+        
             let cellId = String(describing: ProductCell.self)
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProductCell
             
-            let productImg = (productData[indexPath.item]["img"] as! String).split(separator:",")
+            let id = self.productData[indexPath.row]["id"] as! Int
+            cell.productId = id // 상품 ID
+            
+            let productImg = (productData[indexPath.row]["img"] as! String).split(separator:",")
             let url: URL! = URL(string: "http://localhost:3000/\(productImg[0])")
             let imageData = try! Data(contentsOf: url)
             cell.img.image = UIImage(data:imageData)
+          
             
-            let sellerName: NSDictionary? = self.productData[indexPath.item]["User"] as? NSDictionary
+            let sellerName: NSDictionary? = self.productData[indexPath.row]["User"] as? NSDictionary
             cell.sellerName.text = sellerName?["nickname"] as? String
             
-            let productName = self.productData[indexPath.item]["name"] as! String
+            let productName = self.productData[indexPath.row]["name"] as! String
             cell.name.text = productName
             
-            let price = self.productData[indexPath.item]["selling_price"] as! Int
+            let price = self.productData[indexPath.row]["selling_price"] as! Int
             cell.sellingPrice.text = String (price) + "원"
+            
+            
+            let like = self.productData[indexPath.row]["Likes"] as? Array<NSDictionary>
+            print(like!, "\n")
+            
+            if((like?.count) != 0){
+                cell.likeBtn.tag = 1
+            }else {
+                cell.likeBtn.tag = 0
+            }
+
+            cell.likeUI()
             
             return cell
         }

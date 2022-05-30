@@ -71,7 +71,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
             let selling_price = self.sellingPrice.text // 판매가격
             let cost_price = self.costPrice.text// 구매 당시 가격
             let description = self.descriptionField.text // 상품 상세
-            
+
 
             let url = URL(string: "http://localhost:3000/product/\(boardId!)/register")
 
