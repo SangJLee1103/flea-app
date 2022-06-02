@@ -14,7 +14,12 @@ class MainViewController: UIViewController {
     
     let token = Keychain.read(key: "accessToken")
     var startTime: String? = ""
-    var data : Array<NSDictionary> = []
+    var data : NSDictionary = [:]
+    
+    lazy var list: [Board] = {
+        var datalist = [Board]()
+        return datalist
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,30 +37,33 @@ class MainViewController: UIViewController {
         initRefresh()
     }
     
-    func getBoardAll(callBack: @escaping ((Array<NSDictionary>) -> Void)) {
-        do{
-            guard let url =  URL(string: "http://localhost:3000/board/read-all") else { return }
+    func getBoardAll(callBack: @escaping ( (NSDictionary) -> Void)) {
+
+        guard let url =  URL(string: "http://localhost:3000/board/read-all") else { return }
             //URLRequest 객체를 정의
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
             
-            //HTTP 메시지 헤더
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+        //HTTP 메시지 헤더
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
             
-            //URLSession 객체를 통해 전송, 응답값 처리
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                if let e = error{
-                    NSLog("An error has occured: \(e.localizedDescription)")
-                    return
-                }
+        //URLSession 객체를 통해 전송, 응답값 처리
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let e = error{
+                NSLog("An error has occured: \(e.localizedDescription)")
+                return
+        }
                 // 서버로부터 응답된 스트링 표시
                 do {
                     let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                     guard let jsonObject = object else { return }
                     //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
                     // JSON 결과값을 추출
-                    guard let data = jsonObject["data"] as? Array<NSDictionary> else { return  print("") }
+                    let data = jsonObject["data"] as! NSDictionary
+                    let writer = jsonObject["User"] as! NSDictionary
+                    
                     callBack(data)
                     
                 } catch let e as NSError {
@@ -63,8 +71,8 @@ class MainViewController: UIViewController {
                 }
             }
             task.resume()
-        }
     }
+//    }
     
     //새로고침
     func initRefresh(){
@@ -92,8 +100,6 @@ class MainViewController: UIViewController {
 }
 
     
-
-
 //// 데이터 소스 설정: 데이터 관련된 것들
 extension MainViewController: UICollectionViewDataSource {
 
@@ -127,6 +133,7 @@ extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //게시글 아이디
         guard let id = self.data[indexPath.item]["id"] as? Int else { return }
+        
         //게시글 아이디 전달
         guard let boardElement = self.storyboard?.instantiateViewController(withIdentifier: "boardElement") as? BoardElementVC else { return }
         boardElement.boardId = id

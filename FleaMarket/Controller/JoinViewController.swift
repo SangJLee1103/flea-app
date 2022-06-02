@@ -6,18 +6,20 @@
 //
 
 import UIKit
+import Foundation
 
 class JoinViewController: UIViewController, UITextFieldDelegate {
     
     //이미 계정이 있으신가요? 버튼
     @IBOutlet var btnForLoginViewController: UIButton!
     
+    // 회원가입 데이터 전송 필드
     @IBOutlet var emailField: UITextField!
     @IBOutlet var pwField: UITextField!
     @IBOutlet var nicknameField: UITextField!
     @IBOutlet var phoneField: UITextField!
     
-    
+    // 회원가입 에러 출력 라벨
     @IBOutlet var emailError: UILabel!
     @IBOutlet var pwError: UILabel!
     @IBOutlet var nicknameError: UILabel!
@@ -26,13 +28,15 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
     //회원가입 버튼
     @IBOutlet var btnForJoin: UIButton!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
         self.navigationController?.isNavigationBarHidden = true
     }
     
+    
+    // 로그인 페이지 이동 버튼
     @IBAction func onLoginViewControllerClicked(_ sender: UIButton) {
         
         //네비게이션 뷰 컨트롤러 POP
@@ -54,28 +58,26 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
         phoneError.text = ""
     }
     
-    //회원가입 기능 액션 함수
-    @IBAction func onJoinBtn(_ sender: UIButton) {
-        
+    // 회원가입 로직
+    func callJoinAPI() {
         do{
-            let id = self.emailField?.text
-            let pw = self.pwField?.text
-            let nickname = self.nicknameField?.text
-            let phone = self.phoneField?.text
+            guard let url = URL(string: "http://localhost:3000/member/join") else {
+                print("Cannot create URL!")
+                return
+            }
+
+            let user = User(email: self.emailField?.text, password: self.pwField?.text, nickname: self.nicknameField?.text, phoneNumber: self.phoneField?.text)
+
             
             //Json 객체로 전송할 딕셔너리
-            let body = ["id" : id, "password" : pw, "nickname" : nickname, "phone" : phone]
-            let bodyData = try! JSONSerialization.data(withJSONObject: body, options: [])
-            let url = URL(string: "http://localhost:3000/member/join")
+            let body = ["id" : user.email, "password" : user.password, "nickname" : user.nickname, "phone" : user.phoneNumber]
             
             //URLRequest 객체를 정의
-            var request = URLRequest(url: url!)
+            var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            request.httpBody = bodyData
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try! JSONSerialization.data(withJSONObject: body, options: [])
             
-            //HTTP 메시지 헤더
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue(String(bodyData.count), forHTTPHeaderField: "Content-Length")
             
             //URLSession 객체를 통해 전송, 응답값 처리
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -98,7 +100,6 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
                       
                         if status == 201 {
                             self.clearLabel()
-                            print("성공")
                             let joinAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
                             
                             let action = UIAlertAction(title: "OK", style: .default, handler: { _ in self.navigationController?.popViewController(animated: true)})
@@ -153,5 +154,11 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
             }
             task.resume()
         }
+        
+    }
+    
+    //회원가입 기능 액션 함수
+    @IBAction func onJoinBtn(_ sender: UIButton) {
+        callJoinAPI()
     }
 }

@@ -21,6 +21,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboard()
         // Do any additional setup after loading the view.
         
         //상단 네비게이션 바 hidden

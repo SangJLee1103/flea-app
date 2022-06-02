@@ -186,6 +186,8 @@ extension BoardElementVC: UICollectionViewDataSource {
             
             cell.contentView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             
+            cell.lankingLbl.text = "\(indexPath.row + 1)위"
+            
             // top 10 상품 이미지 출력 부분
             let lankImage = (lankData[indexPath.row]["img"] as! String).split(separator:",")
             let url: URL! = URL(string: "http://localhost:3000/\(lankImage[0])")
@@ -199,11 +201,10 @@ extension BoardElementVC: UICollectionViewDataSource {
             cell.sellingPrice.text = String (price) + "원"
             return cell
         } else if collectionView == productView{
-            
             if productData.count > 0 {
                 productNumber.text = "총 \(productData.count)건"
             }
-        
+    
             let cellId = String(describing: ProductCell.self)
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProductCell
             
@@ -227,9 +228,7 @@ extension BoardElementVC: UICollectionViewDataSource {
             
             
             let like = self.productData[indexPath.row]["Likes"] as? Array<NSDictionary>
-            print(like!, "\n")
-            
-            if((like?.count) != 0){
+            if((like?.count) != 0){ // LIKES 데이터가 있으면
                 cell.likeBtn.tag = 1
             }else {
                 cell.likeBtn.tag = 0

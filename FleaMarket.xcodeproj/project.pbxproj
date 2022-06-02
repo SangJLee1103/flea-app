@@ -18,6 +18,8 @@
 		F42D5AC72827EC210081FF12 /* TopLankingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AC62827EC210081FF12 /* TopLankingCell.swift */; };
 		F449FD1B283A861B00DAACB0 /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F449FD1A283A861B00DAACB0 /* BSImagePicker */; };
 		F449FD1D283B79D900DAACB0 /* SelectedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */; };
+		F4651A8C2848990600D7FE63 /* JoinResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651A8B2848990600D7FE63 /* JoinResponse.swift */; };
+		F4651A8E28489AA800D7FE63 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651A8D28489AA800D7FE63 /* Board.swift */; };
 		F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1C2833E370004BA7FE /* ProductCell.swift */; };
 		F49CAF1F28360EC3004BA7FE /* ProductRegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1E28360EC2004BA7FE /* ProductRegisterVC.swift */; };
 		F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */; };
@@ -27,7 +29,7 @@
 		F4D5E7B828087E5C001A97AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4D5E7B728087E5C001A97AD /* Assets.xcassets */; };
 		F4D5E7BB28087E5C001A97AD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D5E7B928087E5C001A97AD /* LaunchScreen.storyboard */; };
 		F4D5E7C4280885FE001A97AD /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7C3280885FE001A97AD /* JoinViewController.swift */; };
-		F4D5E7C8280891DE001A97AD /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7C7280891DE001A97AD /* UserData.swift */; };
+		F4D5E7C8280891DE001A97AD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7C7280891DE001A97AD /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,6 +56,8 @@
 		F42D5AB0282661300081FF12 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		F42D5AC62827EC210081FF12 /* TopLankingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLankingCell.swift; sourceTree = "<group>"; };
 		F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageCell.swift; sourceTree = "<group>"; };
+		F4651A8B2848990600D7FE63 /* JoinResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinResponse.swift; sourceTree = "<group>"; };
+		F4651A8D28489AA800D7FE63 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		F49CAF1C2833E370004BA7FE /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		F49CAF1E28360EC2004BA7FE /* ProductRegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegisterVC.swift; sourceTree = "<group>"; };
 		F4D5E7AB28087E5A001A97AD /* FleaMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FleaMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,7 +69,7 @@
 		F4D5E7BA28087E5C001A97AD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4D5E7BC28087E5C001A97AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4D5E7C3280885FE001A97AD /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
-		F4D5E7C7280891DE001A97AD /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		F4D5E7C7280891DE001A97AD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +122,6 @@
 		F4D5E7AD28087E5A001A97AD /* FleaMarket */ = {
 			isa = PBXGroup;
 			children = (
-				F41B61162818E00000EC3C12 /* cell */,
 				F42D2B102812AD2C00564B26 /* security */,
 				F4D5E7C6280891A2001A97AD /* view */,
 				F4D5E7C52808919A001A97AD /* Model */,
@@ -151,7 +154,9 @@
 		F4D5E7C52808919A001A97AD /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				F4D5E7C7280891DE001A97AD /* UserData.swift */,
+				F4D5E7C7280891DE001A97AD /* User.swift */,
+				F4651A8B2848990600D7FE63 /* JoinResponse.swift */,
+				F4651A8D28489AA800D7FE63 /* Board.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -159,6 +164,7 @@
 		F4D5E7C6280891A2001A97AD /* view */ = {
 			isa = PBXGroup;
 			children = (
+				F41B61162818E00000EC3C12 /* cell */,
 				F4D5E7B428087E5A001A97AD /* Main.storyboard */,
 			);
 			path = view;
@@ -249,15 +255,17 @@
 				F4D5E7C4280885FE001A97AD /* JoinViewController.swift in Sources */,
 				F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */,
 				F407D029280EBB2C00E36491 /* MyTabBarController.swift in Sources */,
-				F4D5E7C8280891DE001A97AD /* UserData.swift in Sources */,
+				F4D5E7C8280891DE001A97AD /* User.swift in Sources */,
 				F42D2B122812AD4100564B26 /* Keychain.swift in Sources */,
 				F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */,
 				F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */,
 				F407D02B280EBBD900E36491 /* AlarmViewController.swift in Sources */,
+				F4651A8C2848990600D7FE63 /* JoinResponse.swift in Sources */,
 				F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */,
 				F49CAF1F28360EC3004BA7FE /* ProductRegisterVC.swift in Sources */,
 				F449FD1D283B79D900DAACB0 /* SelectedImageCell.swift in Sources */,
 				F42D5AC72827EC210081FF12 /* TopLankingCell.swift in Sources */,
+				F4651A8E28489AA800D7FE63 /* Board.swift in Sources */,
 				F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

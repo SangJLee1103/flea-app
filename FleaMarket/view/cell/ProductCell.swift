@@ -47,16 +47,10 @@ class ProductCell: UICollectionViewCell {
                 request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
 
                 //URLSession 객체를 통해 전송, 응답값 처리
-                let task = URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
+                let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
                     if let e = error{
                         NSLog("An error has occured: \(e.localizedDescription)")
                         return
-                    }
-                    // 서버로부터 응답된 스트링 표시
-                    do {
-                        print("\(self.productId)좋아요 완료")
-                    } catch let e as NSError {
-                        print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                     }
                 }
                 task.resume()
@@ -81,12 +75,6 @@ class ProductCell: UICollectionViewCell {
                     if let e = error{
                         NSLog("An error has occured: \(e.localizedDescription)")
                         return
-                    }
-                    // 서버로부터 응답된 스트링 표시
-                    do {
-                        print("\(self.productId)좋아요 취소")
-                    } catch let e as NSError {
-                        print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                     }
                 }
                 task.resume()

@@ -9,6 +9,7 @@ import UIKit
 
 class TopLankingCell: UICollectionViewCell {
     
+    var lank = 1
     @IBOutlet var lankingLbl: UILabel!
     @IBOutlet var productImg: UIImageView!
     @IBOutlet var sellerName: UILabel!
