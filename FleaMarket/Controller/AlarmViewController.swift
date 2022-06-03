@@ -12,5 +12,4 @@ class AlarmViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
 }

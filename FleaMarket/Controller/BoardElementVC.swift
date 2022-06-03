@@ -16,7 +16,8 @@ class BoardElementVC: UIViewController {
     var lankData : Array<NSDictionary> = []
     var productData: Array<NSDictionary> = []
     var likeData: Array<NSDictionary> = []
-    var likeList: Array? = []
+    
+    
     // 상품 랭킹 컬렉션 뷰
     @IBOutlet var lankingView: UICollectionView!
     // 전체 상품 컬렉션 뷰
@@ -185,7 +186,6 @@ extension BoardElementVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TopLankingCell
             
             cell.contentView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-            
             cell.lankingLbl.text = "\(indexPath.row + 1)위"
             
             // top 10 상품 이미지 출력 부분

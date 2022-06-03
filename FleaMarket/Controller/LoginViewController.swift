@@ -11,9 +11,12 @@ import WebKit
 class LoginViewController: UIViewController {
    
 
+    @IBOutlet var logoImg: UIImageView!
     @IBOutlet var emailField: UITextField!
-    
     @IBOutlet var pwField: UITextField!
+    
+    
+    @IBOutlet var moveJoinBtn: UIButton!
     //로그인 버튼
     @IBOutlet var btnForLogin: UIButton!
     
@@ -21,34 +24,37 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        logoImg.image = UIImage(named:"build.png")
+        
+        // 화면 터치 시 키보드 숨김
         self.hideKeyboard()
-        // Do any additional setup after loading the view.
         
         //상단 네비게이션 바 hidden
         self.navigationController?.isNavigationBarHidden = true
     }
     
-    
-    //로그인 액션 함수
-    @IBAction func onLoginBtn(_ sender: UIButton) {
-        
+    func callLoginAPI(){
         do{
-            let id = self.emailField?.text
-            let pw = self.pwField?.text
-           
+            
+            guard let url = URL(string: "http://localhost:3000/member/login") else
+            {
+                print("Cannot create URL!")
+                return
+            }
+            
+            
+            let login = loginData(email: self.emailField?.text, password: self.pwField?.text)
             //Json 객체로 전송할 딕셔너리
-            let body = ["id" : id, "password" : pw]
+            let body = ["id" : login.email, "password" : login.password]
             let bodyData = try! JSONSerialization.data(withJSONObject: body, options: [])
             
-            let url = URL(string: "http://localhost:3000/member/login")
             
             //URLRequest 객체를 정의
-            var request = URLRequest(url: url!)
+            var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.httpBody = bodyData
-            
-            //HTTP 메시지 헤더
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue(String(bodyData.count), forHTTPHeaderField: "Content-Length")
             
             //URLSession 객체를 통해 전송, 응답값 처리
@@ -68,6 +74,7 @@ class LoginViewController: UIViewController {
                         // JSON 결과값을 추출
                         let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
                         let accessToken = jsonObject["accessToken"] as? String
+                        
                         
                         if (status == 200) {
                             let loginAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
@@ -93,6 +100,12 @@ class LoginViewController: UIViewController {
             }
             task.resume()
         }
+    }
+    
+    
+    //로그인 액션 함수
+    @IBAction func onLoginBtn(_ sender: UIButton) {
+        callLoginAPI()
     }
 }
 
