@@ -10,6 +10,9 @@ import Foundation
 
 class JoinViewController: UIViewController, UITextFieldDelegate {
     
+    
+    @IBOutlet var logoImg: UIImageView!
+    
     //이미 계정이 있으신가요? 버튼
     @IBOutlet var btnForLoginViewController: UIButton!
     
@@ -33,6 +36,7 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.navigationController?.isNavigationBarHidden = true
+        logoImg.image = UIImage(named:"build.png")
     }
     
     
@@ -98,6 +102,7 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
                         let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
                         let error = jsonObject["message"] as? Array<NSDictionary>
                       
+                        
                         if status == 201 {
                             self.clearLabel()
                             let joinAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)

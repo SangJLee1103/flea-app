@@ -28,6 +28,8 @@ class WriteViewController: UIViewController, UITextViewDelegate {
         descriptionField.delegate = self
         descriptionField.text = placeholder
         descriptionField.textColor = .lightGray
+        
+        titleField.addLeftPadding()
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -132,4 +134,12 @@ class WriteViewController: UIViewController, UITextViewDelegate {
             task.resume()
         }
     }
+}
+
+extension UITextField {
+  func addLeftPadding() {
+    let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: self.frame.height))
+    self.leftView = paddingView
+    self.leftViewMode = ViewMode.always
+  }
 }
