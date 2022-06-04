@@ -49,7 +49,7 @@ class MainViewController: UIViewController {
             if let e = error{
                 NSLog("An error has occured: \(e.localizedDescription)")
                 return
-        }
+            }
                 // 서버로부터 응답된 스트링 표시
                 do {
                     let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
@@ -113,10 +113,10 @@ extension MainViewController: UICollectionViewDataSource {
         
         let row = self.list[indexPath.row]
         
-        cell.writer.text = row.writer
-        cell.date.text = row.date
-        cell.place.text = row.place
-        cell.desc.text = row.description
+        cell.writer?.text = row.writer
+        cell.date?.text = row.date
+        cell.place?.text = row.place
+        cell.desc?.text = row.description
         
         return cell
     }

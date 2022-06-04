@@ -13,8 +13,6 @@ class BoardElementVC: UIViewController {
     
     var boardId: Int?
     let token = Keychain.read(key: "accessToken")
-    var lankData : Array<NSDictionary> = []
-    var productData: Array<NSDictionary> = []
     var likeData: Array<NSDictionary> = []
     
     
@@ -24,6 +22,20 @@ class BoardElementVC: UIViewController {
     @IBOutlet var productView: UICollectionView!
     @IBOutlet var productNumber: UILabel!
     
+    
+    // 랭킹 데이터 리스트
+    lazy var lankList: [LankingData] = {
+        var datalist = [LankingData]()
+        return datalist
+    }()
+    
+    //상품 데이터 리스트
+    lazy var productList: [Product] = {
+        var datalist = [Product]()
+        return datalist
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,17 +43,15 @@ class BoardElementVC: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(goProductRegisterVC))
         
         
-        getTopLanking { [weak self] datas in
-            self?.lankData = datas
+        self.getTopLanking {
             DispatchQueue.main.async {
-                self?.lankingView.reloadData()
+                self.lankingView.reloadData()
             }
         }
         
-        getProduct { [weak self] datas in
-            self?.productData = datas
+        getProduct {
             DispatchQueue.main.async {
-                self?.productView.reloadData()
+                self.productView.reloadData()
             }
         }
         
@@ -67,8 +77,7 @@ class BoardElementVC: UIViewController {
     
     
     // 상품 Top10 정보 가져오기
-    func getTopLanking(callBack: @escaping ((Array<NSDictionary>) -> Void)){
-        do{
+    func getTopLanking(callBack: @escaping () -> Void) {
             guard let url =  URL(string: "http://localhost:3000/product/\(boardId!)/popular") else { return }
         
             //URLRequest 객체를 정의
@@ -76,7 +85,7 @@ class BoardElementVC: UIViewController {
             request.httpMethod = "GET"
             
             //HTTP 메시지 헤더
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
             //URLSession 객체를 통해 전송, 응답값 처리
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -90,18 +99,28 @@ class BoardElementVC: UIViewController {
                     guard let jsonObject = object else { return }
                     //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
                     // JSON 결과값을 추출
-                    guard let data = jsonObject["data"] as? Array<NSDictionary> else { return  print("") }
-                    callBack(data)
+                    let data = jsonObject["data"] as! NSArray
+                    
+                    for row in data {
+                        let r = row as! NSDictionary
+                        let lankVO = LankingData()
+                        
+                        lankVO.price = r["selling_price"] as? Int
+                        lankVO.sellerName = r["nickname"] as? String
+                        lankVO.productImg = r["img"] as? String
+                        
+                        self.lankList.append(lankVO)
+                        callBack()
+                    }
                 } catch let e as NSError {
                     print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                 }
             }
             task.resume()
-        }
     }
     
     // 전체 상품 조회 API 호출 함수
-    func getProduct(callBack: @escaping ((Array<NSDictionary>) -> Void)){
+    func getProduct(callBack: @escaping () -> Void){
         do{
             guard let url =  URL(string: "http://localhost:3000/product/\(boardId!)/all") else { return }
         
@@ -110,8 +129,8 @@ class BoardElementVC: UIViewController {
             request.httpMethod = "GET"
             
             //HTTP 메시지 헤더
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
             
             //URLSession 객체를 통해 전송, 응답값 처리
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -123,10 +142,28 @@ class BoardElementVC: UIViewController {
                 do {
                     let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                     guard let jsonObject = object else { return }
-                    //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
-                    // JSON 결과값을 추출
-                    guard let productData = jsonObject["data"] as? Array<NSDictionary> else { return  print("") }
-                    callBack(productData)
+                   
+                    let data = jsonObject["data"] as! NSArray
+                    
+                    for row in data {
+                        let r = row as! NSDictionary
+                        let productVO = Product()
+                        
+                        productVO.id = r["id"] as? Int
+                        productVO.productName = r["name"] as? String
+                        productVO.sellingPrice = r["selling_price"] as? Int
+                        productVO.costPrice = r["cost_price"] as? Int
+                        productVO.description = r["description"] as? String
+                        productVO.productImg = r["img"] as? String
+                        
+                        let seller = r["User"] as! NSDictionary
+                        productVO.sellerName = seller["nickname"] as? String
+        
+                        productVO.like =  r["Likes"] as? NSArray
+                        
+                        self.productList.append(productVO)
+                        callBack()
+                    }
                 } catch let e as NSError {
                     print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                 }
@@ -170,9 +207,9 @@ extension BoardElementVC: UICollectionViewDataSource {
     //아이템 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == lankingView {
-            return lankData.count
+            return self.lankList.count
         }else if collectionView == productView {
-            return productData.count
+            return self.productList.count
         }
         return 0
     }
@@ -189,49 +226,40 @@ extension BoardElementVC: UICollectionViewDataSource {
             cell.lankingLbl.text = "\(indexPath.row + 1)위"
             
             // top 10 상품 이미지 출력 부분
-            let lankImage = (lankData[indexPath.row]["img"] as! String).split(separator:",")
-            let url: URL! = URL(string: "http://localhost:3000/\(lankImage[0])")
-            let imageData = try! Data(contentsOf: url)
-            cell.productImg.image = UIImage(data:imageData)
             
-            let sellerName = self.lankData[indexPath.row]["nickname"] as! String
-            cell.sellerName.text = sellerName
+            let row = self.lankList[indexPath.row]
+            let imgParse = row.productImg!.split(separator:",")
             
-            let price = self.lankData[indexPath.row]["selling_price"] as! Int
-            cell.sellingPrice.text = String (price) + "원"
+            cell.productImg?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(imgParse[0])")!))
+            cell.sellerName?.text = row.sellerName
+            cell.sellingPrice?.text = String (row.price!) + "원"
+            
             return cell
         } else if collectionView == productView{
-            if productData.count > 0 {
-                productNumber.text = "총 \(productData.count)건"
+            if productList.count > 0 {
+                productNumber.text = "총 \(productList.count)건"
             }
     
             let cellId = String(describing: ProductCell.self)
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProductCell
             
-            let id = self.productData[indexPath.row]["id"] as! Int
-            cell.productId = id // 상품 ID
+            let row = self.productList[indexPath.row]
             
-            let productImg = (productData[indexPath.row]["img"] as! String).split(separator:",")
-            let url: URL! = URL(string: "http://localhost:3000/\(productImg[0])")
-            let imageData = try! Data(contentsOf: url)
-            cell.img.image = UIImage(data:imageData)
-          
+//            let id = self.productData[indexPath.row]["id"] as! Int
+            cell.productId = row.id! // 상품 ID
             
-            let sellerName: NSDictionary? = self.productData[indexPath.row]["User"] as? NSDictionary
-            cell.sellerName.text = sellerName?["nickname"] as? String
+            let imgParse = row.productImg!.split(separator:",")
             
-            let productName = self.productData[indexPath.row]["name"] as! String
-            cell.name.text = productName
+            cell.img?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(imgParse[0])")!))
+            cell.sellerName?.text = row.sellerName
+            cell.name?.text = row.productName
+            cell.sellingPrice?.text = String(row.sellingPrice!) + "원"
             
-            let price = self.productData[indexPath.row]["selling_price"] as! Int
-            cell.sellingPrice.text = String (price) + "원"
-            
-            
-            let like = self.productData[indexPath.row]["Likes"] as? Array<NSDictionary>
+            let like = row.like
             if((like?.count) != 0){ // LIKES 데이터가 있으면
-                cell.likeBtn.tag = 1
+                cell.likeBtn?.tag = 1
             }else {
-                cell.likeBtn.tag = 0
+                cell.likeBtn?.tag = 0
             }
 
             cell.likeUI()
