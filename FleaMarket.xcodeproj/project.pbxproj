@@ -16,6 +16,7 @@
 		F42D2B122812AD4100564B26 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D2B112812AD4100564B26 /* Keychain.swift */; };
 		F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AB0282661300081FF12 /* WriteViewController.swift */; };
 		F42D5AC72827EC210081FF12 /* TopLankingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AC62827EC210081FF12 /* TopLankingCell.swift */; };
+		F434175E284CC234008EF15C /* ProductRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F434175D284CC234008EF15C /* ProductRequest.swift */; };
 		F449FD1B283A861B00DAACB0 /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F449FD1A283A861B00DAACB0 /* BSImagePicker */; };
 		F449FD1D283B79D900DAACB0 /* SelectedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */; };
 		F4651A8C2848990600D7FE63 /* JoinResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651A8B2848990600D7FE63 /* JoinResponse.swift */; };
@@ -28,7 +29,7 @@
 		F4651A9B284B79E600D7FE63 /* MyWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651A9A284B79E600D7FE63 /* MyWriteViewController.swift */; };
 		F4651A9D284B7A1C00D7FE63 /* MyUploadItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651A9C284B7A1C00D7FE63 /* MyUploadItemViewController.swift */; };
 		F4651A9F284B7CEE00D7FE63 /* LankingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651A9E284B7CEE00D7FE63 /* LankingData.swift */; };
-		F4651AA1284B7CFB00D7FE63 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651AA0284B7CFB00D7FE63 /* Product.swift */; };
+		F4651AA1284B7CFB00D7FE63 /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651AA0284B7CFB00D7FE63 /* ProductResponse.swift */; };
 		F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1C2833E370004BA7FE /* ProductCell.swift */; };
 		F49CAF1F28360EC3004BA7FE /* ProductRegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1E28360EC2004BA7FE /* ProductRegisterVC.swift */; };
 		F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */; };
@@ -64,6 +65,7 @@
 		F42D2B112812AD4100564B26 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		F42D5AB0282661300081FF12 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		F42D5AC62827EC210081FF12 /* TopLankingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLankingCell.swift; sourceTree = "<group>"; };
+		F434175D284CC234008EF15C /* ProductRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRequest.swift; sourceTree = "<group>"; };
 		F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageCell.swift; sourceTree = "<group>"; };
 		F4651A8B2848990600D7FE63 /* JoinResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinResponse.swift; sourceTree = "<group>"; };
 		F4651A8D28489AA800D7FE63 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
@@ -75,7 +77,7 @@
 		F4651A9A284B79E600D7FE63 /* MyWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWriteViewController.swift; sourceTree = "<group>"; };
 		F4651A9C284B7A1C00D7FE63 /* MyUploadItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUploadItemViewController.swift; sourceTree = "<group>"; };
 		F4651A9E284B7CEE00D7FE63 /* LankingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LankingData.swift; sourceTree = "<group>"; };
-		F4651AA0284B7CFB00D7FE63 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		F4651AA0284B7CFB00D7FE63 /* ProductResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductResponse.swift; sourceTree = "<group>"; };
 		F49CAF1C2833E370004BA7FE /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		F49CAF1E28360EC2004BA7FE /* ProductRegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegisterVC.swift; sourceTree = "<group>"; };
 		F4D5E7AB28087E5A001A97AD /* FleaMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FleaMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -190,7 +192,8 @@
 				F4651A8D28489AA800D7FE63 /* Board.swift */,
 				F4651A922848F03000D7FE63 /* loginData.swift */,
 				F4651A9E284B7CEE00D7FE63 /* LankingData.swift */,
-				F4651AA0284B7CFB00D7FE63 /* Product.swift */,
+				F4651AA0284B7CFB00D7FE63 /* ProductResponse.swift */,
+				F434175D284CC234008EF15C /* ProductRequest.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -291,9 +294,10 @@
 				F4651A9F284B7CEE00D7FE63 /* LankingData.swift in Sources */,
 				F414AE09281CEAB6002D9221 /* BoardElementVC.swift in Sources */,
 				F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */,
+				F434175E284CC234008EF15C /* ProductRequest.swift in Sources */,
 				F4651A99284B175C00D7FE63 /* ActivityCell.swift in Sources */,
 				F4D5E7C4280885FE001A97AD /* JoinViewController.swift in Sources */,
-				F4651AA1284B7CFB00D7FE63 /* Product.swift in Sources */,
+				F4651AA1284B7CFB00D7FE63 /* ProductResponse.swift in Sources */,
 				F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */,
 				F4651A9D284B7A1C00D7FE63 /* MyUploadItemViewController.swift in Sources */,
 				F407D029280EBB2C00E36491 /* MyTabBarController.swift in Sources */,

@@ -6,7 +6,7 @@
 //
 import Foundation
 
-class Product {
+class ProductResponse {
     var id: Int?
     var productImg: String?
     var productName: String?

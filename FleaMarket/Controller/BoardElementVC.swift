@@ -30,8 +30,8 @@ class BoardElementVC: UIViewController {
     }()
     
     //상품 데이터 리스트
-    lazy var productList: [Product] = {
-        var datalist = [Product]()
+    lazy var productList: [ProductResponse] = {
+        var datalist = [ProductResponse]()
         return datalist
     }()
     
@@ -147,7 +147,7 @@ class BoardElementVC: UIViewController {
                     
                     for row in data {
                         let r = row as! NSDictionary
-                        let productVO = Product()
+                        let productVO = ProductResponse()
                         
                         productVO.id = r["id"] as? Int
                         productVO.productName = r["name"] as? String
@@ -245,9 +245,7 @@ extension BoardElementVC: UICollectionViewDataSource {
             
             let row = self.productList[indexPath.row]
             
-//            let id = self.productData[indexPath.row]["id"] as! Int
             cell.productId = row.id! // 상품 ID
-            
             let imgParse = row.productImg!.split(separator:",")
             
             cell.img?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(imgParse[0])")!))

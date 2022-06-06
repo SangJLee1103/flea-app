@@ -344,7 +344,7 @@
         <!--Product RegisterVC-->
         <scene sceneID="Z0R-q7-J3O">
             <objects>
-                <viewController storyboardIdentifier="productRegister" id="aK4-Zx-LLh" customClass="ProductRegisterVC" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="productRegister" storyboardIdentifier="productRegister" id="aK4-Zx-LLh" customClass="ProductRegisterVC" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2ab-91-bE4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -515,7 +515,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B5A-CV-FhK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="219" y="2612"/>
+            <point key="canvasLocation" x="521" y="2611"/>
         </scene>
         <!--Alarm View Controller-->
         <scene sceneID="Qaa-Mw-FUq">
@@ -808,7 +808,7 @@
         <!--Board ElementVC-->
         <scene sceneID="I29-F0-FRp">
             <objects>
-                <viewController storyboardIdentifier="boardElement" id="gOY-6H-Hcf" customClass="BoardElementVC" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="boardElement" storyboardIdentifier="boardElement" id="gOY-6H-Hcf" customClass="BoardElementVC" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3Pl-tG-IW6">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="2269"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -891,7 +891,7 @@
                                                     <outlet property="delegate" destination="gOY-6H-Hcf" id="EV4-82-CyX"/>
                                                 </connections>
                                             </collectionView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="상품 랭킹" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K4K-ph-WYJ">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="상품 랭킹👍🏻" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K4K-ph-WYJ">
                                                 <rect key="frame" x="8" y="22" width="126" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="126" id="7TN-2J-PSm"/>

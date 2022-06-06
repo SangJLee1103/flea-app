@@ -63,64 +63,96 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
         }
     }
     
-    func requestPOSTWithMultipartform(   parameters: [String : String],
-                                         data: Data,
-                                         filename: String,
-                                         mimeType: String,
-                                         completionHandler: @escaping (Bool, Any) -> Void) {
+    
+    // POST - Image 송신
+    // ✅ data : UIImage 를 pngData() 혹은 jpegData() 사용해서 Data 로 변환한 것.
+    // ✅ filename : 파일이름(img.jpg 과 같은 이름)
+    // ✅ mimeType :  타입에 맞게 png면 image/png, text text/plain 등 타입.
+    func registProduct() {
+            
+            guard let url = URL(string: "http://localhost:3000/product/\(boardId!)/register") else {
+                print("Error: cannot create URL")
+                return
+            }
+            
+            let name = self.productName?.text
+            let cost_price = Int((self.costPrice?.text)!)
+            let selling_price = Int((self.sellingPrice?.text)!)
+            let description = self.descriptionField?.text
+            
+            
+            let parameters = [
+                "name" : name!,
+                "cost_price" : cost_price!,
+                "selling_price" : selling_price!,
+                "description" : description!
+            ] as [String : Any]
 
-           guard let url = URL(string: "http://localhost:3000/product/\(boardId!)/register") else {
-               print("Error: cannot create URL")
-               return
-           }
 
-           // ✅ boundary 설정
-           let boundary = "Boundary-\(UUID().uuidString)"
-
-           var request = URLRequest(url: url)
-           request.httpMethod = "POST"
-           request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-            request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+            
+            
+            // ✅ boundary 설정
+            let boundary = "Boundary-\(UUID().uuidString)"
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
         
-            let name = self.productName.text// 상품명
-            let selling_price = self.sellingPrice.text // 판매가격
-            let cost_price = self.costPrice.text// 구매 당시 가격
-            let description = self.descriptionField.text // 상품 상세
+            // ✅ data
+            var uploadData = Data()
+            let imgDataKey = "img"
+            let boundaryPrefix = "--\(boundary)\r\n"
+            
+            for (key, value) in parameters {
+                uploadData.append(boundaryPrefix.data(using: .utf8)!)
+                uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+                uploadData.append("\(value)\r\n".data(using: .utf8)!)
+            }
+            
+            
+            for data in selectedData {
+                uploadData.append(boundaryPrefix.data(using: .utf8)!)
+                uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
+                uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
+                uploadData.append(data)
+                uploadData.append("\r\n".data(using: .utf8)!)
+            }
+            uploadData.append("--\(boundary)--".data(using: .utf8)!)
         
+            let defaultSession = URLSession(configuration: .default)
+            // ✅ uploadTask(with:from:) 메서드 사용해서 reqeust body 에 data 추가.
+            defaultSession.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
+
+                do {
+                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+                    guard let jsonObject = object else { return }
+                    //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
+                    let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+                    let data = jsonObject["message"] as! String
+                    
+                    if (status == 201) {
+                        print("등록 완료")
+                    }else {
+                        print("ㅅㅂ")
+                    }
+                    
+                }catch let e as NSError {
+                    print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+                }
+            }.resume()
+
+            
+        }
         
-//           request.httpBody = uploadData
-
-           // ✅ data
-           var uploadData = Data()
-           let imgDataKey = "img"
-           let boundaryPrefix = "--\(boundary)\r\n"
-
-           for (key, value) in parameters {
-               uploadData.append(boundaryPrefix.data(using: .utf8)!)
-               uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-               uploadData.append("\(value)\r\n".data(using: .utf8)!)
-           }
-
-           uploadData.append(boundaryPrefix.data(using: .utf8)!)
-           uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
-           uploadData.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
-           uploadData.append(data)
-           uploadData.append("\r\n".data(using: .utf8)!)
-           uploadData.append("--\(boundary)--".data(using: .utf8)!)
-
-           let defaultSession = URLSession(configuration: .default)
-           // ✅ uploadTask(with:from:) 메서드 사용해서 reqeust body 에 data 추가.
-           defaultSession.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
-               // ...
-           }.resume()
-       }
     
     
+    // 완료 버튼 클릭시 이벤트
     @objc func productRegist(){
         
-       
-//        guard let productRegister = self.storyboard?.instantiateViewController(withIdentifier: "productRegister") as? ProductRegisterVC else { return }
-//        self.navigationController?.pushViewController(productRegister, animated: true)
+        registProduct()
+        //        guard let productRegister = self.storyboard?.instantiateViewController(withIdentifier: "productRegister") as? ProductRegisterVC else { return }
+        //        self.navigationController?.pushViewController(productRegister, animated: true)
     }
     
     // 이미지 선택
@@ -139,7 +171,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
         
         picker.settings.selection.max = 5
         picker.settings.fetch.assets.supportedMediaTypes = [.image]
-                
+        
         presentImagePicker(picker, select: { (asset) in
             // User selected an asset. Do something with it. Perhaps begin processing/upload?
         }, deselect: { (asset) in
@@ -148,44 +180,44 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
             // User canceled selection.
         }, finish: { (assets) in
             // User finished selection assets.
-        for i in 0..<assets.count {
-            self.selectedAssets.append(assets[i])
-            self.selectedCount += 1
-        }
+            for i in 0..<assets.count {
+                self.selectedAssets.append(assets[i])
+                self.selectedCount += 1
+            }
             self.convertAssetToImages() // image 타입으로 변환하는 함수 실행
         })
     }
     
     // asset 타입을 image 타입으로 변환
     func convertAssetToImages() {
-            if selectedAssets.count != 0 {
-//                self.selectedData.removeAll()
-//                self.userSelectedImages.removeAll()
+        if selectedAssets.count != 0 {
+            //                self.selectedData.removeAll()
+            //                self.userSelectedImages.removeAll()
+            
+            for i in 0..<selectedAssets.count {
                 
-                for i in 0..<selectedAssets.count {
-                    
-                    let imageManager = PHImageManager.default()
-                    let option = PHImageRequestOptions()
-                    var thumbnail = UIImage()
-                    option.isSynchronous = true
-                    imageManager.requestImage(for: selectedAssets[i],
-                                              targetSize: CGSize(width: 30, height: 30),
-                                                 contentMode: .aspectFill,
-                                              options: option) { (result, info) in
+                let imageManager = PHImageManager.default()
+                let option = PHImageRequestOptions()
+                var thumbnail = UIImage()
+                option.isSynchronous = true
+                imageManager.requestImage(for: selectedAssets[i],
+                                             targetSize: CGSize(width: 30, height: 30),
+                                             contentMode: .aspectFill,
+                                             options: option) { (result, info) in
                     thumbnail = result!
-                    }
-                    
-                    let data = thumbnail.jpegData(compressionQuality: 0.7)
-                    let newImage = UIImage(data: data!)
-
-                    
-                    self.userSelectedImages.append(newImage! as UIImage)
-                    self.selectedData.append(data!)
                 }
                 
-                self.productImgView.reloadData()
+                let data = thumbnail.jpegData(compressionQuality: 0.7)
+                let newImage = UIImage(data: data!)
+                
+                
+                self.userSelectedImages.append(newImage! as UIImage)
+                self.selectedData.append(data!)
             }
+            
+            self.productImgView.reloadData()
         }
+    }
 }
 
 
@@ -202,10 +234,8 @@ extension ProductRegisterVC: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SelectedImageCell
         
         cell.selectedImg.image = self.userSelectedImages[indexPath.row]
-//        print("indexpath = \(indexPath.row)")
-//        cell.cancelImgBtn.tag = indexPath.row
-        
-        
+        //        print("indexpath = \(indexPath.row)")
+        //        cell.cancelImgBtn.tag = indexPath.row
         
         return cell
     }
@@ -216,23 +246,23 @@ extension ProductRegisterVC: UICollectionViewDataSource {
         
         let confirm = UIAlertAction(title: "확인", style: .default, handler: { (_) in
             
-                print("tag = \(sender.tag)")
-                print("selectedData = \(self.selectedData)")
+            print("tag = \(sender.tag)")
+            print("selectedData = \(self.selectedData)")
             self.productImgView.deleteItems(at: [IndexPath.init(row: sender.tag, section: 0)])
             self.selectedData.remove(at: sender.tag)
-                print(sender.tag, "번째 사진 삭제")
-                self.selectedCount -= 1
+            print(sender.tag, "번째 사진 삭제")
+            self.selectedCount -= 1
             
-                self.productImgView.reloadData()
+            self.productImgView.reloadData()
             
-            }
+        }
         )
         
         let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-
+        
         alert.addAction(confirm)
         alert.addAction(cancel)
-
+        
         self.present(alert, animated: false)
     }
 }
