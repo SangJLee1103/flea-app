@@ -42,7 +42,6 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
     
     // 로그인 페이지 이동 버튼
     @IBAction func onLoginViewControllerClicked(_ sender: UIButton) {
-        
         //네비게이션 뷰 컨트롤러 POP
         self.navigationController?.popViewController(animated: true)
     }

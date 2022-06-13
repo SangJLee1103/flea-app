@@ -109,18 +109,17 @@ class WriteViewController: UIViewController, UITextViewDelegate {
                        
                         // JSON 결과값을 추출
                         let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
-                        let error = jsonObject["message"] as? Array<NSDictionary>
+                        let error = jsonObject["message"] as? String
                         
                         if (status == 201) {
                             let writeAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
-
-                            let action = UIAlertAction(title: "OK", style: .default){ (_) in self.navigationController?.popToRootViewController(animated: true)
+                            let action = UIAlertAction(title: "OK", style: .default){ (_) in
+                                self.navigationController?.popToRootViewController(animated: true)
                             }
-                            
                             writeAlert.addAction(action)
                             self.present(writeAlert, animated: true, completion: nil)
                         } else {
-                            let checkAlert = UIAlertController(title: "Flea Market", message: (error?[0])?["msg"] as? String, preferredStyle: .alert)
+                            let checkAlert = UIAlertController(title: "Flea Market", message: error, preferredStyle: .alert)
                             
                             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                             checkAlert.addAction(action)

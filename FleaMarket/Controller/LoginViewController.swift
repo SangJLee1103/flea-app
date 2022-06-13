@@ -17,7 +17,6 @@ class LoginViewController: UIViewController {
     
     
     @IBOutlet var moveJoinBtn: UIButton!
-    //로그인 버튼
     @IBOutlet var btnForLogin: UIButton!
     
     var get: String?

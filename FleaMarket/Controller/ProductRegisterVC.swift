@@ -68,91 +68,85 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
     // ✅ data : UIImage 를 pngData() 혹은 jpegData() 사용해서 Data 로 변환한 것.
     // ✅ filename : 파일이름(img.jpg 과 같은 이름)
     // ✅ mimeType :  타입에 맞게 png면 image/png, text text/plain 등 타입.
-    func registProduct() {
-            
-            guard let url = URL(string: "http://localhost:3000/product/\(boardId!)/register") else {
-                print("Error: cannot create URL")
-                return
-            }
-            
-            let name = self.productName?.text
-            let cost_price = Int((self.costPrice?.text)!)
-            let selling_price = Int((self.sellingPrice?.text)!)
-            let description = self.descriptionField?.text
-            
-            
-            let parameters = [
-                "name" : name!,
-                "cost_price" : cost_price!,
-                "selling_price" : selling_price!,
-                "description" : description!
-            ] as [String : Any]
-
-
-            
-            
-            // ✅ boundary 설정
-            let boundary = "Boundary-\(UUID().uuidString)"
-            
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+    // 완료 버튼 클릭시 이벤트
+    @objc func productRegist(){
         
-            // ✅ data
-            var uploadData = Data()
-            let imgDataKey = "img"
-            let boundaryPrefix = "--\(boundary)\r\n"
-            
-            for (key, value) in parameters {
-                uploadData.append(boundaryPrefix.data(using: .utf8)!)
-                uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-                uploadData.append("\(value)\r\n".data(using: .utf8)!)
-            }
-            
-            
-            for data in selectedData {
-                uploadData.append(boundaryPrefix.data(using: .utf8)!)
-                uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
-                uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
-                uploadData.append(data)
-                uploadData.append("\r\n".data(using: .utf8)!)
-            }
-            uploadData.append("--\(boundary)--".data(using: .utf8)!)
+        guard let url = URL(string: "http://localhost:3000/product/\(boardId!)/register") else {
+            print("Error: cannot create URL")
+            return
+        }
         
-            let defaultSession = URLSession(configuration: .default)
-            // ✅ uploadTask(with:from:) 메서드 사용해서 reqeust body 에 data 추가.
-            defaultSession.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
+        let name = self.productName?.text
+        let cost_price = Int((self.costPrice?.text)!)
+        let selling_price = Int((self.sellingPrice?.text)!)
+        let description = self.descriptionField?.text
+        
+        
+        let parameters = [
+            "name" : name!,
+            "cost_price" : cost_price!,
+            "selling_price" : selling_price!,
+            "description" : description!
+        ] as [String : Any]
 
+
+        
+        
+        // ✅ boundary 설정
+        let boundary = "Boundary-\(UUID().uuidString)"
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+    
+        // ✅ data
+        var uploadData = Data()
+        let imgDataKey = "img"
+        let boundaryPrefix = "--\(boundary)\r\n"
+        
+        for (key, value) in parameters {
+            uploadData.append(boundaryPrefix.data(using: .utf8)!)
+            uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+            uploadData.append("\(value)\r\n".data(using: .utf8)!)
+        }
+        
+        
+        for data in selectedData {
+            uploadData.append(boundaryPrefix.data(using: .utf8)!)
+            uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
+            uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
+            uploadData.append(data)
+            uploadData.append("\r\n".data(using: .utf8)!)
+        }
+        uploadData.append("--\(boundary)--".data(using: .utf8)!)
+    
+        let defaultSession = URLSession(configuration: .default)
+        // ✅ uploadTask(with:from:) 메서드 사용해서 reqeust body 에 data 추가.
+        defaultSession.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
+            DispatchQueue.main.async() {
                 do {
                     let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                     guard let jsonObject = object else { return }
                     //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
                     let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-                    let data = jsonObject["message"] as! String
+                    let data = jsonObject["message"] as? String
                     
                     if (status == 201) {
-                        print("등록 완료")
+                        let alert = UIAlertController(title: "Flea Market", message: data, preferredStyle: .alert)
+                        let action = UIAlertAction(title: "확인", style: .cancel){ (_) in
+                            self.navigationController?.popToRootViewController(animated: true)
+                        }
+                        alert.addAction(action)
+                        self.present(alert, animated: true, completion: nil)
                     }else {
-                        print("ㅅㅂ")
+                        print("실패")
                     }
-                    
                 }catch let e as NSError {
                     print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                 }
-            }.resume()
-
-            
-        }
-        
-    
-    
-    // 완료 버튼 클릭시 이벤트
-    @objc func productRegist(){
-        
-        registProduct()
-        //        guard let productRegister = self.storyboard?.instantiateViewController(withIdentifier: "productRegister") as? ProductRegisterVC else { return }
-        //        self.navigationController?.pushViewController(productRegister, animated: true)
+            }
+        }.resume()
     }
     
     // 이미지 선택
@@ -207,7 +201,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
                     thumbnail = result!
                 }
                 
-                let data = thumbnail.jpegData(compressionQuality: 0.7)
+                let data = thumbnail.jpegData(compressionQuality: 1.0)
                 let newImage = UIImage(data: data!)
                 
                 
@@ -253,16 +247,14 @@ extension ProductRegisterVC: UICollectionViewDataSource {
             print(sender.tag, "번째 사진 삭제")
             self.selectedCount -= 1
             
-            self.productImgView.reloadData()
-            
-        }
-        )
+            self.productImgView.reloadData()            
+        })
         
         let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         
         alert.addAction(confirm)
         alert.addAction(cancel)
-        
+
         self.present(alert, animated: false)
     }
 }

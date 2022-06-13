@@ -13,19 +13,17 @@ class BoardElementVC: UIViewController {
     
     var boardId: Int?
     let token = Keychain.read(key: "accessToken")
-    var likeData: Array<NSDictionary> = []
-    
     
     // 상품 랭킹 컬렉션 뷰
-    @IBOutlet var lankingView: UICollectionView!
+    @IBOutlet var rankingView: UICollectionView!
     // 전체 상품 컬렉션 뷰
     @IBOutlet var productView: UICollectionView!
     @IBOutlet var productNumber: UILabel!
     
     
     // 랭킹 데이터 리스트
-    lazy var lankList: [LankingData] = {
-        var datalist = [LankingData]()
+    lazy var rankList: [RankingData] = {
+        var datalist = [RankingData]()
         return datalist
     }()
     
@@ -43,21 +41,21 @@ class BoardElementVC: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(goProductRegisterVC))
         
         
-        self.getTopLanking {
+        self.getTopRanking {
             DispatchQueue.main.async {
-                self.lankingView.reloadData()
+                self.rankingView.reloadData()
             }
         }
         
-        getProduct {
+        self.getProduct {
             DispatchQueue.main.async {
                 self.productView.reloadData()
             }
         }
         
-        lankingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        lankingView.dataSource = self
-        lankingView.delegate = self
+        rankingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        rankingView.dataSource = self
+        rankingView.delegate = self
         
         productView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         productView.dataSource = self
@@ -69,15 +67,18 @@ class BoardElementVC: UIViewController {
 
     // 상품 등록 페이지 이동 함수
     @objc func goProductRegisterVC(){
-        
         guard let productRegister = self.storyboard?.instantiateViewController(withIdentifier: "productRegister") as? ProductRegisterVC else { return }
         productRegister.boardId = boardId
         self.navigationController?.pushViewController(productRegister, animated: true)
     }
     
+    func popView(){
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     
     // 상품 Top10 정보 가져오기
-    func getTopLanking(callBack: @escaping () -> Void) {
+    func getTopRanking(callBack: @escaping () -> Void) {
             guard let url =  URL(string: "http://localhost:3000/product/\(boardId!)/popular") else { return }
         
             //URLRequest 객체를 정의
@@ -103,13 +104,13 @@ class BoardElementVC: UIViewController {
                     
                     for row in data {
                         let r = row as! NSDictionary
-                        let lankVO = LankingData()
+                        let rankVO = RankingData()
                         
-                        lankVO.price = r["selling_price"] as? Int
-                        lankVO.sellerName = r["nickname"] as? String
-                        lankVO.productImg = r["img"] as? String
+                        rankVO.price = r["selling_price"] as? Int
+                        rankVO.sellerName = r["nickname"] as? String
+                        rankVO.productImg = r["img"] as? String
                         
-                        self.lankList.append(lankVO)
+                        self.rankList.append(rankVO)
                         callBack()
                     }
                 } catch let e as NSError {
@@ -206,8 +207,8 @@ extension BoardElementVC: UICollectionViewDataSource {
     //Top10 컬렉션 뷰 부분
     //아이템 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == lankingView {
-            return self.lankList.count
+        if collectionView == rankingView {
+            return self.rankList.count
         }else if collectionView == productView {
             return self.productList.count
         }
@@ -218,16 +219,16 @@ extension BoardElementVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // top 10 뷰
-        if collectionView == lankingView {
-            let cellId = String(describing: TopLankingCell.self)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TopLankingCell
+        if collectionView == rankingView {
+            let cellId = String(describing: TopRankingCell.self)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TopRankingCell
             
             cell.contentView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-            cell.lankingLbl.text = "\(indexPath.row + 1)위"
+            cell.rankingLbl.text = "\(indexPath.row + 1)위"
             
             // top 10 상품 이미지 출력 부분
             
-            let row = self.lankList[indexPath.row]
+            let row = self.rankList[indexPath.row]
             let imgParse = row.productImg!.split(separator:",")
             
             cell.productImg?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(imgParse[0])")!))
@@ -259,7 +260,6 @@ extension BoardElementVC: UICollectionViewDataSource {
             }else {
                 cell.likeBtn?.tag = 0
             }
-
             cell.likeUI()
             
             return cell

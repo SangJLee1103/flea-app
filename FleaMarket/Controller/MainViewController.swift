@@ -13,6 +13,11 @@ class MainViewController: UIViewController {
     @IBOutlet var boardCollection: UICollectionView!
     
     let token = Keychain.read(key: "accessToken")
+    
+    let school = ["school1.png", "school2.png"]
+    let church = ["cross1.png", "cross2.png"]
+    let fleamarket = ["flea1.png", "flea2.png"]
+    
 
     // lazy 키워드 사용이유
     // 1.미리 생성하지 않고 변수가 참조되는 시점에 맞추어 초기화되므로 메모리 낭비를 줄여줌
@@ -23,17 +28,20 @@ class MainViewController: UIViewController {
     }()
     
     override func viewDidLoad() {
-        self.getBoardAll{
-            DispatchQueue.main.async {
-                self.boardCollection.reloadData()
-            }
-        }
         boardCollection.dataSource = self
         boardCollection.delegate = self
+        
+        self.getBoardAll{
+            DispatchQueue.main.async { [weak self] in
+                self?.boardCollection.reloadData()
+            }
+        }
+       
         self.initRefresh()
     }
     
     func getBoardAll(callback: @escaping () -> Void) {
+        list = [] //데이터를 한번 비워줌
         guard let url =  URL(string: "http://localhost:3000/board/read-all") else { return }
             //URLRequest 객체를 정의
         var request = URLRequest(url: url)
@@ -92,8 +100,24 @@ class MainViewController: UIViewController {
     
     @objc func updateUI(refresh: UIRefreshControl){
         refresh.endRefreshing() //refresh 종료
-        self.boardCollection.reloadData() // 컬렉션 뷰 로드
+        list = [] //데이터를 한번 비워주고 API를 다시 호출
+        getBoardAll {
+            DispatchQueue.main.async { [weak self] in
+                self?.boardCollection.reloadData()
+            }
+        }
     }
+    
+    
+    func updateAPI(){
+        getBoardAll {
+            DispatchQueue.main.async { [weak self] in
+                self?.boardCollection.reloadData()
+            }
+        }
+        print("writeVC에서 호출됨")
+    }
+    
 }
 
     
@@ -113,21 +137,31 @@ extension MainViewController: UICollectionViewDataSource {
         
         let row = self.list[indexPath.row]
         
+        
+        if (String(describing: row.place)).contains("교회") {
+            cell.image?.image = UIImage(named: church[Int.random(in: 0..<2)])
+        } else if (String(describing: row.place)).contains("학교") {
+            cell.image?.image = UIImage(named: school[Int.random(in: 0..<2)])
+        } else {
+            cell.image?.image = UIImage(named: fleamarket[Int.random(in: 0..<2)])
+        }
+        
         cell.writer?.text = row.writer
         cell.date?.text = row.date
-        cell.place?.text = row.place
+        cell.place?.text = "장소:\(String(describing: row.place!))"
         cell.desc?.text = row.description
         
+      
         return cell
     }
     
-    //클릭
+    // 셀 클릭 시 이동
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //게시글 아이디
         
         let row = self.list[indexPath.row]
         let id = row.id
-        //게시글 아이디 전달
+        //게시글 아이디 전달 및 게시글페이지로 이동
         guard let boardElement = self.storyboard?.instantiateViewController(withIdentifier: "boardElement") as? BoardElementVC else { return }
         boardElement.boardId = id
         self.navigationController?.pushViewController(boardElement, animated: true)
