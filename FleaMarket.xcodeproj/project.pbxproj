@@ -37,6 +37,8 @@
 		F4779FAB2855B7C000CA19F9 /* cross1.png in Resources */ = {isa = PBXBuildFile; fileRef = F4779FA92855B7C000CA19F9 /* cross1.png */; };
 		F4779FAC2855B7C000CA19F9 /* cross2.png in Resources */ = {isa = PBXBuildFile; fileRef = F4779FAA2855B7C000CA19F9 /* cross2.png */; };
 		F4779FAE2856B56200CA19F9 /* UserInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4779FAD2856B56200CA19F9 /* UserInfoResponse.swift */; };
+		F4779FB028577A6D00CA19F9 /* MyUploadItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4779FAF28577A6D00CA19F9 /* MyUploadItemCell.swift */; };
+		F4779FB22857824700CA19F9 /* MyLikeItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4779FB12857824700CA19F9 /* MyLikeItemViewController.swift */; };
 		F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1C2833E370004BA7FE /* ProductCell.swift */; };
 		F49CAF1F28360EC3004BA7FE /* ProductRegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1E28360EC2004BA7FE /* ProductRegisterVC.swift */; };
 		F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */; };
@@ -92,6 +94,8 @@
 		F4779FA92855B7C000CA19F9 /* cross1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross1.png; sourceTree = "<group>"; };
 		F4779FAA2855B7C000CA19F9 /* cross2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross2.png; sourceTree = "<group>"; };
 		F4779FAD2856B56200CA19F9 /* UserInfoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoResponse.swift; sourceTree = "<group>"; };
+		F4779FAF28577A6D00CA19F9 /* MyUploadItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUploadItemCell.swift; sourceTree = "<group>"; };
+		F4779FB12857824700CA19F9 /* MyLikeItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikeItemViewController.swift; sourceTree = "<group>"; };
 		F49CAF1C2833E370004BA7FE /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		F49CAF1E28360EC2004BA7FE /* ProductRegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegisterVC.swift; sourceTree = "<group>"; };
 		F4D5E7AB28087E5A001A97AD /* FleaMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FleaMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +130,7 @@
 				F49CAF1C2833E370004BA7FE /* ProductCell.swift */,
 				F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */,
 				F4651A98284B175C00D7FE63 /* ActivityCell.swift */,
+				F4779FAF28577A6D00CA19F9 /* MyUploadItemCell.swift */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -200,6 +205,7 @@
 				F49CAF1E28360EC2004BA7FE /* ProductRegisterVC.swift */,
 				F4651A9A284B79E600D7FE63 /* MyWriteViewController.swift */,
 				F4651A9C284B7A1C00D7FE63 /* MyUploadItemViewController.swift */,
+				F4779FB12857824700CA19F9 /* MyLikeItemViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -332,9 +338,11 @@
 				F4D5E7C8280891DE001A97AD /* User.swift in Sources */,
 				F42D2B122812AD4100564B26 /* Keychain.swift in Sources */,
 				F4651A932848F03000D7FE63 /* loginData.swift in Sources */,
+				F4779FB22857824700CA19F9 /* MyLikeItemViewController.swift in Sources */,
 				F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */,
 				F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */,
 				F4779FAE2856B56200CA19F9 /* UserInfoResponse.swift in Sources */,
+				F4779FB028577A6D00CA19F9 /* MyUploadItemCell.swift in Sources */,
 				F407D02B280EBBD900E36491 /* AlarmViewController.swift in Sources */,
 				F4651A8C2848990600D7FE63 /* JoinResponse.swift in Sources */,
 				F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */,

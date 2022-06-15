@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Foundation
 
 
 class MyPageViewController: UIViewController {
@@ -19,6 +20,8 @@ class MyPageViewController: UIViewController {
     
     @IBOutlet var nickname: UILabel!
     @IBOutlet var phone: UILabel!
+    
+    let userInfoVO = UserInfoResponse()
     
     lazy var list: [UserInfoResponse] = {
         var datalist = [UserInfoResponse]()
@@ -53,25 +56,23 @@ class MyPageViewController: UIViewController {
                 // 서버로부터 응답된 스트링 표시
             DispatchQueue.main.async {
                 do {
-                        let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                        guard let jsonObject = object else { return }
-                        //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
-                        // JSON 결과값을 추출
-                        let data = jsonObject["list"] as? Array<NSDictionary>
-                    
-                        let userInfoVO = UserInfoResponse()
-
-                        userInfoVO.email = data![0]["id"] as? String
-                        userInfoVO.password = data![0]["password"] as? String
-                        userInfoVO.phoneNumber = data![0]["phone"] as? String
-                        userInfoVO.nickname = data![0]["nickname"] as? String
-                        userInfoVO.boards = data![0]["Boards"] as? NSArray
-                        userInfoVO.products = data![0]["Products"] as? NSArray
+                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+                    guard let jsonObject = object else { return }
+                    //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
+                    // JSON 결과값을 추출
+                    let data = jsonObject["list"] as? Array<NSDictionary>
+                
+                    self.userInfoVO.email = data![0]["id"] as? String
+                    self.userInfoVO.password = data![0]["password"] as? String
+                    self.userInfoVO.phoneNumber = data![0]["phone"] as? String
+                    self.userInfoVO.nickname = data![0]["nickname"] as? String
+                    self.userInfoVO.boards = data![0]["Boards"] as? NSArray
+                    self.userInfoVO.products = data![0]["Products"] as? NSArray
                         
-                        self.list.append(userInfoVO)
+                    self.list.append(self.userInfoVO)
                     
-                        self.nickname.text = "닉네임: \(userInfoVO.nickname!)"
-                        self.phone.text = "휴대폰 번호: \(userInfoVO.phoneNumber!)"
+                    self.nickname.text = "닉네임: \(self.userInfoVO.nickname!)"
+                    self.phone.text = "휴대폰 번호: \(self.userInfoVO.phoneNumber!)"
                     
                     
                 } catch let e as NSError {
@@ -95,15 +96,30 @@ extension MyPageViewController: UITableViewDataSource {
     
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, didSelectItemAt indexPath: IndexPath) {
-        NSLog("선택된 행은 \(indexPath.row) 번째 행입니다.")
-    }
-    
 }
 
+// 액션 관련
 extension MyPageViewController: UITableViewDelegate {
-    
-    
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        switch indexPath.row{
+        case 0:
+            guard let myWriteVC = self.storyboard?.instantiateViewController(withIdentifier: "MyWriteViewController") as? MyWriteViewController else { return }
+            
+            self.navigationController?.pushViewController(myWriteVC, animated: true)
+            
+        
+        case 1:
+            guard let myuploadItemVC = self.storyboard?.instantiateViewController(withIdentifier: "MyUploadItemViewController") as? MyUploadItemViewController else { return }
+            myuploadItemVC.item = self.userInfoVO.products!
+            self.navigationController?.pushViewController(myuploadItemVC, animated: true)
+            
+        case 2:
+            guard let myLikeVC = self.storyboard?.instantiateViewController(withIdentifier:    "MyLikeItemViewController") as? MyLikeItemViewController else { return }
+            self.navigationController?.pushViewController(myLikeVC, animated: true)
+            
+        default:
+            return
+        }
+    }
 }

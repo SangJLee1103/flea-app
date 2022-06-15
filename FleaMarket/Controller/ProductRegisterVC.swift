@@ -195,7 +195,7 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
                 var thumbnail = UIImage()
                 option.isSynchronous = true
                 imageManager.requestImage(for: selectedAssets[i],
-                                             targetSize: CGSize(width: 30, height: 30),
+                                             targetSize: CGSize(width: 200, height: 200),
                                              contentMode: .aspectFill,
                                              options: option) { (result, info) in
                     thumbnail = result!
@@ -203,12 +203,10 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
                 
                 let data = thumbnail.jpegData(compressionQuality: 1.0)
                 let newImage = UIImage(data: data!)
-                
-                
+                    
                 self.userSelectedImages.append(newImage! as UIImage)
                 self.selectedData.append(data!)
             }
-            
             self.productImgView.reloadData()
         }
     }
