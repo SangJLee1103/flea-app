@@ -10,8 +10,18 @@ import UIKit
 
 class MyLikeItemViewController: UITableViewController {
         
+    var data: NSArray = []
+    
+    lazy var productList: [ProductResponse] = {
+        var datalist = [ProductResponse]()
+        return datalist
+    }()
+    
     override func viewDidLoad() {
-        
+        print(data)
     }
     
+    func databind(){
+       
+    }
 }

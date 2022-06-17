@@ -12,6 +12,7 @@ class ProductResponse {
     var productName: String?
     var sellerName: String?
     var sellingPrice: Int?
+    var createdAt: String?
     var costPrice: Int?
     var description: String?
     var like: NSArray?

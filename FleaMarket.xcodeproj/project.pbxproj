@@ -12,6 +12,7 @@
 		F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02C280EBF6E00E36491 /* MyPageViewController.swift */; };
 		F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02E280EC39E00E36491 /* MainViewController.swift */; };
 		F414AE09281CEAB6002D9221 /* BoardElementVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414AE08281CEAB6002D9221 /* BoardElementVC.swift */; };
+		F419E6B9285C89B000D02F4F /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F419E6B8285C89B000D02F4F /* ProductDetailViewController.swift */; };
 		F41B61182818E01E00EC3C12 /* MainSceneBoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */; };
 		F42D2B122812AD4100564B26 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D2B112812AD4100564B26 /* Keychain.swift */; };
 		F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AB0282661300081FF12 /* WriteViewController.swift */; };
@@ -70,6 +71,7 @@
 		F407D02C280EBF6E00E36491 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		F407D02E280EC39E00E36491 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F414AE08281CEAB6002D9221 /* BoardElementVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardElementVC.swift; sourceTree = "<group>"; };
+		F419E6B8285C89B000D02F4F /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		F41B61172818E01E00EC3C12 /* MainSceneBoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneBoardCell.swift; sourceTree = "<group>"; };
 		F42D2B112812AD4100564B26 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		F42D5AB0282661300081FF12 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				F4651A9A284B79E600D7FE63 /* MyWriteViewController.swift */,
 				F4651A9C284B7A1C00D7FE63 /* MyUploadItemViewController.swift */,
 				F4779FB12857824700CA19F9 /* MyLikeItemViewController.swift */,
+				F419E6B8285C89B000D02F4F /* ProductDetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 				F42D2B122812AD4100564B26 /* Keychain.swift in Sources */,
 				F4651A932848F03000D7FE63 /* loginData.swift in Sources */,
 				F4779FB22857824700CA19F9 /* MyLikeItemViewController.swift in Sources */,
+				F419E6B9285C89B000D02F4F /* ProductDetailViewController.swift in Sources */,
 				F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */,
 				F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */,
 				F4779FAE2856B56200CA19F9 /* UserInfoResponse.swift in Sources */,

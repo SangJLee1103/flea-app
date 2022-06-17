@@ -16,8 +16,6 @@ class MyPageViewController: UIViewController {
     let token = Keychain.read(key: "accessToken")
     
     @IBOutlet var activityView: UITableView!
-    
-    
     @IBOutlet var nickname: UILabel!
     @IBOutlet var phone: UILabel!
     
@@ -68,12 +66,12 @@ class MyPageViewController: UIViewController {
                     self.userInfoVO.nickname = data![0]["nickname"] as? String
                     self.userInfoVO.boards = data![0]["Boards"] as? NSArray
                     self.userInfoVO.products = data![0]["Products"] as? NSArray
+                    self.userInfoVO.likes = data![0]["Likes"] as? NSArray
                         
                     self.list.append(self.userInfoVO)
                     
                     self.nickname.text = "닉네임: \(self.userInfoVO.nickname!)"
                     self.phone.text = "휴대폰 번호: \(self.userInfoVO.phoneNumber!)"
-                    
                     
                 } catch let e as NSError {
                     print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
@@ -116,6 +114,7 @@ extension MyPageViewController: UITableViewDelegate {
             
         case 2:
             guard let myLikeVC = self.storyboard?.instantiateViewController(withIdentifier:    "MyLikeItemViewController") as? MyLikeItemViewController else { return }
+            myLikeVC.data = self.userInfoVO.likes!
             self.navigationController?.pushViewController(myLikeVC, animated: true)
             
         default:
