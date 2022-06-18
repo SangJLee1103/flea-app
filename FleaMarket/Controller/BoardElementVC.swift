@@ -106,6 +106,7 @@ class BoardElementVC: UIViewController {
                         let r = row as! NSDictionary
                         let rankVO = RankingData()
                         
+                        rankVO.id = r["product_id"] as? Int
                         rankVO.price = r["selling_price"] as? Int
                         rankVO.sellerName = r["nickname"] as? String
                         rankVO.productImg = r["img"] as? String
@@ -265,6 +266,26 @@ extension BoardElementVC: UICollectionViewDataSource {
             return cell
         }
         return UICollectionViewCell()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView ==  rankingView {
+            let row = self.rankList[indexPath.row]
+            let id = row.id
+            
+            guard let productDetailVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
+            productDetailVC.productId = id!
+            self.navigationController?.pushViewController(productDetailVC, animated: true)
+            
+        }else if collectionView == productView{
+            let row = self.productList[indexPath.row]
+            let id = row.id
+            
+            guard let productDetailVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
+            productDetailVC.productId = id!
+            self.navigationController?.pushViewController(productDetailVC, animated: true)
+            
+        }
     }
 }
     

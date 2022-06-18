@@ -13,6 +13,4 @@ class MyWriteViewController: UITableViewController {
     override func viewDidLoad() {
         
     }
-    
-    
 }

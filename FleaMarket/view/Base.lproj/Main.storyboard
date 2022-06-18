@@ -1487,23 +1487,78 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="82e-vM-8lu">
-                                <rect key="frame" x="0.0" y="44" width="390" height="349"/>
-                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wYt-jT-bYr">
+                                <rect key="frame" x="0.0" y="0.0" width="390" height="484"/>
+                            </scrollView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Fa-Mh-cvx">
+                                <rect key="frame" x="0.0" y="575" width="390" height="1"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="1"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Vd-Nd-zEt">
+                                <rect key="frame" x="27" y="512" width="147" height="25.666666666666629"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQ1-tt-L1J">
+                                <rect key="frame" x="27" y="546" width="195" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZZx-JN-m5Q">
+                                <rect key="frame" x="28" y="597" width="334" height="247"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="2ui-iV-OhV">
+                                <rect key="frame" x="108" y="486" width="174" height="25"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="pageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="currentPageIndicatorTintColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </pageControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="W5C-Hr-80p"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="W5C-Hr-80p" firstAttribute="bottom" secondItem="82e-vM-8lu" secondAttribute="bottom" constant="417" id="FML-SH-ybU"/>
-                            <constraint firstItem="82e-vM-8lu" firstAttribute="trailing" secondItem="W5C-Hr-80p" secondAttribute="trailing" id="Q2w-qF-ekq"/>
-                            <constraint firstItem="82e-vM-8lu" firstAttribute="leading" secondItem="W5C-Hr-80p" secondAttribute="leading" id="Qlb-CE-HFH"/>
-                            <constraint firstItem="82e-vM-8lu" firstAttribute="top" secondItem="W5C-Hr-80p" secondAttribute="top" id="fXz-W6-zi5"/>
+                            <constraint firstItem="fQ1-tt-L1J" firstAttribute="top" secondItem="1Vd-Nd-zEt" secondAttribute="bottom" constant="8.5" id="1KR-yI-4oe"/>
+                            <constraint firstItem="wYt-jT-bYr" firstAttribute="trailing" secondItem="W5C-Hr-80p" secondAttribute="trailing" id="2v3-7D-omD"/>
+                            <constraint firstItem="W5C-Hr-80p" firstAttribute="bottom" secondItem="wYt-jT-bYr" secondAttribute="bottom" constant="326" id="IzQ-gb-7yE"/>
+                            <constraint firstItem="5Fa-Mh-cvx" firstAttribute="top" secondItem="2ui-iV-OhV" secondAttribute="bottom" constant="64" id="MvS-ja-EbN"/>
+                            <constraint firstItem="2ui-iV-OhV" firstAttribute="bottom" secondItem="VYv-Or-qmw" secondAttribute="bottomMargin" constant="-299" id="TEu-uB-ggk"/>
+                            <constraint firstItem="1Vd-Nd-zEt" firstAttribute="leading" secondItem="W5C-Hr-80p" secondAttribute="leading" constant="27" id="UQG-Uu-WBv"/>
+                            <constraint firstItem="5Fa-Mh-cvx" firstAttribute="trailing" secondItem="W5C-Hr-80p" secondAttribute="trailing" id="V6L-dc-6DN"/>
+                            <constraint firstItem="wYt-jT-bYr" firstAttribute="leading" secondItem="W5C-Hr-80p" secondAttribute="leading" id="W4q-lV-QNL"/>
+                            <constraint firstItem="wYt-jT-bYr" firstAttribute="top" secondItem="VYv-Or-qmw" secondAttribute="top" id="Yhj-t4-aP9"/>
+                            <constraint firstItem="W5C-Hr-80p" firstAttribute="trailing" secondItem="1Vd-Nd-zEt" secondAttribute="trailing" constant="216" id="ahP-Ci-xBx"/>
+                            <constraint firstItem="ZZx-JN-m5Q" firstAttribute="leading" secondItem="W5C-Hr-80p" secondAttribute="leading" constant="28" id="cU1-O8-etF"/>
+                            <constraint firstItem="W5C-Hr-80p" firstAttribute="trailing" secondItem="fQ1-tt-L1J" secondAttribute="trailing" constant="168" id="dbq-Xe-Ula"/>
+                            <constraint firstItem="fQ1-tt-L1J" firstAttribute="leading" secondItem="W5C-Hr-80p" secondAttribute="leading" constant="27" id="gN9-n7-u0s"/>
+                            <constraint firstItem="1Vd-Nd-zEt" firstAttribute="top" secondItem="2ui-iV-OhV" secondAttribute="bottom" constant="1" id="h1E-ad-yPQ"/>
+                            <constraint firstItem="W5C-Hr-80p" firstAttribute="trailing" secondItem="ZZx-JN-m5Q" secondAttribute="trailing" constant="28" id="ked-iG-2Ma"/>
+                            <constraint firstItem="2ui-iV-OhV" firstAttribute="centerX" secondItem="VYv-Or-qmw" secondAttribute="centerX" id="ntt-dU-aeL"/>
+                            <constraint firstAttribute="trailing" secondItem="2ui-iV-OhV" secondAttribute="trailing" constant="108" id="q9E-ep-PmG"/>
+                            <constraint firstItem="ZZx-JN-m5Q" firstAttribute="top" secondItem="5Fa-Mh-cvx" secondAttribute="bottom" constant="21" id="sjH-bT-P0L"/>
+                            <constraint firstItem="5Fa-Mh-cvx" firstAttribute="leading" secondItem="W5C-Hr-80p" secondAttribute="leading" id="w2u-HW-iIN"/>
+                            <constraint firstAttribute="bottom" secondItem="ZZx-JN-m5Q" secondAttribute="bottom" id="z1s-Iz-rBo"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="itemDesc" destination="ZZx-JN-m5Q" id="6Fr-jZ-2CX"/>
+                        <outlet property="itemName" destination="fQ1-tt-L1J" id="fj8-ar-sOu"/>
+                        <outlet property="itemPrice" destination="1Vd-Nd-zEt" id="qNp-Oc-Hpj"/>
+                        <outlet property="itemScrollView" destination="wYt-jT-bYr" id="zhX-pT-bVR"/>
+                        <outlet property="pageControl" destination="2ui-iV-OhV" id="BcG-l4-E1O"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="be6-dB-yPU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1031.2" y="4120.3898050974512"/>
+            <point key="canvasLocation" x="1023.2" y="4115.8920539730134"/>
         </scene>
     </scenes>
     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
