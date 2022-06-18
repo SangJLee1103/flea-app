@@ -20,13 +20,13 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
     let token = Keychain.read(key: "accessToken")
     var images = [UIImage]()
     var imageViews = [UIImageView]()
+    var imageCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         itemScrollView.delegate = self
         productDetailAPI()
-        setPageControl()
     }
     
     
@@ -47,7 +47,7 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
                 return
             }
             // 서버로부터 응답된 스트링 표시
-            DispatchQueue.main.async { [self] in
+            DispatchQueue.main.async {
                 do {
                     let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                     guard let jsonObject = object else { return }
@@ -61,15 +61,16 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
                         
                         self.images.append(UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(imgParse[i])")!))!)
                         
+                        
                         let imageView = UIImageView()
                         let xPos = self.view.frame.width * CGFloat(i)
-                        imageView.frame = CGRect(x: xPos, y: 0, width: self.itemScrollView.bounds.width, height: itemScrollView.bounds.height)
+                        imageView.frame = CGRect(x: xPos, y: 0, width: self.itemScrollView.bounds.width, height: self.itemScrollView.bounds.height)
                         
-                        imageView.image = images[i]
-                        itemScrollView.addSubview(imageView)
-                        itemScrollView.contentSize.width = imageView.frame.width * CGFloat(i + 1)
+                        imageView.image = self.images[i]
+                        self.itemScrollView.addSubview(imageView)
+                        self.itemScrollView.contentSize.width = imageView.frame.width * CGFloat(i + 1)
                     }
-                    
+                    self.pageControl.numberOfPages = imgParse.count
                     self.itemPrice.text = "₩ \(String((data["selling_price"] as? Int)!))"
                     self.itemName.text = data["name"] as? String
                     self.itemDesc.text = data["description"] as? String
@@ -81,12 +82,7 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
         task.resume()
     }
     
-    private func setPageControl() {
-        pageControl.numberOfPages = imageViews.count
-        print("이미지 수: \(imageViews.count)")
-    }
-
-    private func setPageControlSelectedPage(currentPage:Int) {
+    func setPageControlSelectedPage(currentPage:Int) {
             pageControl.currentPage = currentPage
     }
     
