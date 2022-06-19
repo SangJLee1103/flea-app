@@ -18,7 +18,11 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
     
     var productId = 0
     let token = Keychain.read(key: "accessToken")
-    var images = [UIImage]()
+    var images = [UIImage]() {
+        didSet {
+            print("images = \(images)")
+        }
+    }
     var imageViews = [UIImageView]()
     var imageCount = 0
     
@@ -50,16 +54,21 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
             DispatchQueue.main.async {
                 do {
                     let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                    guard let jsonObject = object else { return }
+                    guard let jsonObject = object,
+                          let data = jsonObject["data"] as? NSDictionary,
+                          let imgDataString = data["img"] as? String else { return }
                     //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
                     // JSON 결과값을 추출
-                    let data = jsonObject["data"] as! NSDictionary
                     
-                    let imgParse = (data["img"] as? String)!.split(separator:",")
+                    let imgParse = imgDataString.split(separator:",")
                     
                     for i in 0..<imgParse.count {
                         
-                        self.images.append(UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(imgParse[i])")!))!)
+                        guard let url = URL(string: "http://localhost:3000/\(imgParse[i])"),
+                              let data = try? Data(contentsOf: url),
+                              let image = UIImage(data: data) else { return }
+                        
+                        self.images.append(image)
                         
                         
                         let imageView = UIImageView()
