@@ -6,30 +6,62 @@
 //
 
 import UIKit
+import Photos
 
 class WriteViewController: UIViewController, UITextViewDelegate {
     
-    let placeholder = " 상세 내용을 적어주세요!!"
-    
+    @IBOutlet weak var thumbnail: UIImageView!
     @IBOutlet var titleField: UITextField!
     @IBOutlet var descriptionField: UITextView!
     @IBOutlet var startField: UIDatePicker!
-
+    @IBOutlet var placeField: UITextField!
     @IBOutlet var btnForWrite: UIBarButtonItem!
 
     
     let token = Keychain.read(key: "accessToken")
-    var startTime: String? = ""
+    var startTime: String = ""
+    var photo: Data = Data()
+    
+    let imagePickerController = UIImagePickerController()
+    
+    let placeholder = " 상세 내용을 적어주세요!!"
+    let alertController = UIAlertController(title: "올릴 방식을 선택하세요", message: "사진 찍기 또는 앨범에서 선택", preferredStyle: .actionSheet)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         startField.contentHorizontalAlignment = .center
+        
+        enrollAlertEvent()
+        self.imagePickerController.delegate = self
+        addGestureRecognizer()
         
         descriptionField.delegate = self
         descriptionField.text = placeholder
         descriptionField.textColor = .lightGray
         
         titleField.addLeftPadding()
+    }
+    
+    func enrollAlertEvent() {
+            print("눌림")
+            let photoLibraryAlertAction = UIAlertAction(title: "사진 앨범", style: .default) {
+                (action) in
+                self.openAlbum()
+            }
+            let cameraAlertAction = UIAlertAction(title: "카메라", style: .default) {(action) in
+                self.openCamera()
+            }
+            let cancelAlertAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+            self.alertController.addAction(photoLibraryAlertAction)
+            self.alertController.addAction(cameraAlertAction)
+            self.alertController.addAction(cancelAlertAction)
+        
+            guard let alertControllerPopoverPresentationController
+                    = alertController.popoverPresentationController
+            else {return}
+        
+            prepareForPopoverPresentation(alertControllerPopoverPresentationController)
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -39,7 +71,6 @@ class WriteViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    
     func textViewDidEndEditing(_ textView: UITextView) {
         if descriptionField.text == "" {
             descriptionField.text = placeholder
@@ -48,6 +79,7 @@ class WriteViewController: UIViewController, UITextViewDelegate {
     }
     
     
+    // 날짜 String으로 포멧
     @IBAction func selectDate(_ sender: UIDatePicker) {
         let datePickerView = sender
         
@@ -57,7 +89,7 @@ class WriteViewController: UIViewController, UITextViewDelegate {
         startTime = formatter.string(from: datePickerView.date)
     }
     
-    
+    // 나가기 버튼
     @IBAction func onExitBtn(_ sender: Any) {
         let alert = UIAlertController(title: "FleaMarket", message: "작성을 취소하시겠습니까?", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "취소", style: .cancel)
@@ -71,33 +103,54 @@ class WriteViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func onWriteBtn(_ sender: Any) {
         do{
-            let start = startTime!
+            
+            guard let url = URL(string: "http://localhost:3000/board/write") else { return }
+        
+            let start = startTime
+            let place = self.placeField?.text
             let topic = self.titleField?.text
             let description = self.descriptionField?.text
-            let password = ""
            
             //Json 객체로 전송할 딕셔너리
-            let body = ["start" : start, "topic" : topic, "description" : description, "password" : password]
-            let bodyData = try! JSONSerialization.data(withJSONObject: body, options: [])
+            let parameters = [
+                "start" : start,
+                "topic" : topic!,
+                "description" : description!,
+                "place" : place!
+            ] as [String : Any]
             
-            let url = URL(string: "http://localhost:3000/board/write")
             
-            //URLRequest 객체를 정의
-            var request = URLRequest(url: url!)
+            let boundary = "Boundary-\(UUID().uuidString)"
+            
+            var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            request.httpBody = bodyData
-            
-            //HTTP 메시지 헤더
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
-            request.setValue(String(bodyData.count), forHTTPHeaderField: "Content-Length")
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            
+            
+            var uploadData = Data()
+            let imgDataKey = "img"
+            let boundaryPrefix = "--\(boundary)\r\n"
+            
+            for (key, value) in parameters {
+                uploadData.append(boundaryPrefix.data(using: .utf8)!)
+                uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+                uploadData.append("\(String(describing: value))\r\n".data(using: .utf8)!)
+            }
+            
+            
+            uploadData.append(boundaryPrefix.data(using: .utf8)!)
+            uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
+            uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
+            uploadData.append(photo)
+            uploadData.append("\r\n".data(using: .utf8)!)
+            uploadData.append("--\(boundary)--".data(using: .utf8)!)
+            
+            
+            let defaultSession = URLSession(configuration: .default)
             
             //URLSession 객체를 통해 전송, 응답값 처리
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                if let e = error{
-                    NSLog("An error has occured: \(e.localizedDescription)")
-                    return
-                }
+            defaultSession.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
                 DispatchQueue.main.async() {
                     // 서버로부터 응답된 스트링 표시
                     do {
@@ -109,8 +162,10 @@ class WriteViewController: UIViewController, UITextViewDelegate {
                        
                         // JSON 결과값을 추출
                         let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
-                        let error = jsonObject["message"] as? String
+                        let errorArray = jsonObject["message"] as? Array<NSDictionary>
+                        let error = errorArray?[0]["msg"] as? String
                         
+                        // 성공
                         if (status == 201) {
                             let writeAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
                             let action = UIAlertAction(title: "OK", style: .default){ (_) in
@@ -118,9 +173,9 @@ class WriteViewController: UIViewController, UITextViewDelegate {
                             }
                             writeAlert.addAction(action)
                             self.present(writeAlert, animated: true, completion: nil)
-                        } else {
+                        } else { // 실패
                             let checkAlert = UIAlertController(title: "Flea Market", message: error, preferredStyle: .alert)
-                            
+                        
                             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                             checkAlert.addAction(action)
                             self.present(checkAlert, animated: true, completion: nil)
@@ -129,8 +184,7 @@ class WriteViewController: UIViewController, UITextViewDelegate {
                         print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                     }
                 }
-            }
-            task.resume()
+            }.resume()
         }
     }
 }
@@ -141,4 +195,67 @@ extension UITextField {
     self.leftView = paddingView
     self.leftViewMode = ViewMode.always
   }
+}
+
+extension WriteViewController: UIPopoverPresentationControllerDelegate {
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        if let popoverPresentationController =
+      self.alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = self.view
+            popoverPresentationController.sourceRect
+            = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverPresentationController.permittedArrowDirections = []
+        }
+    }
+}
+
+extension WriteViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func openAlbum() {
+            self.imagePickerController.sourceType = .photoLibrary
+            present(self.imagePickerController, animated: false, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let image = info[UIImagePickerController.InfoKey.originalImage]
+                as? UIImage {
+                
+                thumbnail?.image = image
+                let newImageRect = CGRect(x: 0, y: 0, width: 200, height: 200)
+                UIGraphicsBeginImageContext(CGSize(width: 200, height: 200))
+                image.draw(in: newImageRect)
+                let newImage = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
+                UIGraphicsEndImageContext()
+                
+                let data = newImage!.jpegData(compressionQuality: 1.0)
+                self.photo = data!
+            }
+            else {
+                print("error detected in didFinishPickinMediaWithInfo method")
+            }
+            dismiss(animated: true, completion: nil) // 반드시 dismiss 하기.
+    }
+    
+    func openCamera() {
+            if (UIImagePickerController.isSourceTypeAvailable(.camera)) {
+                self.imagePickerController.sourceType = .camera
+                present(self.imagePickerController, animated: false, completion: nil)
+            }
+            else {
+                print ("Camera's not available as for now.")
+            }
+    }
+    
+    
+    func addGestureRecognizer() {
+            let tapGestureRecognizer
+      = UITapGestureRecognizer(target: self,
+                               action: #selector(self.tappedUIImageView(_:)))
+            self.thumbnail.addGestureRecognizer(tapGestureRecognizer)
+            self.thumbnail.isUserInteractionEnabled = true
+    }
+
+    
+    @objc func tappedUIImageView(_ gesture: UITapGestureRecognizer) {
+            self.present(alertController, animated: true, completion: nil)
+    }
 }

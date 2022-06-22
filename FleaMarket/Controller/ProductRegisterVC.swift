@@ -65,9 +65,9 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
     
     
     // POST - Image 송신
-    // ✅ data : UIImage 를 pngData() 혹은 jpegData() 사용해서 Data 로 변환한 것.
-    // ✅ filename : 파일이름(img.jpg 과 같은 이름)
-    // ✅ mimeType :  타입에 맞게 png면 image/png, text text/plain 등 타입.
+    // data : UIImage 를 pngData() 혹은 jpegData() 사용해서 Data 로 변환한 것.
+    // filename : 파일이름(img.jpg 과 같은 이름)
+    // mimeType :  타입에 맞게 png면 image/png, text text/plain 등 타입.
     // 완료 버튼 클릭시 이벤트
     @objc func productRegist(){
         
@@ -88,19 +88,16 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
             "selling_price" : selling_price!,
             "description" : description!
         ] as [String : Any]
-
-
         
-        
-        // ✅ boundary 설정
+        // boundary 설정
         let boundary = "Boundary-\(UUID().uuidString)"
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
-    
-        // ✅ data
+        
+        // data
         var uploadData = Data()
         let imgDataKey = "img"
         let boundaryPrefix = "--\(boundary)\r\n"

@@ -10,7 +10,9 @@ import Foundation
 class Board {
     var id: Int? // 게시글 아이디
     var writer: String? // 게시글 작성자
+    var topic: String?
     var date: String? // 플리마켓 날짜
     var place: String? // 플리마켓 장소
     var description: String? // 플리마켓 주제
+    var imgPath: String? // 이미지 경로
 }

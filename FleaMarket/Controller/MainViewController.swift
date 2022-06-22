@@ -72,8 +72,10 @@ class MainViewController: UIViewController {
                         
                         boardVO.id = r["id"] as? Int
                         boardVO.date = r["start"] as? String
-                        boardVO.place = r["topic"] as? String
+                        boardVO.topic = r["topic"] as? String
+                        boardVO.place = r["place"] as? String
                         boardVO.description = r["description"] as? String
+                        boardVO.imgPath = r["thumbnail"] as? String
                         let writer = r["User"] as! NSDictionary
                         boardVO.writer = writer["nickname"] as? String
                         self.list.append(boardVO)
@@ -137,19 +139,26 @@ extension MainViewController: UICollectionViewDataSource {
         
         let row = self.list[indexPath.row]
         
+        cell.image.layer.cornerRadius = 10
         
-        if (String(describing: row.place)).contains("교회") {
-            cell.image?.image = UIImage(named: church[Int.random(in: 0..<2)])
-        } else if (String(describing: row.place)).contains("학교") {
-            cell.image?.image = UIImage(named: school[Int.random(in: 0..<2)])
+//        guard let imgParse = row.imgPath else {
+//            cell.image?.image = UIImage(named: fleamarket[Int.random(in: 0..<2)])
+//
+//        }
+//
+//        let url = "http://localhost:3000/\(String(describing: row.imgPath))"
+        
+        let url: URL! = URL(string: row.imgPath!)
+        
+        if (url != nil) {
+            cell.image?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(String(describing: url!))")!))
         } else {
             cell.image?.image = UIImage(named: fleamarket[Int.random(in: 0..<2)])
         }
         
-        cell.writer?.text = row.writer
+        cell.topic?.text = row.topic
         cell.date?.text = row.date
         cell.place?.text = "장소:\(String(describing: row.place!))"
-        cell.desc?.text = row.description
         
       
         return cell
