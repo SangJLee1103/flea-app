@@ -123,7 +123,7 @@ class MainViewController: UIViewController {
 }
 
     
-//// 데이터 소스 설정: 데이터 관련된 것들
+// MARK: 데이터 소스 설정: 데이터 관련된 것들
 extension MainViewController: UICollectionViewDataSource {
 
     // 각 섹션에 들어가는 아이템 갯수
@@ -177,7 +177,7 @@ extension MainViewController: UICollectionViewDataSource {
     }
 }
 
-// 컬렉션 뷰 델리게이트 - 액션과 관련된 것들
+// MARK: 컬렉션 뷰 델리게이트 - 액션과 관련된 것들
 extension MainViewController: UICollectionViewDelegate {
     
 }

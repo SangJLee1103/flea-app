@@ -506,6 +506,8 @@
 				DEVELOPMENT_TEAM = BFTA9SX898;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FleaMarket/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "플리마켓";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앱에서 사진첩에 접근하여 사진을 선택하려 합니다. 허용하시겠습니까?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -534,6 +536,8 @@
 				DEVELOPMENT_TEAM = BFTA9SX898;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FleaMarket/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "플리마켓";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앱에서 사진첩에 접근하여 사진을 선택하려 합니다. 허용하시겠습니까?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

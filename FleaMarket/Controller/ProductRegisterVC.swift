@@ -9,11 +9,7 @@ import UIKit
 import Photos
 import BSImagePicker
 
-class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewDelegate {
-    
-    let placeholder = "상품에 대해서 설명을 적어주세요(상품 사용 기간, 상품의 흠집 여부 및 특징 등)"
-    
-    var boardId: Int?
+class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
     
     @IBOutlet var productImgView: UICollectionView!
     @IBOutlet var productName: UITextField!
@@ -22,6 +18,9 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
     @IBOutlet var descriptionField: UITextView!
     
     let token = Keychain.read(key: "accessToken")
+    
+    let placeholder = "상품에 대해서 설명을 적어주세요(상품 사용 기간, 상품의 흠집 여부 및 특징 등)"
+    var boardId: Int?
     
     var selectedData: [Data] = [Data]()
     var selectedAssets = [PHAsset]()
@@ -47,23 +46,6 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
     }
     
     
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if descriptionField.textColor == .lightGray {
-            descriptionField.text = ""
-            descriptionField.textColor = .black
-        }
-    }
-    
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if descriptionField.text == "" {
-            descriptionField.text = placeholder
-            descriptionField.textColor = .lightGray
-        }
-    }
-    
-    
     // POST - Image 송신
     // data : UIImage 를 pngData() 혹은 jpegData() 사용해서 Data 로 변환한 것.
     // filename : 파일이름(img.jpg 과 같은 이름)
@@ -77,15 +59,15 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
         }
         
         let name = self.productName?.text
-        let cost_price = Int((self.costPrice?.text)!)
-        let selling_price = Int((self.sellingPrice?.text)!)
+        let cost_price = self.costPrice?.text
+        let selling_price = self.sellingPrice?.text
         let description = self.descriptionField?.text
         
         
         let parameters = [
             "name" : name!,
-            "cost_price" : cost_price!,
-            "selling_price" : selling_price!,
+            "cost_price" : Int(cost_price!) as Any,
+            "selling_price" : Int(selling_price!) as Any,
             "description" : description!
         ] as [String : Any]
         
@@ -94,8 +76,8 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         // data
         var uploadData = Data()
@@ -119,15 +101,18 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
         uploadData.append("--\(boundary)--".data(using: .utf8)!)
     
         let defaultSession = URLSession(configuration: .default)
-        // ✅ uploadTask(with:from:) 메서드 사용해서 reqeust body 에 data 추가.
+        
         defaultSession.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
             DispatchQueue.main.async() {
                 do {
                     let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+                    
                     guard let jsonObject = object else { return }
-                    //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
+                  
                     let status = (response as? HTTPURLResponse)?.statusCode ?? 0
                     let data = jsonObject["message"] as? String
+                    let errorArray = jsonObject["message"] as? Array<NSDictionary>
+                    let error = errorArray?[0]["msg"] as? String
                     
                     if (status == 201) {
                         let alert = UIAlertController(title: "Flea Market", message: data, preferredStyle: .alert)
@@ -137,7 +122,11 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
                         alert.addAction(action)
                         self.present(alert, animated: true, completion: nil)
                     }else {
-                        print("실패")
+                        let checkAlert = UIAlertController(title: "Flea Market", message: error, preferredStyle: .alert)
+                    
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        checkAlert.addAction(action)
+                        self.present(checkAlert, animated: true, completion: nil)
                     }
                 }catch let e as NSError {
                     print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
@@ -164,13 +153,10 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
         picker.settings.fetch.assets.supportedMediaTypes = [.image]
         
         presentImagePicker(picker, select: { (asset) in
-            // User selected an asset. Do something with it. Perhaps begin processing/upload?
         }, deselect: { (asset) in
-            // User deselected an asset. Cancel whatever you did when asset was selected.
         }, cancel: { (assets) in
-            // User canceled selection.
         }, finish: { (assets) in
-            // User finished selection assets.
+
             for i in 0..<assets.count {
                 self.selectedAssets.append(assets[i])
                 self.selectedCount += 1
@@ -209,11 +195,28 @@ class ProductRegisterVC: UIViewController, UITextViewDelegate, UICollectionViewD
     }
 }
 
+// MARK: 텍스트 뷰 관리
+extension ProductRegisterVC: UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if descriptionField.textColor == .lightGray {
+            descriptionField.text = ""
+            descriptionField.textColor = .black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if descriptionField.text == "" {
+            descriptionField.text = placeholder
+            descriptionField.textColor = .lightGray
+        }
+    }
+}
 
-
+// MAKR: 컬렉션 뷰 데이터에 대한 것들
 extension ProductRegisterVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        selectedData.count
+        return selectedData.count
     }
     
     // 컬렉션 뷰 셀에 대한 설정

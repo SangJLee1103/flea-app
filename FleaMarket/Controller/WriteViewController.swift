@@ -8,7 +8,7 @@
 import UIKit
 import Photos
 
-class WriteViewController: UIViewController, UITextViewDelegate {
+class WriteViewController: UIViewController {
     
     @IBOutlet weak var thumbnail: UIImageView!
     @IBOutlet var titleField: UITextField!
@@ -16,7 +16,7 @@ class WriteViewController: UIViewController, UITextViewDelegate {
     @IBOutlet var startField: UIDatePicker!
     @IBOutlet var placeField: UITextField!
     @IBOutlet var btnForWrite: UIBarButtonItem!
-
+    
     
     let token = Keychain.read(key: "accessToken")
     var startTime: String = ""
@@ -32,52 +32,37 @@ class WriteViewController: UIViewController, UITextViewDelegate {
         startField.contentHorizontalAlignment = .center
         
         enrollAlertEvent()
-        self.imagePickerController.delegate = self
+        
+        imagePickerController.delegate = self
         addGestureRecognizer()
         
         descriptionField.delegate = self
         descriptionField.text = placeholder
-        descriptionField.textColor = .lightGray
-        
-        titleField.addLeftPadding()
+        descriptionField.textColor = #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1)
     }
     
+    // 카메라 혹은 사진 앨범 라이브러리 선택 Alert
     func enrollAlertEvent() {
-            print("눌림")
-            let photoLibraryAlertAction = UIAlertAction(title: "사진 앨범", style: .default) {
-                (action) in
-                self.openAlbum()
-            }
-            let cameraAlertAction = UIAlertAction(title: "카메라", style: .default) {(action) in
-                self.openCamera()
-            }
-            let cancelAlertAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        
-            self.alertController.addAction(photoLibraryAlertAction)
-            self.alertController.addAction(cameraAlertAction)
-            self.alertController.addAction(cancelAlertAction)
-        
-            guard let alertControllerPopoverPresentationController
-                    = alertController.popoverPresentationController
-            else {return}
-        
-            prepareForPopoverPresentation(alertControllerPopoverPresentationController)
-    }
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if descriptionField.textColor == .lightGray {
-            descriptionField.text = ""
-            descriptionField.textColor = .black
+        print("눌림")
+        let photoLibraryAlertAction = UIAlertAction(title: "사진 앨범", style: .default) {
+            (action) in
+            self.openAlbum()
         }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if descriptionField.text == "" {
-            descriptionField.text = placeholder
-            descriptionField.textColor = .lightGray
+        let cameraAlertAction = UIAlertAction(title: "카메라", style: .default) {(action) in
+            self.openCamera()
         }
+        let cancelAlertAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        self.alertController.addAction(photoLibraryAlertAction)
+        self.alertController.addAction(cameraAlertAction)
+        self.alertController.addAction(cancelAlertAction)
+        
+        guard let alertControllerPopoverPresentationController
+                = alertController.popoverPresentationController
+        else {return}
+        
+        prepareForPopoverPresentation(alertControllerPopoverPresentationController)
     }
-    
     
     // 날짜 String으로 포멧
     @IBAction func selectDate(_ sender: UIDatePicker) {
@@ -89,7 +74,7 @@ class WriteViewController: UIViewController, UITextViewDelegate {
         startTime = formatter.string(from: datePickerView.date)
     }
     
-    // 나가기 버튼
+    // 나가기 버튼 이벤트
     @IBAction func onExitBtn(_ sender: Any) {
         let alert = UIAlertController(title: "FleaMarket", message: "작성을 취소하시겠습니까?", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "취소", style: .cancel)
@@ -100,17 +85,17 @@ class WriteViewController: UIViewController, UITextViewDelegate {
         self.present(alert, animated: false)
     }
     
-    
+    // 작성 버튼 이벤트
     @IBAction func onWriteBtn(_ sender: Any) {
         do{
             
             guard let url = URL(string: "http://localhost:3000/board/write") else { return }
-        
+            
             let start = startTime
             let place = self.placeField?.text
             let topic = self.titleField?.text
             let description = self.descriptionField?.text
-           
+            
             //Json 객체로 전송할 딕셔너리
             let parameters = [
                 "start" : start,
@@ -159,7 +144,7 @@ class WriteViewController: UIViewController, UITextViewDelegate {
                         
                         //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
                         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-                       
+                        
                         // JSON 결과값을 추출
                         let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
                         let errorArray = jsonObject["message"] as? Array<NSDictionary>
@@ -175,7 +160,7 @@ class WriteViewController: UIViewController, UITextViewDelegate {
                             self.present(writeAlert, animated: true, completion: nil)
                         } else { // 실패
                             let checkAlert = UIAlertController(title: "Flea Market", message: error, preferredStyle: .alert)
-                        
+                            
                             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                             checkAlert.addAction(action)
                             self.present(checkAlert, animated: true, completion: nil)
@@ -189,18 +174,28 @@ class WriteViewController: UIViewController, UITextViewDelegate {
     }
 }
 
-extension UITextField {
-  func addLeftPadding() {
-    let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: self.frame.height))
-    self.leftView = paddingView
-    self.leftViewMode = ViewMode.always
-  }
+// MARK:
+extension WriteViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if descriptionField.textColor == #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1) {
+            descriptionField.text = ""
+            descriptionField.textColor = .black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if descriptionField.text == "" {
+            descriptionField.text = placeholder
+            descriptionField.textColor = #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1)
+        }
+    }
 }
+
 
 extension WriteViewController: UIPopoverPresentationControllerDelegate {
     func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
         if let popoverPresentationController =
-      self.alertController.popoverPresentationController {
+            self.alertController.popoverPresentationController {
             popoverPresentationController.sourceView = self.view
             popoverPresentationController.sourceRect
             = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
@@ -209,53 +204,55 @@ extension WriteViewController: UIPopoverPresentationControllerDelegate {
     }
 }
 
+
 extension WriteViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func openAlbum() {
-            self.imagePickerController.sourceType = .photoLibrary
-            present(self.imagePickerController, animated: false, completion: nil)
+        self.imagePickerController.sourceType = .photoLibrary
+        present(self.imagePickerController, animated: false, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            if let image = info[UIImagePickerController.InfoKey.originalImage]
-                as? UIImage {
-                
-                thumbnail?.image = image
-                let newImageRect = CGRect(x: 0, y: 0, width: 200, height: 200)
-                UIGraphicsBeginImageContext(CGSize(width: 200, height: 200))
-                image.draw(in: newImageRect)
-                let newImage = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
-                UIGraphicsEndImageContext()
-                
-                let data = newImage!.jpegData(compressionQuality: 1.0)
-                self.photo = data!
-            }
-            else {
-                print("error detected in didFinishPickinMediaWithInfo method")
-            }
-            dismiss(animated: true, completion: nil) // 반드시 dismiss 하기.
+        if let image = info[UIImagePickerController.InfoKey.originalImage]
+            as? UIImage {
+            
+            thumbnail?.image = image
+            //이미지 사이즈 조절
+            let newImageRect = CGRect(x: 0, y: 0, width: 200, height: 200)
+            UIGraphicsBeginImageContext(CGSize(width: 200, height: 200))
+            image.draw(in: newImageRect)
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
+            UIGraphicsEndImageContext()
+            
+            let data = newImage!.jpegData(compressionQuality: 1.0)
+            self.photo = data!
+        }
+        else {
+            print("error detected in didFinishPickinMediaWithInfo method")
+        }
+        dismiss(animated: true, completion: nil) // 반드시 dismiss 하기.
     }
     
     func openCamera() {
-            if (UIImagePickerController.isSourceTypeAvailable(.camera)) {
-                self.imagePickerController.sourceType = .camera
-                present(self.imagePickerController, animated: false, completion: nil)
-            }
-            else {
-                print ("Camera's not available as for now.")
-            }
+        if (UIImagePickerController.isSourceTypeAvailable(.camera)) {
+            self.imagePickerController.sourceType = .camera
+            present(self.imagePickerController, animated: false, completion: nil)
+        }
+        else {
+            print ("Camera's not available as for now.")
+        }
     }
     
     
     func addGestureRecognizer() {
-            let tapGestureRecognizer
-      = UITapGestureRecognizer(target: self,
-                               action: #selector(self.tappedUIImageView(_:)))
-            self.thumbnail.addGestureRecognizer(tapGestureRecognizer)
-            self.thumbnail.isUserInteractionEnabled = true
+        let tapGestureRecognizer
+        = UITapGestureRecognizer(target: self,
+                                 action: #selector(self.tappedUIImageView(_:)))
+        self.thumbnail.addGestureRecognizer(tapGestureRecognizer)
+        self.thumbnail.isUserInteractionEnabled = true
     }
-
+    
     
     @objc func tappedUIImageView(_ gesture: UITapGestureRecognizer) {
-            self.present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 }
