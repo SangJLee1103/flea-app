@@ -8,9 +8,9 @@
 import Foundation
 
 // 회원 구조체
-struct User {
+struct JoinModel: Codable {
     
-    var email: String? //회원 이메일
+    var id: String? //회원 이메일
     var password: String? // 회원 비밀번호
     var nickname: String? // 회원 닉네임
     var phoneNumber: String? // 회원 휴대폰 번호

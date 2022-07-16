@@ -140,14 +140,6 @@ extension MainViewController: UICollectionViewDataSource {
         let row = self.list[indexPath.row]
         
         cell.image.layer.cornerRadius = 10
-        
-//        guard let imgParse = row.imgPath else {
-//            cell.image?.image = UIImage(named: fleamarket[Int.random(in: 0..<2)])
-//
-//        }
-//
-//        let url = "http://localhost:3000/\(String(describing: row.imgPath))"
-        
         let url: URL! = URL(string: row.imgPath!)
         
         if (url != nil) {

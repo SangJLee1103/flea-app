@@ -10,7 +10,6 @@ import Foundation
 
 class JoinViewController: UIViewController, UITextFieldDelegate {
     
-    
     @IBOutlet var logoImg: UIImageView!
     
     //이미 계정이 있으신가요? 버튼
@@ -68,22 +67,20 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
                 print("Cannot create URL!")
                 return
             }
-
-            let user = User(email: self.emailField?.text, password: self.pwField?.text, nickname: self.nicknameField?.text, phoneNumber: self.phoneField?.text)
-
             
-            //Json 객체로 전송할 딕셔너리
-            let body = ["id" : user.email, "password" : user.password, "nickname" : user.nickname, "phone" : user.phoneNumber]
+            let joinUser = JoinModel(id: self.emailField?.text, password: self.pwField?.text, nickname: self.nicknameField?.text, phoneNumber: self.phoneField?.text)
+            guard let uploadData = try? JSONEncoder().encode(joinUser)
+            else { return }
             
+
             //URLRequest 객체를 정의
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = try! JSONSerialization.data(withJSONObject: body, options: [])
-            
-            
+
+
             //URLSession 객체를 통해 전송, 응답값 처리
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let task = URLSession.shared.uploadTask(with: request, from: uploadData) { (data, response, error) in
                 if let e = error{
                     NSLog("An error has occured: \(e.localizedDescription)")
                     return
@@ -93,19 +90,19 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
                     do {
                         let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                         guard let jsonObject = object else { return }
-                        
+
                         //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
                         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-                       
+
                         // JSON 결과값을 추출
                         let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
                         let error = jsonObject["message"] as? Array<NSDictionary>
-                      
-                        
+
+
                         if status == 201 {
                             self.clearLabel()
                             let joinAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
-                            
+
                             let action = UIAlertAction(title: "OK", style: .default, handler: { _ in self.navigationController?.popViewController(animated: true)})
                             joinAlert.addAction(action)
                             self.present(joinAlert, animated: true, completion: nil)
@@ -119,31 +116,31 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
                             }else {
                                 self.phoneError.text = message
                             }
-                            
+
                         }else {
                             self.clearLabel()
-                            
+
                             for i in 0 ..< (error?.count)! {
                                 if((error?[i])?["param"] as? String == "id"){
                                     self.emailError.text = (((error?[i])?["msg"]) as? String)
                                     break;
                                 }
                             }
-                            
+
                             for i in 0 ..< (error?.count)! {
                                 if((error?[i])?["param"] as? String == "password"){
                                     self.pwError.text = (((error?[i])?["msg"]) as? String)
                                     break
                                 }
                             }
-                            
+
                             for i in 0 ..< (error?.count)! {
                                 if((error?[i])?["param"] as? String == "nickname"){
                                     self.nicknameError.text = (((error?[i])?["msg"]) as? String)
                                     break
                                 }
                             }
-                            
+
                             for i in 0 ..< (error?.count)! {
                                 if((error?[i])?["param"] as? String == "phone"){
                                     self.phoneError.text = (((error?[i])?["msg"]) as? String)
@@ -158,7 +155,7 @@ class JoinViewController: UIViewController, UITextFieldDelegate {
             }
             task.resume()
         }
-        
+
     }
     
     //회원가입 기능 액션 함수

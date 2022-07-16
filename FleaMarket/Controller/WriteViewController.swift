@@ -20,7 +20,7 @@ class WriteViewController: UIViewController {
     
     let token = Keychain.read(key: "accessToken")
     var startTime: String = ""
-    var photo: Data = Data()
+    var photo: Data? = Data()
     
     let imagePickerController = UIImagePickerController()
     
@@ -29,6 +29,9 @@ class WriteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        thumbnail.layer.cornerRadius = 15
+        
         startField.contentHorizontalAlignment = .center
         
         enrollAlertEvent()
@@ -43,7 +46,6 @@ class WriteViewController: UIViewController {
     
     // 카메라 혹은 사진 앨범 라이브러리 선택 Alert
     func enrollAlertEvent() {
-        print("눌림")
         let photoLibraryAlertAction = UIAlertAction(title: "사진 앨범", style: .default) {
             (action) in
             self.openAlbum()
@@ -87,55 +89,49 @@ class WriteViewController: UIViewController {
     
     // 작성 버튼 이벤트
     @IBAction func onWriteBtn(_ sender: Any) {
-        do{
-            
-            guard let url = URL(string: "http://localhost:3000/board/write") else { return }
-            
-            let start = startTime
-            let place = self.placeField?.text
-            let topic = self.titleField?.text
-            let description = self.descriptionField?.text
-            
-            //Json 객체로 전송할 딕셔너리
-            let parameters = [
-                "start" : start,
-                "topic" : topic!,
-                "description" : description!,
-                "place" : place!
-            ] as [String : Any]
-            
-            
-            let boundary = "Boundary-\(UUID().uuidString)"
-            
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
-            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-            
-            
-            var uploadData = Data()
-            let imgDataKey = "img"
-            let boundaryPrefix = "--\(boundary)\r\n"
-            
-            for (key, value) in parameters {
-                uploadData.append(boundaryPrefix.data(using: .utf8)!)
-                uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-                uploadData.append("\(String(describing: value))\r\n".data(using: .utf8)!)
-            }
-            
-            
+        guard let url = URL(string: "http://localhost:3000/board/write") else { return }
+        
+        let topic = self.titleField?.text
+        let place = self.placeField?.text
+        let start = startTime
+        let description = self.descriptionField?.text
+        
+        //Json 객체로 전송할 딕셔너리
+        let parameters = [
+            "topic" : topic!,
+            "place" : place!,
+            "start" : start,
+            "description" : description!
+        ] as [String : Any]
+        
+        let boundary = "Boundary-\(UUID().uuidString)"
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        
+        var uploadData = Data()
+        let imgDataKey = "img"
+        let boundaryPrefix = "--\(boundary)\r\n"
+        
+        for (key, value) in parameters {
             uploadData.append(boundaryPrefix.data(using: .utf8)!)
-            uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
-            uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
-            uploadData.append(photo)
-            uploadData.append("\r\n".data(using: .utf8)!)
-            uploadData.append("--\(boundary)--".data(using: .utf8)!)
-            
-            
-            let defaultSession = URLSession(configuration: .default)
-            
+            uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+            uploadData.append("\(value)\r\n".data(using: .utf8)!)
+        }
+        
+        uploadData.append(boundaryPrefix.data(using: .utf8)!)
+        uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
+        uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
+        uploadData.append(photo!)
+        uploadData.append("\r\n".data(using: .utf8)!)
+        uploadData.append("--\(boundary)--".data(using: .utf8)!)
+        
+        do{
             //URLSession 객체를 통해 전송, 응답값 처리
-            defaultSession.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
+            URLSession.shared.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
                 DispatchQueue.main.async() {
                     // 서버로부터 응답된 스트링 표시
                     do {
@@ -174,7 +170,7 @@ class WriteViewController: UIViewController {
     }
 }
 
-// MARK:
+// MARK: - 텍스트 뷰 델리게이트
 extension WriteViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if descriptionField.textColor == #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1) {
@@ -192,8 +188,10 @@ extension WriteViewController: UITextViewDelegate {
 }
 
 
+// MARK: - 이미지 선택 클릭시 밑에서 올라오는 팝오버 프리젠테이션 델리게이트
 extension WriteViewController: UIPopoverPresentationControllerDelegate {
     func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        
         if let popoverPresentationController =
             self.alertController.popoverPresentationController {
             popoverPresentationController.sourceView = self.view
@@ -201,10 +199,11 @@ extension WriteViewController: UIPopoverPresentationControllerDelegate {
             = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
             popoverPresentationController.permittedArrowDirections = []
         }
+        
     }
 }
 
-
+// MARK: - 이미지 피커 컨트롤러 네비게이션 컨트롤러 델리게이트
 extension WriteViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func openAlbum() {
         self.imagePickerController.sourceType = .photoLibrary
@@ -212,6 +211,7 @@ extension WriteViewController: UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
         if let image = info[UIImagePickerController.InfoKey.originalImage]
             as? UIImage {
             
@@ -252,7 +252,13 @@ extension WriteViewController: UIImagePickerControllerDelegate, UINavigationCont
     }
     
     
+    // 이미지 뷰 탭 했을 때 이벤트
     @objc func tappedUIImageView(_ gesture: UITapGestureRecognizer) {
-        self.present(alertController, animated: true, completion: nil)
+        if self.photo?.count == 0 {
+            self.present(alertController, animated: true, completion: nil)
+        }else {
+            self.photo?.count = 0
+            self.thumbnail.image = UIImage(named: "camera")
+        }
     }
 }

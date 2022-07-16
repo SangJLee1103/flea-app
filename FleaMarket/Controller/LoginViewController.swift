@@ -42,22 +42,17 @@ class LoginViewController: UIViewController {
                 return
             }
             
-            
-            let login = loginData(email: self.emailField?.text, password: self.pwField?.text)
-            //Json 객체로 전송할 딕셔너리
-            let body = ["id" : login.email, "password" : login.password]
-            let bodyData = try! JSONSerialization.data(withJSONObject: body, options: [])
-            
+            let loginUser = LoginModel(id: self.emailField.text!, password: self.pwField.text!)
+            guard let uploadData = try? JSONEncoder().encode(loginUser)
+            else { return }
             
             //URLRequest 객체를 정의
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            request.httpBody = bodyData
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue(String(bodyData.count), forHTTPHeaderField: "Content-Length")
             
             //URLSession 객체를 통해 전송, 응답값 처리
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let task = URLSession.shared.uploadTask(with: request, from: uploadData) { (data, response, error) in
                 if let e = error{
                     NSLog("An error has occured: \(e.localizedDescription)")
                     return

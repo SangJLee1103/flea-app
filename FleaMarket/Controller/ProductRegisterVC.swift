@@ -11,6 +11,7 @@ import BSImagePicker
 
 class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
     
+    
     @IBOutlet var productImgView: UICollectionView!
     @IBOutlet var productName: UITextField!
     @IBOutlet var sellingPrice: UITextField!
@@ -45,11 +46,6 @@ class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
         
     }
     
-    
-    // POST - Image 송신
-    // data : UIImage 를 pngData() 혹은 jpegData() 사용해서 Data 로 변환한 것.
-    // filename : 파일이름(img.jpg 과 같은 이름)
-    // mimeType :  타입에 맞게 png면 image/png, text text/plain 등 타입.
     // 완료 버튼 클릭시 이벤트
     @objc func productRegist(){
         
@@ -66,8 +62,8 @@ class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
         
         let parameters = [
             "name" : name!,
-            "cost_price" : Int(cost_price!) as Any,
-            "selling_price" : Int(selling_price!) as Any,
+            "selling_price" : selling_price!,
+            "cost_price" : cost_price!,
             "description" : description!
         ] as [String : Any]
         
@@ -149,7 +145,7 @@ class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
             self.present(alert, animated: false)
         }
         
-        picker.settings.selection.max = 5
+        picker.settings.selection.max = 5 - selectedCount
         picker.settings.fetch.assets.supportedMediaTypes = [.image]
         
         presentImagePicker(picker, select: { (asset) in
@@ -195,7 +191,7 @@ class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
     }
 }
 
-// MARK: 텍스트 뷰 관리
+// MARK: - 텍스트 뷰 관리
 extension ProductRegisterVC: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -213,7 +209,7 @@ extension ProductRegisterVC: UITextViewDelegate {
     }
 }
 
-// MAKR: 컬렉션 뷰 데이터에 대한 것들
+// MAKR: - 컬렉션 뷰 데이터소스 관리
 extension ProductRegisterVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return selectedData.count
