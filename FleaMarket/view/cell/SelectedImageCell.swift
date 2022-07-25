@@ -8,14 +8,20 @@
 import Foundation
 import UIKit
 
+
+protocol DataCollectionProtocol {
+    func deleteData(index: Int)
+}
+
 class SelectedImageCell: UICollectionViewCell {
     
     @IBOutlet var selectedImg: UIImageView!
     @IBOutlet var cancelImgBtn: UIButton!
     
-    var index = [0, 1, 2, 3, 4]
+    var delegate: DataCollectionProtocol?
+    var index: IndexPath?
     
-    @IBAction func cancelImageBtn(_ sender: UIButton) {
-        
+    @IBAction func cancelImg(_ sender: UIButton) {
+        delegate?.deleteData(index: (index?.row)!)
     }
 }

@@ -64,9 +64,11 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
                         
                         let imageView = UIImageView()
                         let xPos = self.view.frame.width * CGFloat(i)
-                        imageView.frame = CGRect(x: xPos, y: 0, width: self.itemScrollView.bounds.width, height: self.itemScrollView.bounds.height)
                         
+                        imageView.contentMode = .scaleToFill
+                        imageView.frame = CGRect(x: xPos, y: 0, width: self.itemScrollView.bounds.width, height: self.itemScrollView.bounds.height - 70)
                         imageView.image = self.images[i]
+                        
                         self.itemScrollView.addSubview(imageView)
                         self.itemScrollView.contentSize.width = imageView.frame.width * CGFloat(i + 1)
                     }

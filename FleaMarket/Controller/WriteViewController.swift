@@ -108,8 +108,8 @@ class WriteViewController: UIViewController {
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
         
         
         var uploadData = Data()
