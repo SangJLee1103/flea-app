@@ -46,9 +46,8 @@ class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
         
     }
     
-    // 완료 버튼 클릭시 이벤트
+    // 완료 버튼 클릭시 이벤트(상품 등록)
     @objc func productRegist(){
-        
         guard let url = URL(string: "http://localhost:3000/product/\(boardId!)/register") else {
             print("Error: cannot create URL")
             return
@@ -95,16 +94,15 @@ class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
             uploadData.append("\r\n".data(using: .utf8)!)
         }
         uploadData.append("--\(boundary)--".data(using: .utf8)!)
-    
-        let defaultSession = URLSession(configuration: .default)
         
-        defaultSession.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
+        
+        URLSession.shared.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
             DispatchQueue.main.async() {
                 do {
                     let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                     
                     guard let jsonObject = object else { return }
-                  
+                    
                     let status = (response as? HTTPURLResponse)?.statusCode ?? 0
                     let data = jsonObject["message"] as? String
                     let errorArray = jsonObject["message"] as? Array<NSDictionary>
@@ -119,7 +117,7 @@ class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
                         self.present(alert, animated: true, completion: nil)
                     }else {
                         let checkAlert = UIAlertController(title: "Flea Market", message: error, preferredStyle: .alert)
-                    
+                        
                         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                         checkAlert.addAction(action)
                         self.present(checkAlert, animated: true, completion: nil)
@@ -152,21 +150,19 @@ class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
         }, deselect: { (asset) in
         }, cancel: { (assets) in
         }, finish: { (assets) in
-
+            
             for i in 0..<assets.count {
                 self.selectedAssets.append(assets[i])
                 self.selectedCount += 1
             }
             self.convertAssetToImages() // image 타입으로 변환하는 함수 실행
+            self.selectedAssets.removeAll() // Assets 배열을 비워준다.
         })
     }
     
     // asset 타입을 image 타입으로 변환
     func convertAssetToImages() {
         if selectedAssets.count != 0 {
-            //                self.selectedData.removeAll()
-            //                self.userSelectedImages.removeAll()
-            
             for i in 0..<selectedAssets.count {
                 
                 let imageManager = PHImageManager.default()
@@ -182,7 +178,7 @@ class ProductRegisterVC: UIViewController, UICollectionViewDelegate {
                 
                 let data = thumbnail.jpegData(compressionQuality: 1.0)
                 let newImage = UIImage(data: data!)
-                    
+                
                 self.userSelectedImages.append(newImage! as UIImage)
                 self.selectedData.append(data!)
             }
@@ -209,7 +205,8 @@ extension ProductRegisterVC: UITextViewDelegate {
     }
 }
 
-// MAKR: - 컬렉션 뷰 데이터소스 관리
+
+// MARK: - 컬렉션 뷰 데이터소스 관리
 extension ProductRegisterVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return selectedData.count
@@ -222,34 +219,19 @@ extension ProductRegisterVC: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SelectedImageCell
         
         cell.selectedImg.image = self.userSelectedImages[indexPath.row]
-        //        print("indexpath = \(indexPath.row)")
-        //        cell.cancelImgBtn.tag = indexPath.row
+        cell.index = indexPath
+        cell.delegate = self
         
         return cell
     }
-    
-    //선택된 이미지취소(x) 버튼 클릭시 이벤트
-    @objc func cancelImg(sender: UIButton){
-        let alert = UIAlertController(title: "FleaMarket", message: "이미지를 삭제하시겠습니까?", preferredStyle: .alert)
-        
-        let confirm = UIAlertAction(title: "확인", style: .default, handler: { (_) in
-            
-            print("tag = \(sender.tag)")
-            print("selectedData = \(self.selectedData)")
-            self.productImgView.deleteItems(at: [IndexPath.init(row: sender.tag, section: 0)])
-            self.selectedData.remove(at: sender.tag)
-            print(sender.tag, "번째 사진 삭제")
-            self.selectedCount -= 1
-            
-            self.productImgView.reloadData()            
-        })
-        
-        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        
-        alert.addAction(confirm)
-        alert.addAction(cancel)
-
-        self.present(alert, animated: false)
-    }
 }
 
+// MARK: - 등록할 이미지 셀에 대한 프로토콜
+extension ProductRegisterVC: DataCollectionProtocol {
+    func deleteData(index: Int) {
+        self.selectedCount = self.selectedCount - 1
+        self.selectedData.remove(at: index)
+        self.userSelectedImages.remove(at: index)
+        self.productImgView.reloadData()
+    }
+}
