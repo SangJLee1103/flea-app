@@ -174,7 +174,7 @@
                                 <rect key="frame" x="0.0" y="243" width="375" height="428"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ActivityCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivityCell" rowHeight="67" id="FKe-Zq-y8l" userLabel="ActivityCell" customClass="ActivityCell" customModule="FleaMarket" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ActivityCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MypageCell" rowHeight="67" id="FKe-Zq-y8l" userLabel="ActivityCell" customClass="MypageCell" customModule="FleaMarket" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="375" height="67"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FKe-Zq-y8l" id="VHT-cw-Bzb">
@@ -269,10 +269,10 @@
             </objects>
             <point key="canvasLocation" x="1831" y="2481"/>
         </scene>
-        <!--My Upload Item View Controller-->
+        <!--My Item View Controller-->
         <scene sceneID="oXD-Ry-akn">
             <objects>
-                <tableViewController restorationIdentifier="MyUploadItemViewController" storyboardIdentifier="MyUploadItemViewController" id="doc-io-zzT" customClass="MyUploadItemViewController" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController restorationIdentifier="MyUploadItemViewController" storyboardIdentifier="MyUploadItemViewController" id="doc-io-zzT" customClass="MyItemViewController" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="94u-vF-aaJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -398,10 +398,10 @@
             </objects>
             <point key="canvasLocation" x="1077" y="1636"/>
         </scene>
-        <!--Product RegisterVC-->
+        <!--Product Registration View Controller-->
         <scene sceneID="Z0R-q7-J3O">
             <objects>
-                <viewController restorationIdentifier="productRegister" storyboardIdentifier="productRegister" id="aK4-Zx-LLh" customClass="ProductRegisterVC" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="productRegister" storyboardIdentifier="productRegister" id="aK4-Zx-LLh" customClass="ProductRegistrationViewController" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2ab-91-bE4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -756,10 +756,10 @@
             </objects>
             <point key="canvasLocation" x="-1347.8260869565217" y="2642.934782608696"/>
         </scene>
-        <!--Board ElementVC-->
+        <!--Product Post View Controller-->
         <scene sceneID="I29-F0-FRp">
             <objects>
-                <viewController restorationIdentifier="boardElement" storyboardIdentifier="boardElement" id="gOY-6H-Hcf" customClass="BoardElementVC" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="boardElement" storyboardIdentifier="boardElement" id="gOY-6H-Hcf" customClass="ProductPostViewController" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3Pl-tG-IW6">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="2269"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1186,10 +1186,10 @@
             </objects>
             <point key="canvasLocation" x="-967" y="93"/>
         </scene>
-        <!--My Like Item View Controller-->
+        <!--My Like View Controller-->
         <scene sceneID="uAN-sO-8tS">
             <objects>
-                <tableViewController restorationIdentifier="MyLikeItemViewController" storyboardIdentifier="MyLikeItemViewController" id="BR4-vX-feK" customClass="MyLikeItemViewController" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController restorationIdentifier="MyLikeItemViewController" storyboardIdentifier="MyLikeItemViewController" id="BR4-vX-feK" customClass="MyLikeViewController" customModule="FleaMarket" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="jkI-BJ-gMk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

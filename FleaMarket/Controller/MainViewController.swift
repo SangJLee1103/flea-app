@@ -22,8 +22,8 @@ class MainViewController: UIViewController {
     // lazy 키워드 사용이유
     // 1.미리 생성하지 않고 변수가 참조되는 시점에 맞추어 초기화되므로 메모리 낭비를 줄여줌
     // 2. lazy 키워드를 붙이지 않은 프로퍼티는 다른 프로퍼티를 참조할 수 없기 때문
-    lazy var list: [Board] = {
-        var datalist = [Board]()
+    lazy var list: [BoardModel] = {
+        var datalist = [BoardModel]()
         return datalist
     }()
     
@@ -68,7 +68,7 @@ class MainViewController: UIViewController {
                     
                     for row in data{
                         let r = row as! NSDictionary
-                        let boardVO = Board()
+                        let boardVO = BoardModel()
                         
                         boardVO.id = r["id"] as? Int
                         boardVO.date = r["start"] as? String
@@ -163,7 +163,7 @@ extension MainViewController: UICollectionViewDataSource {
         let row = self.list[indexPath.row]
         let id = row.id
         //게시글 아이디 전달 및 게시글페이지로 이동
-        guard let boardElement = self.storyboard?.instantiateViewController(withIdentifier: "boardElement") as? BoardElementVC else { return }
+        guard let boardElement = self.storyboard?.instantiateViewController(withIdentifier: "boardElement") as? ProductPostViewController else { return }
         boardElement.boardId = id
         self.navigationController?.pushViewController(boardElement, animated: true)
     }
