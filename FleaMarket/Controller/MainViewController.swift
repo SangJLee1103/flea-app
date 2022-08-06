@@ -13,9 +13,6 @@ class MainViewController: UIViewController {
     @IBOutlet var boardCollection: UICollectionView!
     
     let token = Keychain.read(key: "accessToken")
-    
-    let school = ["school1.png", "school2.png"]
-    let church = ["cross1.png", "cross2.png"]
     let fleamarket = ["flea1.png", "flea2.png"]
     
 
@@ -36,7 +33,6 @@ class MainViewController: UIViewController {
                 self?.boardCollection.reloadData()
             }
         }
-       
         self.initRefresh()
     }
     

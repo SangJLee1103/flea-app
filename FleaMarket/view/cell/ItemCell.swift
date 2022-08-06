@@ -8,13 +8,10 @@
 import Foundation
 import UIKit
 
-class MyUploadItemCell: UITableViewCell {
-    
-    
+class ItemCell: UITableViewCell {
     @IBOutlet var itemImg: UIImageView!
     @IBOutlet var itemName: UILabel!
     @IBOutlet var createdAt: UILabel!
     @IBOutlet var price: UILabel!
     @IBOutlet var likeCount: UILabel!
-    
 }

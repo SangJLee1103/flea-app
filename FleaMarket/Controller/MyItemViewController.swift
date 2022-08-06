@@ -9,13 +9,13 @@ import Foundation
 import UIKit
 
 class MyItemViewController: UITableViewController {
- 
+    
     let token = Keychain.read(key: "accessToken")
     var item: NSArray = []
     
     override func viewDidLoad() {
-        print(item)
-        self.databinding()
+        self.navigationItem.title = "판매목록"
+        self.dataParsing()
     }
     
     lazy var productList: [ProductModel] = {
@@ -23,7 +23,7 @@ class MyItemViewController: UITableViewController {
         return datalist
     }()
     
-    func databinding(){
+    func dataParsing(){
         for row in item{
             let r = row as! NSDictionary
             
@@ -64,12 +64,12 @@ class MyItemViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return productList.count
     }
-
+    
     // MARK: -  각 행이 화면에 표현해야 할 내용을 구성하는 메소드
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let row = self.productList[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MyUploadItemCell") as! MyUploadItemCell
+        let row: ProductModel = self.productList[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell") as! ItemCell
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
@@ -90,16 +90,13 @@ class MyItemViewController: UITableViewController {
             
             let row = self.productList[indexPath.row]
             
-            productList.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            
             guard let url = URL(string: "http://localhost:3000/product/\(row.id!)") else { return }
             var request = URLRequest(url: url)
             request.httpMethod = "DELETE"
             //HTTP 메시지 헤더
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
-                
+            
             //URLSession 객체를 통해 전송, 응답값 처리
             
             //URLSession 객체를 통해 전송, 응답값 처리
@@ -108,33 +105,37 @@ class MyItemViewController: UITableViewController {
                     NSLog("An error has occured: \(e.localizedDescription)")
                     return
                 }
+                
+                do {
+                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+                    guard let jsonObject = object else { return }
+                    //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
+                    // JSON 결과값을 추출
+                    let data = jsonObject["message"] as! String
                     // 서버로부터 응답된 스트링 표시
-                DispatchQueue.main.async {
-                    do {
-                        let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                        guard let jsonObject = object else { return }
-                        //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
-                        // JSON 결과값을 추출
-                        let data = jsonObject["message"] as! String
-                        
+                    DispatchQueue.main.async {
                         let alert = UIAlertController(title: "Flea Market", message: data, preferredStyle: .alert)
                         let action = UIAlertAction(title: "확인", style: .default, handler: nil)
                         alert.addAction(action)
                         self.present(alert, animated: true, completion: nil)
-                        
-                     
-                    } catch let e as NSError {
-                        print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                     }
+                }catch let e as NSError {
+                    print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                 }
             }
             task.resume()
+            
+            DispatchQueue.main.async {
+                self.productList.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+            
         } else if editingStyle == .insert {
-        
+            
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        
     }
 }

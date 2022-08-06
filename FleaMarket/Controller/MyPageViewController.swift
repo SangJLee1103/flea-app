@@ -11,7 +11,7 @@ import Foundation
 
 class MyPageViewController: UIViewController {
     
-    var activityList = ["나의 게시글", "나의 상품 게시물", "나의 관심 목록"]
+    var activityList = ["게시글", "판매목록", "관심목록"]
     var imageList = ["square.and.pencil", "cart.fill", "suit.heart.fill"]
     let token = Keychain.read(key: "accessToken")
     
@@ -28,14 +28,16 @@ class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.callUserInfoAPI()
         activityView.dataSource = self
         activityView.delegate = self
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        self.callUserInfoAPI()
+    }
     
     // 회원 정보 가져옴(회원 개인정보, 게시글, 상품)
-    func callUserInfoAPI(){
+    func callUserInfoAPI() {
         guard let url =  URL(string: "http://localhost:3000/member/info") else { return }
             //URLRequest 객체를 정의
         var request = URLRequest(url: url)
@@ -66,10 +68,9 @@ class MyPageViewController: UIViewController {
                     self.userInfoVO.nickname = data[0]["nickname"] as? String
                     self.userInfoVO.boards = data[0]["Boards"] as? NSArray
                     self.userInfoVO.products = data[0]["Products"] as? NSArray
-                    self.userInfoVO.likes = data[0]["Likes"] as? NSArray
+                    self.userInfoVO.likes = data[0]["Likes"] as? Array<NSDictionary>
                     
                     self.list.append(self.userInfoVO)
-                    
                     self.nickname.text = "닉네임: \(self.userInfoVO.nickname!)"
                     self.phone.text = "휴대폰 번호: \(self.userInfoVO.phoneNumber!)"
                     
@@ -99,15 +100,14 @@ extension MyPageViewController: UITableViewDataSource {
 
 // 액션 관련
 extension MyPageViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
         switch indexPath.row{
         case 0:
             guard let myWriteVC = self.storyboard?.instantiateViewController(withIdentifier: "MyWriteViewController") as? MyWriteViewController else { return }
+            myWriteVC.boards = self.userInfoVO.boards!
             self.navigationController?.pushViewController(myWriteVC, animated: true)
-            
         
         case 1:
             guard let myuploadItemVC = self.storyboard?.instantiateViewController(withIdentifier: "MyUploadItemViewController") as? MyItemViewController else { return }
@@ -116,7 +116,7 @@ extension MyPageViewController: UITableViewDelegate {
             
         case 2:
             guard let myLikeVC = self.storyboard?.instantiateViewController(withIdentifier:    "MyLikeItemViewController") as? MyLikeViewController else { return }
-            myLikeVC.data = self.userInfoVO.likes!
+            myLikeVC.likeItem = self.userInfoVO.likes!
             self.navigationController?.pushViewController(myLikeVC, animated: true)
             
         default:
