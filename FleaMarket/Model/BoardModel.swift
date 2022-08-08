@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class BoardModel {
     var id: Int? // 게시글 아이디
@@ -15,4 +16,5 @@ class BoardModel {
     var place: String? // 플리마켓 장소
     var description: String? // 플리마켓 주제
     var imgPath: String? // 이미지 경로
+    var thumbnailImage: UIImage? // 이미지
 }

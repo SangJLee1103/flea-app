@@ -14,5 +14,5 @@ class UserInfoModel {
     var phoneNumber: String?
     var boards: NSArray? // 자신이 작성한 플리마켓 리스트
     var products: NSArray? // 자신이 올린 상품 리스트
-    var likes: NSArray? // 자신이 좋아효 한 상품 리스트
+    var likes: Array<NSDictionary>? // 자신이 좋아효 한 상품 리스트
 }
