@@ -8,7 +8,11 @@
 import Foundation
 import UIKit
 
+<<<<<<< HEAD:FleaMarket/Controller/MyProductViewController.swift
 class MyProductViewController: UITableViewController {
+=======
+class MyItemViewController: UITableViewController {
+>>>>>>> f8372e1e3a5005fc1fc41931f1b1c9aa904dad0f:FleaMarket/Controller/MyItemViewController.swift
     
     let token = Keychain.read(key: "accessToken")
     var item: NSArray = []

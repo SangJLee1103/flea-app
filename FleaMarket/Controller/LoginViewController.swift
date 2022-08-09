@@ -33,6 +33,12 @@ class LoginViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
     }
     
+    // MARK: - 로그인 버튼 액션 함수
+    @IBAction func onLoginBtn(_ sender: UIButton) {
+        callLoginAPI()
+    }
+    
+    // MARK: - 로그인 API 호출 함수
     func callLoginAPI(){
         do{
             
@@ -94,12 +100,6 @@ class LoginViewController: UIViewController {
             }
             task.resume()
         }
-    }
-    
-    
-    //로그인 액션 함수
-    @IBAction func onLoginBtn(_ sender: UIButton) {
-        callLoginAPI()
     }
 }
 

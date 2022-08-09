@@ -31,7 +31,6 @@ class WriteViewController: UIViewController {
         super.viewDidLoad()
         
         thumbnail.layer.cornerRadius = 15
-        
         startField.contentHorizontalAlignment = .center
         
         enrollAlertEvent()
@@ -44,7 +43,7 @@ class WriteViewController: UIViewController {
         descriptionField.textColor = #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1)
     }
     
-    // 카메라 혹은 사진 앨범 라이브러리 선택 Alert
+    // MARK: -카메라 혹은 사진 앨범 라이브러리 선택 Alert
     func enrollAlertEvent() {
         let photoLibraryAlertAction = UIAlertAction(title: "사진 앨범", style: .default) {
             (action) in
@@ -66,7 +65,7 @@ class WriteViewController: UIViewController {
         prepareForPopoverPresentation(alertControllerPopoverPresentationController)
     }
     
-    // 날짜 String으로 포멧
+    // MARK: -날짜 String으로 포멧
     @IBAction func selectDate(_ sender: UIDatePicker) {
         let datePickerView = sender
         
@@ -76,7 +75,7 @@ class WriteViewController: UIViewController {
         startTime = formatter.string(from: datePickerView.date)
     }
     
-    // 나가기 버튼 이벤트
+    // MARK: -나가기 버튼 이벤트
     @IBAction func onExitBtn(_ sender: Any) {
         let alert = UIAlertController(title: "FleaMarket", message: "작성을 취소하시겠습니까?", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "취소", style: .cancel)
@@ -87,7 +86,7 @@ class WriteViewController: UIViewController {
         self.present(alert, animated: false)
     }
     
-    // 작성 버튼 이벤트
+    // MARK: -작성 버튼 이벤트
     @IBAction func onWriteBtn(_ sender: Any) {
         guard let url = URL(string: "http://localhost:3000/board/write") else { return }
         

@@ -110,7 +110,7 @@ extension MyPageViewController: UITableViewDelegate {
             self.navigationController?.pushViewController(myWriteVC, animated: true)
         
         case 1:
-            guard let myuploadItemVC = self.storyboard?.instantiateViewController(withIdentifier: "MyUploadItemViewController") as? MyItemViewController else { return }
+            guard let myuploadItemVC = self.storyboard?.instantiateViewController(withIdentifier: "MyProductViewController") as? MyProductViewController else { return }
             myuploadItemVC.item = self.userInfoVO.products!
             self.navigationController?.pushViewController(myuploadItemVC, animated: true)
             

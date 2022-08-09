@@ -11,7 +11,6 @@ import BSImagePicker
 
 class ProductRegistrationViewController: UIViewController, UICollectionViewDelegate {
     
-    
     @IBOutlet var productImgView: UICollectionView!
     @IBOutlet var productName: UITextField!
     @IBOutlet var sellingPrice: UITextField!

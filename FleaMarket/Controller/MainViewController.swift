@@ -36,6 +36,14 @@ class MainViewController: UIViewController {
         self.initRefresh()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        self.getBoardAll {
+            DispatchQueue.main.async { [weak self] in
+                self?.boardCollection.reloadData()
+            }
+        }
+    }
+    
     func getBoardAll(callback: @escaping () -> Void) {
         list = [] //데이터를 한번 비워줌
         guard let url =  URL(string: "http://localhost:3000/board/read-all") else { return }
@@ -106,7 +114,6 @@ class MainViewController: UIViewController {
         }
     }
     
-    
     func updateAPI(){
         getBoardAll {
             DispatchQueue.main.async { [weak self] in
@@ -115,10 +122,8 @@ class MainViewController: UIViewController {
         }
         print("writeVC에서 호출됨")
     }
-    
 }
 
-    
 // MARK: 데이터 소스 설정: 데이터 관련된 것들
 extension MainViewController: UICollectionViewDataSource {
 
