@@ -19,7 +19,7 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
     var productId = 0
     let token = Keychain.read(key: "accessToken")
     var images = [UIImage]()
-    var imageViews = [UIImageView]()
+    //    var imageViews = [UIImageView]()
     var imageCount = 0
     
     override func viewDidLoad() {
@@ -32,7 +32,7 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
     
     func productDetailAPI() {
         guard let url =  URL(string: "http://localhost:3000/product/\(productId)") else { return }
-    
+        
         //URLRequest 객체를 정의
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -85,12 +85,12 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
     }
     
     func setPageControlSelectedPage(currentPage:Int) {
-            pageControl.currentPage = currentPage
+        pageControl.currentPage = currentPage
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-          let value = itemScrollView.contentOffset.x/itemScrollView.frame.size.width
-          setPageControlSelectedPage(currentPage: Int(round(value)))
+        
+        let value = itemScrollView.contentOffset.x/itemScrollView.frame.size.width
+        setPageControlSelectedPage(currentPage: Int(round(value)))
     }
-    
 }

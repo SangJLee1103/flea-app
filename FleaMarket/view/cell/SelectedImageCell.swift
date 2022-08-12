@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 
+// MARK: - 이미지 삭제에 대한 델리게이트
 protocol DataCollectionProtocol {
     func deleteData(index: Int)
 }

@@ -10,7 +10,7 @@ import UIKit
 import Photos
 import BSImagePicker
 
-class ProductModifyViewController: UIViewController, UICollectionViewDelegate {
+class ProductModifyViewController: UIViewController {
     
     @IBOutlet var productImgView: UICollectionView!
     @IBOutlet var productName: UITextField!
@@ -22,6 +22,8 @@ class ProductModifyViewController: UIViewController, UICollectionViewDelegate {
     
     let placeholder = "상품에 대해서 설명을 적어주세요(상품 사용 기간, 상품의 흠집 여부 및 특징 등)"
     var boardId: Int?
+    
+    var productInfo = ProductModel()
     
     var selectedData: [Data] = [Data]()
     var selectedAssets = [PHAsset]()
@@ -44,6 +46,44 @@ class ProductModifyViewController: UIViewController, UICollectionViewDelegate {
         productImgView.dataSource = self
         productImgView.delegate = self
         
+        configureProductUI()
+    }
+    
+    
+    // MARK: - 현재 상품 UI 구성
+    func configureProductUI() {
+        
+        self.productName.text = self.productInfo.productName
+        self.sellingPrice.text = "\(String(describing: self.productInfo.sellingPrice!))"
+        self.costPrice.text = "\(String(describing: self.productInfo.costPrice!))"
+        self.descriptionField.text = self.productInfo.description
+    }
+    
+    
+    // asset 타입을 image 타입으로 변환
+    func convertAssetToImages() {
+        if selectedAssets.count != 0 {
+            for i in 0..<selectedAssets.count {
+                
+                let imageManager = PHImageManager.default()
+                let option = PHImageRequestOptions()
+                var thumbnail = UIImage()
+                option.isSynchronous = true
+                imageManager.requestImage(for: selectedAssets[i],
+                                             targetSize: CGSize(width: 400, height: 400),
+                                             contentMode: .aspectFill,
+                                             options: option) { (result, info) in
+                    thumbnail = result!
+                }
+                
+                let data = thumbnail.jpegData(compressionQuality: 1.0)
+                let newImage = UIImage(data: data!)
+                
+                self.userSelectedImages.append(newImage! as UIImage)
+                self.selectedData.append(data!)
+            }
+            self.productImgView.reloadData()
+        }
     }
     
     // 완료 버튼 클릭시 이벤트(상품 등록)
@@ -159,39 +199,12 @@ class ProductModifyViewController: UIViewController, UICollectionViewDelegate {
             self.selectedAssets.removeAll() // Assets 배열을 비워준다.
         })
     }
-    
-    // asset 타입을 image 타입으로 변환
-    func convertAssetToImages() {
-        if selectedAssets.count != 0 {
-            for i in 0..<selectedAssets.count {
-                
-                let imageManager = PHImageManager.default()
-                let option = PHImageRequestOptions()
-                var thumbnail = UIImage()
-                option.isSynchronous = true
-                imageManager.requestImage(for: selectedAssets[i],
-                                             targetSize: CGSize(width: 400, height: 400),
-                                             contentMode: .aspectFill,
-                                             options: option) { (result, info) in
-                    thumbnail = result!
-                }
-                
-                let data = thumbnail.jpegData(compressionQuality: 1.0)
-                let newImage = UIImage(data: data!)
-                
-                self.userSelectedImages.append(newImage! as UIImage)
-                self.selectedData.append(data!)
-            }
-            self.productImgView.reloadData()
-        }
-    }
 }
 
 // MARK: - 텍스트 뷰 관리
 extension ProductModifyViewController: UITextViewDelegate {
-    
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if descriptionField.textColor == .lightGray {
+        if descriptionField.textColor == #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1) {
             descriptionField.text = ""
             descriptionField.textColor = .black
         }
@@ -200,14 +213,14 @@ extension ProductModifyViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if descriptionField.text == "" {
             descriptionField.text = placeholder
-            descriptionField.textColor = .lightGray
+            descriptionField.textColor = #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1)
         }
     }
 }
 
 
 // MARK: - 컬렉션 뷰 데이터소스 관리
-extension ProductModifyViewController: UICollectionViewDataSource {
+extension ProductModifyViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return selectedData.count
     }

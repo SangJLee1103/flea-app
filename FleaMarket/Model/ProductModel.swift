@@ -9,7 +9,7 @@ import UIKit
 
 class ProductModel {
     var id: Int?
-    var thumbnail: String?
+    var imgPath: String? // 이미지 경로
     var productName: String?
     var sellerName: String?
     var sellingPrice: Int?
@@ -17,5 +17,5 @@ class ProductModel {
     var costPrice: Int?
     var description: String?
     var like: NSArray?
-    var thumbnailImage: UIImage?
+    var thumbnailImage: UIImage? // 이미지
 }

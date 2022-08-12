@@ -156,7 +156,7 @@ class ProductPostViewController: UIViewController {
                         productVO.sellingPrice = r["selling_price"] as? Int
                         productVO.costPrice = r["cost_price"] as? Int
                         productVO.description = r["description"] as? String
-                        productVO.thumbnail = r["img"] as? String
+                        productVO.imgPath = r["img"] as? String
                         
                         let seller = r["User"] as! NSDictionary
                         productVO.sellerName = seller["nickname"] as? String
@@ -248,7 +248,7 @@ extension ProductPostViewController: UICollectionViewDataSource {
             let row = self.productList[indexPath.row]
             
             cell.productId = row.id! // 상품 ID
-            let imgParse = row.thumbnail!.split(separator:",")
+            let imgParse = row.imgPath!.split(separator:",")
             
             cell.img?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(imgParse[0])")!))
             cell.sellerName?.text = row.sellerName

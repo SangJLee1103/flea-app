@@ -97,6 +97,7 @@ class MainViewController: UIViewController {
         let refresh = UIRefreshControl()
         refresh.addTarget(self, action: #selector(updateUI(refresh:)), for: .valueChanged)
         
+        // iOS 10.0 버전 이후부터
         if #available(iOS 10.0, *){
             boardCollection.refreshControl = refresh
         }else {

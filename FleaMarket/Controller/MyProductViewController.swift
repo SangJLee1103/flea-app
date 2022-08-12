@@ -8,11 +8,7 @@
 import Foundation
 import UIKit
 
-<<<<<<< HEAD:FleaMarket/Controller/MyProductViewController.swift
 class MyProductViewController: UITableViewController {
-=======
-class MyItemViewController: UITableViewController {
->>>>>>> f8372e1e3a5005fc1fc41931f1b1c9aa904dad0f:FleaMarket/Controller/MyItemViewController.swift
     
     let token = Keychain.read(key: "accessToken")
     var item: NSArray = []
@@ -42,7 +38,7 @@ class MyItemViewController: UITableViewController {
             myItem.sellerName = r["user_id"] as? String
             myItem.createdAt = r["created_at"] as? String
             myItem.like = r["Likes"] as? NSArray
-            myItem.thumbnail = r["img"] as? String
+            myItem.imgPath = r["img"] as? String
             
             self.productList.append(myItem)
         }
@@ -55,13 +51,59 @@ class MyItemViewController: UITableViewController {
         if let savedImage = item.thumbnailImage {
             return savedImage
         } else {
-            let imgParse = item.thumbnail!.split(separator:",")
+            let imgParse = item.imgPath!.split(separator:",")
             let url: URL! = URL(string: "http://localhost:3000/\(imgParse[0])")
             let imageData = try! Data(contentsOf: url)
             item.thumbnailImage = UIImage(data: imageData)
             
             return item.thumbnailImage!
         }
+    }
+    
+    // 상품 수정 페이지로 이동하는 함수
+    func moveModifyViewController(_ row: ProductModel) {
+        guard let productModifyVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductModifyViewController") as? ProductModifyViewController else { return }
+        productModifyVC.productInfo = row
+        self.navigationController?.pushViewController(productModifyVC, animated: true)
+    }
+    
+    
+    func callDeleteAPI(_ row: ProductModel) {
+        guard let url = URL(string: "http://localhost:3000/product/\(row.id!)") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        //HTTP 메시지 헤더
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+        
+        //URLSession 객체를 통해 전송, 응답값 처리
+        
+        //URLSession 객체를 통해 전송, 응답값 처리
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let e = error{
+                NSLog("An error has occured: \(e.localizedDescription)")
+                return
+            }
+            
+            do {
+                let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+                guard let jsonObject = object else { return }
+                //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
+                // JSON 결과값을 추출
+                let data = jsonObject["message"] as! String
+                // 서버로부터 응답된 스트링 표시
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "Flea Market", message: data, preferredStyle: .alert)
+                    let action = UIAlertAction(title: "확인", style: .default, handler: nil)
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }catch let e as NSError {
+                print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+            }
+        }
+        task.resume()
+        
     }
     
     // MARK: - 테이블 뷰가 생성해야 할 행의 개수를 반환하는 메소드
@@ -75,64 +117,50 @@ class MyItemViewController: UITableViewController {
         let row: ProductModel = self.productList[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell") as! ItemCell
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-        row.createdAt = formatter.string(from: Date())
         cell.itemImg.layer.cornerRadius = 5
         cell.itemImg?.image = self.getThumbnailImage(indexPath.row)
         cell.itemName?.text = row.productName
         cell.price?.text = "\(row.sellingPrice!)원"
-        cell.createdAt?.text = "\(String(describing: row.createdAt!))"
+        cell.createdAt?.text = "\(row.createdAt!)"
         cell.likeCount?.text = "\(String(describing: (row.like?.count)!))"
         
         return cell
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let row = self.productList[indexPath.row]
+        
+        let modify = UIContextualAction(style: .normal, title: "Modify") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
+            self.moveModifyViewController(row)
+            success(true)
+        }
+        modify.backgroundColor = .systemGray
+        
+        
+        let delete = UIContextualAction(style: .normal, title: "Delete") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
+
+            self.callDeleteAPI(row)
+            
+            DispatchQueue.main.async {
+                self.productList.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+            success(true)
+        }
+        delete.backgroundColor = .systemRed
+        
+        //actions배열 인덱스 0이 오른쪽에 붙어서 나옴
+        return UISwipeActionsConfiguration(actions:[delete, modify])
     }
     
     // MARK: - 행을 삭제하는 메소드
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
-            let row = self.productList[indexPath.row]
             
-            guard let url = URL(string: "http://localhost:3000/product/\(row.id!)") else { return }
-            var request = URLRequest(url: url)
-            request.httpMethod = "DELETE"
-            //HTTP 메시지 헤더
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
             
-            //URLSession 객체를 통해 전송, 응답값 처리
-            
-            //URLSession 객체를 통해 전송, 응답값 처리
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                if let e = error{
-                    NSLog("An error has occured: \(e.localizedDescription)")
-                    return
-                }
-                
-                do {
-                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                    guard let jsonObject = object else { return }
-                    //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
-                    // JSON 결과값을 추출
-                    let data = jsonObject["message"] as! String
-                    // 서버로부터 응답된 스트링 표시
-                    DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "Flea Market", message: data, preferredStyle: .alert)
-                        let action = UIAlertAction(title: "확인", style: .default, handler: nil)
-                        alert.addAction(action)
-                        self.present(alert, animated: true, completion: nil)
-                    }
-                }catch let e as NSError {
-                    print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
-                }
-            }
-            task.resume()
-            
-            DispatchQueue.main.async {
-                self.productList.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
             
         } else if editingStyle == .insert {
             

@@ -70,7 +70,8 @@ class WriteViewController: UIViewController {
         let datePickerView = sender
         
         let formatter = DateFormatter() // DateFormatter 클래스 상수 선언
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss EEE" // formatter의 dateFormat 속성을 설정
+        formatter.dateFormat = "yyyy-MM-dd a hh시:mm분 EEEEEE" // formatter의 dateFormat 속성을 설정
+        formatter.locale = Locale(identifier:"ko_KR")
         
         startTime = formatter.string(from: datePickerView.date)
     }
@@ -94,6 +95,7 @@ class WriteViewController: UIViewController {
         let place = self.placeField?.text
         let start = startTime
         let description = self.descriptionField?.text
+        
         
         //Json 객체로 전송할 딕셔너리
         let parameters = [

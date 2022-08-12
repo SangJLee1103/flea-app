@@ -37,7 +37,7 @@ class MyLikeViewController: UITableViewController {
             myLikeItem.sellerName = item["user_id"] as? String
             myLikeItem.createdAt = item["created_at"] as? String
             myLikeItem.like = item["Likes"] as? NSArray
-            myLikeItem.thumbnail = item["img"] as? String
+            myLikeItem.imgPath = item["img"] as? String
             
             self.productList.append(myLikeItem)
             
@@ -51,7 +51,7 @@ class MyLikeViewController: UITableViewController {
         if let savedImage = item.thumbnailImage {
             return savedImage
         } else {
-            let imgParse = item.thumbnail!.split(separator:",")
+            let imgParse = item.imgPath!.split(separator:",")
             let url: URL! = URL(string: "http://localhost:3000/\(imgParse[0])")
             let imageData = try! Data(contentsOf: url)
             item.thumbnailImage = UIImage(data: imageData)
@@ -59,6 +59,7 @@ class MyLikeViewController: UITableViewController {
             return item.thumbnailImage!
         }
     }
+    
     
     // MARK: - 테이블 뷰가 생성해야 할 행의 개수를 반환하는 메소드
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,9 +72,6 @@ class MyLikeViewController: UITableViewController {
         let row: ProductModel = self.productList[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell") as! ItemCell
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-        row.createdAt = formatter.string(from: Date())
         cell.itemImg.layer.cornerRadius = 5
         cell.itemImg?.image = self.getThumbnailImage(indexPath.row)
         cell.itemName?.text = row.productName

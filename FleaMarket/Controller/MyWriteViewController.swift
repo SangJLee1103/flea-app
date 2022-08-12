@@ -59,7 +59,7 @@ class MyWriteViewController: UITableViewController {
     }
     
     // MARK: - 게시글 수정 페이지 이동 함수
-    func moveUpdateViewController(_ row: BoardModel) {
+    func moveModifyViewController(_ row: BoardModel) {
         guard let boardModifyVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardModifyViewController") as? BoardModifyViewController else { return }
         boardModifyVC.boardInfo = row
         self.navigationController?.pushViewController(boardModifyVC, animated: true)
@@ -110,7 +110,7 @@ class MyWriteViewController: UITableViewController {
     // MARK: - 테이블 뷰가 생성해야 할 행의 개수를 반환하는 메소드
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return boardList.count
-    }
+}
     
     // MARK: -  각 행이 화면에 표현해야 할 내용을 구성하는 메소드
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -118,9 +118,6 @@ class MyWriteViewController: UITableViewController {
         let row: BoardModel = self.boardList[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "boardCell") as! BoardCell
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm EEEEEE"
-        row.date = formatter.string(from: Date())
         cell.img.layer.cornerRadius = 5
         cell.img?.image = self.getThumbnailImage(indexPath.row)
         cell.topic?.text = row.topic
@@ -136,7 +133,7 @@ class MyWriteViewController: UITableViewController {
         let row = self.boardList[indexPath.row]
         
         let modify = UIContextualAction(style: .normal, title: "Modify") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
-            self.moveUpdateViewController(row)
+            self.moveModifyViewController(row)
             success(true)
         }
         modify.backgroundColor = .systemGray

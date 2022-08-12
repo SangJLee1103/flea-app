@@ -17,11 +17,13 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
     @IBOutlet var costPrice: UITextField!
     @IBOutlet var descriptionField: UITextView!
     
+    
     let token = Keychain.read(key: "accessToken")
     
     let placeholder = "상품에 대해서 설명을 적어주세요(상품 사용 기간, 상품의 흠집 여부 및 특징 등)"
     var boardId: Int?
     
+    // 상품 업로드 날짜
     var selectedData: [Data] = [Data]()
     var selectedAssets = [PHAsset]()
     var userSelectedImages = [UIImage]()
@@ -56,13 +58,16 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         let cost_price = self.costPrice?.text
         let selling_price = self.sellingPrice?.text
         let description = self.descriptionField?.text
-        
+        let createdAt = dateToString(Date())
+
+        print("createdAt: \(createdAt)")
         
         let parameters = [
             "name" : name!,
             "selling_price" : selling_price!,
             "cost_price" : cost_price!,
-            "description" : description!
+            "description" : description!,
+            "created_at" : createdAt
         ] as [String : Any]
         
         // boundary 설정
@@ -128,6 +133,46 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         }.resume()
     }
     
+    
+    func dateToString(_ createdAt: Date) -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm" // formatter의 dateFormat 속성을 설정
+        dateFormatter.locale = Locale(identifier:"ko_KR")
+        
+        print("날짜 포멧 함수\(dateFormatter.string(from: createdAt))")
+        
+        let formatDate = dateFormatter.string(from: createdAt)
+        return formatDate
+    }
+    
+    
+    // asset 타입을 image 타입으로 변환
+    func convertAssetToImages() {
+        if selectedAssets.count != 0 {
+            for i in 0..<selectedAssets.count {
+                
+                let imageManager = PHImageManager.default()
+                let option = PHImageRequestOptions()
+                var thumbnail = UIImage()
+                option.isSynchronous = true
+                imageManager.requestImage(for: selectedAssets[i],
+                                             targetSize: CGSize(width: 400, height: 400),
+                                             contentMode: .aspectFill,
+                                             options: option) { (result, info) in
+                    thumbnail = result!
+                }
+                
+                let data = thumbnail.jpegData(compressionQuality: 1.0)
+                let newImage = UIImage(data: data!)
+                
+                self.userSelectedImages.append(newImage! as UIImage)
+                self.selectedData.append(data!)
+            }
+            self.productImgView.reloadData()
+        }
+    }
+    
     // 이미지 선택
     @IBAction func openGalary(_ sender: UIButton) {
         // 이미지 피커 컨트롤러 인스턴스 생성
@@ -157,32 +202,6 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
             self.convertAssetToImages() // image 타입으로 변환하는 함수 실행
             self.selectedAssets.removeAll() // Assets 배열을 비워준다.
         })
-    }
-    
-    // asset 타입을 image 타입으로 변환
-    func convertAssetToImages() {
-        if selectedAssets.count != 0 {
-            for i in 0..<selectedAssets.count {
-                
-                let imageManager = PHImageManager.default()
-                let option = PHImageRequestOptions()
-                var thumbnail = UIImage()
-                option.isSynchronous = true
-                imageManager.requestImage(for: selectedAssets[i],
-                                             targetSize: CGSize(width: 400, height: 400),
-                                             contentMode: .aspectFill,
-                                             options: option) { (result, info) in
-                    thumbnail = result!
-                }
-                
-                let data = thumbnail.jpegData(compressionQuality: 1.0)
-                let newImage = UIImage(data: data!)
-                
-                self.userSelectedImages.append(newImage! as UIImage)
-                self.selectedData.append(data!)
-            }
-            self.productImgView.reloadData()
-        }
     }
 }
 

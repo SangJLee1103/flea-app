@@ -44,7 +44,7 @@ class BoardModifyViewController: UIViewController {
         descriptionField.delegate = self
         
         // 초기 UI 함수 호출
-        configureUI()
+        configureBoardUI()
     }
     
     // MARK: -카메라 혹은 사진 앨범 라이브러리 선택 Alert
@@ -94,8 +94,8 @@ class BoardModifyViewController: UIViewController {
         }
     }
     
-    // MARK: - 현재 게시글에 대한 정보
-    func configureUI() {
+    // MARK: - 현재 게시글 UI 구성
+    func configureBoardUI() {
         let data = self.getThumbnailImage().jpegData(compressionQuality: 1.0)
             
         self.photo = data!
@@ -206,7 +206,7 @@ extension BoardModifyViewController: UITextViewDelegate {
         if descriptionField.text == "" {
             descriptionField.text = placeholder
             descriptionField.textColor = #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1)
-        }
+        } 
     }
 }
 
