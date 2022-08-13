@@ -21,7 +21,6 @@ class ProductModifyViewController: UIViewController {
     let token = Keychain.read(key: "accessToken")
     
     let placeholder = "상품에 대해서 설명을 적어주세요(상품 사용 기간, 상품의 흠집 여부 및 특징 등)"
-    var boardId: Int?
     
     var productInfo = ProductModel()
     
@@ -40,7 +39,7 @@ class ProductModifyViewController: UIViewController {
         
         descriptionField.delegate = self
         descriptionField.text = placeholder
-        descriptionField.textColor = .lightGray
+        descriptionField.textColor = .black
         
         productImgView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         productImgView.dataSource = self
@@ -50,9 +49,23 @@ class ProductModifyViewController: UIViewController {
     }
     
     
+    // MARK: - 선택 이미지 셀에 이미지를 넣어주는 함수
+    func imgIntoUserSelectedImg() {
+        let imgPath = self.productInfo.imgPath
+        let imgParse = imgPath!.split(separator:",")
+        
+        for i in 0..<imgParse.count {
+            let url: URL! = URL(string: "http://localhost:3000/\(imgParse[i])")
+            let imageData = try! Data(contentsOf: url)
+            self.userSelectedImages.append(UIImage(data: imageData)!)
+            self.selectedData.append(imageData)
+            self.selectedCount = imgParse.count
+        }
+    }
+    
     // MARK: - 현재 상품 UI 구성
     func configureProductUI() {
-        
+        self.imgIntoUserSelectedImg()
         self.productName.text = self.productInfo.productName
         self.sellingPrice.text = "\(String(describing: self.productInfo.sellingPrice!))"
         self.costPrice.text = "\(String(describing: self.productInfo.costPrice!))"
@@ -86,9 +99,22 @@ class ProductModifyViewController: UIViewController {
         }
     }
     
+    func dateToString(_ createdAt: Date) -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm" // formatter의 dateFormat 속성을 설정
+        dateFormatter.locale = Locale(identifier:"ko_KR")
+        
+        print("날짜 포멧 함수\(dateFormatter.string(from: createdAt))")
+        
+        let formatDate = dateFormatter.string(from: createdAt)
+        return formatDate
+    }
+    
     // 완료 버튼 클릭시 이벤트(상품 등록)
     @objc func productRegist(){
-        guard let url = URL(string: "http://localhost:3000/product/\(boardId!)/register") else {
+        guard let productId = self.productInfo.id else { return }
+        guard let url = URL(string: "http://localhost:3000/product/\(productId)") else {
             print("Error: cannot create URL")
             return
         }
@@ -97,20 +123,21 @@ class ProductModifyViewController: UIViewController {
         let cost_price = self.costPrice?.text
         let selling_price = self.sellingPrice?.text
         let description = self.descriptionField?.text
-        
+        let createdAt = dateToString(Date())
         
         let parameters = [
             "name" : name!,
             "selling_price" : selling_price!,
             "cost_price" : cost_price!,
-            "description" : description!
+            "description" : description!,
+            "created_at" : createdAt
         ] as [String : Any]
         
         // boundary 설정
         let boundary = "Boundary-\(UUID().uuidString)"
         
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = "PUT"
         request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         

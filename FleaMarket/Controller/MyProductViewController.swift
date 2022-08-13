@@ -23,6 +23,7 @@ class MyProductViewController: UITableViewController {
         return datalist
     }()
     
+    // 상품 데이터 파싱 함수
     func dataParsing(){
         for row in item{
             let r = row as! NSDictionary
@@ -34,7 +35,7 @@ class MyProductViewController: UITableViewController {
             myItem.sellingPrice = r["selling_price"] as? Int
             myItem.description = r["description"] as? String
             myItem.productName = r["name"] as? String
-            myItem.costPrice = r["cost_price"] as? Int
+            myItem.boardId = r["board_id"] as? Int
             myItem.sellerName = r["user_id"] as? String
             myItem.createdAt = r["created_at"] as? String
             myItem.like = r["Likes"] as? NSArray
@@ -68,6 +69,7 @@ class MyProductViewController: UITableViewController {
     }
     
     
+    // 상품 삭제 API 호출
     func callDeleteAPI(_ row: ProductModel) {
         guard let url = URL(string: "http://localhost:3000/product/\(row.id!)") else { return }
         var request = URLRequest(url: url)
@@ -128,6 +130,7 @@ class MyProductViewController: UITableViewController {
     }
     
     
+    // MARK: - 테이블 뷰 셀 스와이핑 이벤트
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let row = self.productList[indexPath.row]

@@ -58,9 +58,7 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate{
                     let imgParse = (data["img"] as? String)!.split(separator:",")
                     
                     for i in 0..<imgParse.count {
-                        
                         self.images.append(UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(imgParse[i])")!))!)
-                        
                         
                         let imageView = UIImageView()
                         let xPos = self.view.frame.width * CGFloat(i)

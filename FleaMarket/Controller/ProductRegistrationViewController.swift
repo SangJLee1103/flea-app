@@ -59,8 +59,6 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         let selling_price = self.sellingPrice?.text
         let description = self.descriptionField?.text
         let createdAt = dateToString(Date())
-
-        print("createdAt: \(createdAt)")
         
         let parameters = [
             "name" : name!,
