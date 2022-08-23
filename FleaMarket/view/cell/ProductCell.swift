@@ -36,7 +36,7 @@ class ProductCell: UICollectionViewCell {
             likeBtn.configuration?.image = UIImage(systemName: "heart.fill")
             likeBtn.tag = 1
             do{
-                guard let url =  URL(string: "http://localhost:3000/likes/\(productId)/count") else { return }
+                guard let url =  URL(string: "http://172.30.1.63:3000/likes/\(productId)/count") else { return }
 
                 //URLRequest 객체를 정의
                 var request = URLRequest(url: url)
@@ -60,7 +60,7 @@ class ProductCell: UICollectionViewCell {
             likeBtn.tag = 0
             
             do{
-                guard let url =  URL(string: "http://localhost:3000/likes/\(productId)/count") else { return }
+                guard let url =  URL(string: "http://172.30.1.63:3000/likes/\(productId)/count") else { return }
 
                 //URLRequest 객체를 정의
                 var request = URLRequest(url: url)

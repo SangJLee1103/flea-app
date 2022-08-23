@@ -55,7 +55,7 @@ class ProductModifyViewController: UIViewController {
         let imgParse = imgPath!.split(separator:",")
         
         for i in 0..<imgParse.count {
-            let url: URL! = URL(string: "http://localhost:3000/\(imgParse[i])")
+            let url: URL! = URL(string: "http://172.30.1.63:3000/\(imgParse[i])")
             let imageData = try! Data(contentsOf: url)
             self.userSelectedImages.append(UIImage(data: imageData)!)
             self.selectedData.append(imageData)
@@ -114,7 +114,7 @@ class ProductModifyViewController: UIViewController {
     // 완료 버튼 클릭시 이벤트(상품 등록)
     @objc func productRegist(){
         guard let productId = self.productInfo.id else { return }
-        guard let url = URL(string: "http://localhost:3000/product/\(productId)") else {
+        guard let url = URL(string: "http://172.30.1.63:3000/product/\(productId)") else {
             print("Error: cannot create URL")
             return
         }
@@ -243,8 +243,28 @@ extension ProductModifyViewController: UITextViewDelegate {
             descriptionField.textColor = #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1)
         }
     }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+      if (text == "\n") {
+        textView.resignFirstResponder()
+      } else {
+      }
+      return true
+    } 
 }
 
+extension ProductModifyViewController: UITextFieldDelegate {
+    
+    //화면 터치시 키보드 내림
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder() // TextField 비활성화
+        return true
+    }
+}
 
 // MARK: - 컬렉션 뷰 데이터소스 관리
 extension ProductModifyViewController: UICollectionViewDataSource, UICollectionViewDelegate {

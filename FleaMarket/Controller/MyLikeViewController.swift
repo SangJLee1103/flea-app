@@ -52,7 +52,7 @@ class MyLikeViewController: UITableViewController {
             return savedImage
         } else {
             let imgParse = item.imgPath!.split(separator:",")
-            let url: URL! = URL(string: "http://localhost:3000/\(imgParse[0])")
+            let url: URL! = URL(string: "http://172.30.1.63:3000/\(imgParse[0])")
             let imageData = try! Data(contentsOf: url)
             item.thumbnailImage = UIImage(data: imageData)
             

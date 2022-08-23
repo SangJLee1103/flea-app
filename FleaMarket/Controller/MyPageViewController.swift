@@ -15,6 +15,7 @@ class MyPageViewController: UIViewController {
     var imageList = ["square.and.pencil", "cart.fill", "suit.heart.fill"]
     let token = Keychain.read(key: "accessToken")
     
+    @IBOutlet var topView: UIView!
     @IBOutlet var activityView: UITableView!
     @IBOutlet var nickname: UILabel!
     @IBOutlet var phone: UILabel!
@@ -30,15 +31,25 @@ class MyPageViewController: UIViewController {
         super.viewDidLoad()
         activityView.dataSource = self
         activityView.delegate = self
+        
+        let gesture = UITapGestureRecognizer(target: self, action:  #selector(self.moveEditPersonalInfoVC))
+        self.topView.addGestureRecognizer(gesture)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.callUserInfoAPI()
     }
     
+    @objc func moveEditPersonalInfoVC(sender : UITapGestureRecognizer) {
+        // Do what you want
+        guard let editPersonalInfoVC = self.storyboard?.instantiateViewController(withIdentifier: "EditPersonalInfoViewController") as? EditPersonalInfoViewController else { return }
+        self.navigationController?.pushViewController(editPersonalInfoVC, animated: true)
+    }
+    
+    
     // 회원 정보 가져옴(회원 개인정보, 게시글, 상품)
     func callUserInfoAPI() {
-        guard let url =  URL(string: "http://localhost:3000/member/info") else { return }
+        guard let url =  URL(string: "http://172.30.1.63:3000/member/info") else { return }
             //URLRequest 객체를 정의
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -80,6 +91,23 @@ class MyPageViewController: UIViewController {
             }
         }
         task.resume()
+    }
+    
+    @IBAction func logout(_ sender: UIButton) {
+        let appDelegate = AppDelegate()
+        if Keychain.read(key: "accessToken") != nil {
+            let alert = UIAlertController(title: "FleaMarket", message: "정말 로그아웃 하시겠습니까?", preferredStyle: .alert)
+            let alertLogoutAction = UIAlertAction(title: "로그아웃", style: .default) {_ in
+                appDelegate.resetApp()
+            }
+            let alertCanceAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            alert.addAction(alertLogoutAction)
+            alert.addAction(alertCanceAction)
+            
+            self.present(alert, animated: false)
+        } else {
+            return
+        }
     }
 }
 

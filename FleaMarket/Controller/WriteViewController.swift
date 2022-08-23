@@ -30,6 +30,9 @@ class WriteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.titleField.delegate = self
+        self.placeField.delegate = self
+        
         thumbnail.layer.cornerRadius = 15
         startField.contentHorizontalAlignment = .center
         
@@ -37,7 +40,6 @@ class WriteViewController: UIViewController {
         
         imagePickerController.delegate = self
         addGestureRecognizer()
-        
         descriptionField.delegate = self
         descriptionField.text = placeholder
         descriptionField.textColor = #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1)
@@ -70,7 +72,7 @@ class WriteViewController: UIViewController {
         let datePickerView = sender
         
         let formatter = DateFormatter() // DateFormatter 클래스 상수 선언
-        formatter.dateFormat = "yyyy-MM-dd a hh시:mm분 EEEEEE" // formatter의 dateFormat 속성을 설정
+        formatter.dateFormat = "yyyy-MM-dd a hh:mm EEEEEE요일" // formatter의 dateFormat 속성을 설정
         formatter.locale = Locale(identifier:"ko_KR")
         
         startTime = formatter.string(from: datePickerView.date)
@@ -89,7 +91,7 @@ class WriteViewController: UIViewController {
     
     // MARK: -작성 버튼 이벤트
     @IBAction func onWriteBtn(_ sender: Any) {
-        guard let url = URL(string: "http://localhost:3000/board/write") else { return }
+        guard let url = URL(string: "http://172.30.1.63:3000/board/write") else { return }
         
         let topic = self.titleField?.text
         let place = self.placeField?.text
@@ -171,6 +173,20 @@ class WriteViewController: UIViewController {
     }
 }
 
+extension WriteViewController: UITextFieldDelegate {
+    
+    //화면 터치시 키보드 내림
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder() // TextField 비활성화
+        return true
+    }
+}
+
+
 // MARK: - 텍스트 뷰 델리게이트
 extension WriteViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -186,6 +202,14 @@ extension WriteViewController: UITextViewDelegate {
             descriptionField.textColor = #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1)
         }
     }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+      if (text == "\n") {
+        textView.resignFirstResponder()
+      } else {
+      }
+      return true
+    } 
 }
 
 

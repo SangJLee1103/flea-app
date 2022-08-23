@@ -50,7 +50,7 @@ class MyWriteViewController: UITableViewController {
         if let savedImage = board.thumbnailImage {
             return savedImage
         } else {
-            let url: URL! = URL(string: "http://localhost:3000/\(board.imgPath!)")
+            let url: URL! = URL(string: "http://172.30.1.63:3000/\(board.imgPath!)")
             let imageData = try! Data(contentsOf: url)
             board.thumbnailImage = UIImage(data: imageData)
             
@@ -68,7 +68,7 @@ class MyWriteViewController: UITableViewController {
     // MARK: - 삭제 API 호출 함수
     func callDeleteAPI(_ row: BoardModel) {
         
-        guard let url = URL(string: "http://localhost:3000/board/\(row.writer!)/\(row.id!)") else { return }
+        guard let url = URL(string: "http://172.30.1.63:3000/board/\(row.writer!)/\(row.id!)") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         //HTTP 메시지 헤더
@@ -104,17 +104,13 @@ class MyWriteViewController: UITableViewController {
         task.resume()
     }
     
-    
-    
-    
     // MARK: - 테이블 뷰가 생성해야 할 행의 개수를 반환하는 메소드
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return boardList.count
-}
+    }
     
     // MARK: -  각 행이 화면에 표현해야 할 내용을 구성하는 메소드
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let row: BoardModel = self.boardList[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "boardCell") as! BoardCell
         
@@ -123,7 +119,6 @@ class MyWriteViewController: UITableViewController {
         cell.topic?.text = row.topic
         cell.date?.text = row.date
         cell.place?.text = row.place
-        
         return cell
     }
     
@@ -131,16 +126,13 @@ class MyWriteViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let row = self.boardList[indexPath.row]
-        
         let modify = UIContextualAction(style: .normal, title: "Modify") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
             self.moveModifyViewController(row)
             success(true)
         }
         modify.backgroundColor = .systemGray
         
-        
         let delete = UIContextualAction(style: .normal, title: "Delete") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
-
             self.callDeleteAPI(row)
             
             DispatchQueue.main.async {

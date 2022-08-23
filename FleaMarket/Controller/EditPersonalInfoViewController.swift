@@ -1,19 +1,16 @@
 //
-//  JoinViewController.swift
+//  EditPersonalInfoViewController.swift
 //  FleaMarket
 //
-//  Created by 이상준 on 2022/04/15.
+//  Created by 이상준 on 2022/08/23.
 //
 
-import UIKit
 import Foundation
+import UIKit
 
-class JoinViewController: UIViewController {
+class EditPersonalInfoViewController: UIViewController {
     
     @IBOutlet var logoImg: UIImageView!
-    
-    //이미 계정이 있으신가요? 버튼
-    @IBOutlet var btnForLoginViewController: UIButton!
     
     // 회원가입 데이터 전송 필드
     @IBOutlet var emailField: UITextField!
@@ -34,20 +31,12 @@ class JoinViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.navigationController?.isNavigationBarHidden = true
         logoImg.image = UIImage(named:"build.png")
         
         self.emailField.delegate = self
         self.pwField.delegate = self
         self.nicknameField.delegate = self
         self.phoneField.delegate = self
-    }
-    
-     
-    // 로그인 페이지 이동 버튼
-    @IBAction func onLoginViewControllerClicked(_ sender: UIButton) {
-        //네비게이션 뷰 컨트롤러 POP
-        self.navigationController?.popViewController(animated: true)
     }
     
     //회원가입 다음 로직 -> 로그인
@@ -169,7 +158,7 @@ class JoinViewController: UIViewController {
     }
 }
 
-extension JoinViewController: UITextFieldDelegate {
+extension EditPersonalInfoViewController: UITextFieldDelegate {
     
     //화면 터치시 키보드 내림
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

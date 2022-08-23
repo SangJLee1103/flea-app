@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D6894292900C07156061A175 /* Pods_FleaMarket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A8DFDC4EF8BB87EC537EA61 /* Pods_FleaMarket.framework */; };
 		F407D029280EBB2C00E36491 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D028280EBB2C00E36491 /* MyTabBarController.swift */; };
 		F407D02B280EBBD900E36491 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02A280EBBD900E36491 /* AlarmViewController.swift */; };
 		F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02C280EBF6E00E36491 /* MyPageViewController.swift */; };
@@ -38,6 +39,7 @@
 		F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1C2833E370004BA7FE /* ProductCell.swift */; };
 		F49CAF1F28360EC3004BA7FE /* ProductRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */; };
 		F4A69D692881732C000E6FC6 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A69D682881732C000E6FC6 /* LoginModel.swift */; };
+		F4B9CE6228B3D789007A1DFF /* EditPersonalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B9CE6128B3D789007A1DFF /* EditPersonalInfoViewController.swift */; };
 		F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */; };
 		F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */; };
 		F4D5E7B328087E5A001A97AD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B228087E5A001A97AD /* LoginViewController.swift */; };
@@ -62,6 +64,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		47B997064340DBA82C3202B1 /* Pods-FleaMarket.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FleaMarket.release.xcconfig"; path = "Target Support Files/Pods-FleaMarket/Pods-FleaMarket.release.xcconfig"; sourceTree = "<group>"; };
+		5A8DFDC4EF8BB87EC537EA61 /* Pods_FleaMarket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FleaMarket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1A393FA3C4A609ABB509023 /* Pods-FleaMarket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FleaMarket.debug.xcconfig"; path = "Target Support Files/Pods-FleaMarket/Pods-FleaMarket.debug.xcconfig"; sourceTree = "<group>"; };
 		F407D028280EBB2C00E36491 /* MyTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
 		F407D02A280EBBD900E36491 /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		F407D02C280EBF6E00E36491 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -92,6 +97,7 @@
 		F49CAF1C2833E370004BA7FE /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegistrationViewController.swift; sourceTree = "<group>"; };
 		F4A69D682881732C000E6FC6 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
+		F4B9CE6128B3D789007A1DFF /* EditPersonalInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPersonalInfoViewController.swift; sourceTree = "<group>"; };
 		F4D5E7AB28087E5A001A97AD /* FleaMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FleaMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,12 +116,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				F449FD1B283A861B00DAACB0 /* BSImagePicker in Frameworks */,
+				D6894292900C07156061A175 /* Pods_FleaMarket.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A02BED1AA18AD5B5D1631F7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D1A393FA3C4A609ABB509023 /* Pods-FleaMarket.debug.xcconfig */,
+				47B997064340DBA82C3202B1 /* Pods-FleaMarket.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E6A20F7D4C5347DD35374773 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5A8DFDC4EF8BB87EC537EA61 /* Pods_FleaMarket.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F41B61162818E00000EC3C12 /* cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +177,8 @@
 			children = (
 				F4D5E7AD28087E5A001A97AD /* FleaMarket */,
 				F4D5E7AC28087E5A001A97AD /* Products */,
+				3A02BED1AA18AD5B5D1631F7 /* Pods */,
+				E6A20F7D4C5347DD35374773 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -186,11 +212,11 @@
 				F4D5E7B228087E5A001A97AD /* LoginViewController.swift */,
 				F4D5E7C3280885FE001A97AD /* JoinViewController.swift */,
 				F407D028280EBB2C00E36491 /* MyTabBarController.swift */,
-				F407D02A280EBBD900E36491 /* AlarmViewController.swift */,
-				F42D5AB0282661300081FF12 /* WriteViewController.swift */,
-				F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */,
 				F407D02E280EC39E00E36491 /* MainViewController.swift */,
 				F414AE08281CEAB6002D9221 /* ProductPostViewController.swift */,
+				F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */,
+				F407D02A280EBBD900E36491 /* AlarmViewController.swift */,
+				F42D5AB0282661300081FF12 /* WriteViewController.swift */,
 				F407D02C280EBF6E00E36491 /* MyPageViewController.swift */,
 				F4651A9A284B79E600D7FE63 /* MyWriteViewController.swift */,
 				F472554328A0CF14008F6C3A /* BoardModifyViewController.swift */,
@@ -198,6 +224,7 @@
 				F472554528A0CF3A008F6C3A /* ProductModifyViewController.swift */,
 				F4779FB12857824700CA19F9 /* MyLikeViewController.swift */,
 				F419E6B8285C89B000D02F4F /* ProductDetailViewController.swift */,
+				F4B9CE6128B3D789007A1DFF /* EditPersonalInfoViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -233,10 +260,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4D5E7BF28087E5C001A97AD /* Build configuration list for PBXNativeTarget "FleaMarket" */;
 			buildPhases = (
+				C5E01973F053DB1076E7AA10 /* [CP] Check Pods Manifest.lock */,
 				F4D5E7A728087E5A001A97AD /* Sources */,
 				F4D5E7A828087E5A001A97AD /* Frameworks */,
 				F4D5E7A928087E5A001A97AD /* Resources */,
 				F42587FF2813B06400B16782 /* Embed App Extensions */,
+				2C94431AD064841AFB4D9D11 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -302,6 +331,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2C94431AD064841AFB4D9D11 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FleaMarket/Pods-FleaMarket-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FleaMarket/Pods-FleaMarket-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FleaMarket/Pods-FleaMarket-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C5E01973F053DB1076E7AA10 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FleaMarket-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F4D5E7A728087E5A001A97AD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -316,6 +387,7 @@
 				F4651A99284B175C00D7FE63 /* MypageCell.swift in Sources */,
 				F4D5E7C4280885FE001A97AD /* JoinViewController.swift in Sources */,
 				F4651AA1284B7CFB00D7FE63 /* ProductModel.swift in Sources */,
+				F4B9CE6228B3D789007A1DFF /* EditPersonalInfoViewController.swift in Sources */,
 				F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */,
 				F43B4B21289E6D5C008EFDC7 /* BoardCell.swift in Sources */,
 				F4651A9D284B7A1C00D7FE63 /* MyProductViewController.swift in Sources */,
@@ -482,6 +554,7 @@
 		};
 		F4D5E7C028087E5C001A97AD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D1A393FA3C4A609ABB509023 /* Pods-FleaMarket.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -512,6 +585,7 @@
 		};
 		F4D5E7C128087E5C001A97AD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47B997064340DBA82C3202B1 /* Pods-FleaMarket.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

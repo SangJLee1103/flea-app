@@ -6,17 +6,16 @@
 //
 
 import UIKit
-import WebKit
 
 class LoginViewController: UIViewController {
-   
-
+    
+    
     @IBOutlet var logoImg: UIImageView!
     @IBOutlet var emailField: UITextField!
     @IBOutlet var pwField: UITextField!
     
-    
     @IBOutlet var moveJoinBtn: UIButton!
+    
     @IBOutlet var btnForLogin: UIButton!
     
     var get: String?
@@ -27,7 +26,8 @@ class LoginViewController: UIViewController {
         logoImg.image = UIImage(named:"build.png")
         
         // 화면 터치 시 키보드 숨김
-        self.hideKeyboard()
+        self.emailField.delegate = self
+        self.pwField.delegate = self
         
         //상단 네비게이션 바 hidden
         self.navigationController?.isNavigationBarHidden = true
@@ -42,7 +42,7 @@ class LoginViewController: UIViewController {
     func callLoginAPI(){
         do{
             
-            guard let url = URL(string: "http://localhost:3000/member/login") else
+            guard let url = URL(string: "http://172.30.1.63:3000/member/login") else
             {
                 print("Cannot create URL!")
                 return
@@ -70,7 +70,7 @@ class LoginViewController: UIViewController {
                         guard let jsonObject = object else { return }
                         
                         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-                       
+                        
                         // JSON 결과값을 추출
                         let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
                         let accessToken = jsonObject["accessToken"] as? String
@@ -78,13 +78,13 @@ class LoginViewController: UIViewController {
                         
                         if (status == 200) {
                             let loginAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
-
+                            
                             let action = UIAlertAction(title: "OK", style: .default, handler: { _ in
                                 self.performSegue(withIdentifier: "mainSegue", sender: self)
                             })
                             loginAlert.addAction(action)
-                            Keychain.create(key: "accessToken", token: accessToken!)
                             UserDefaults.standard.set(accessToken!, forKey: "accessToken")
+                            Keychain.create(key: "accessToken", token: accessToken!)
                             self.present(loginAlert, animated: true, completion: nil)
                         } else {
                             let checkAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
@@ -100,6 +100,19 @@ class LoginViewController: UIViewController {
             }
             task.resume()
         }
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    
+    //화면 터치시 키보드 내림
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder() // TextField 비활성화
+        return true
     }
 }
 

@@ -13,7 +13,7 @@ struct JoinModel: Codable {
     var id: String? //회원 이메일
     var password: String? // 회원 비밀번호
     var nickname: String? // 회원 닉네임
-    var phoneNumber: String? // 회원 휴대폰 번호
+    var phone: String? // 회원 휴대폰 번호
     
     //구조체는 init()을 자동으로 갖음
 }

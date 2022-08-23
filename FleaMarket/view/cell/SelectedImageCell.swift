@@ -4,10 +4,7 @@
 //
 //  Created by 이상준 on 2022/05/23.
 //
-
-import Foundation
 import UIKit
-
 
 // MARK: - 이미지 삭제에 대한 델리게이트
 protocol DataCollectionProtocol {

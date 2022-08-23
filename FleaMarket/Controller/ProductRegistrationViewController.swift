@@ -37,6 +37,10 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(productRegist))
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.systemYellow
         
+        productName.delegate = self
+        sellingPrice.delegate = self
+        costPrice.delegate = self
+        
         descriptionField.delegate = self
         descriptionField.text = placeholder
         descriptionField.textColor = .lightGray
@@ -44,12 +48,11 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         productImgView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         productImgView.dataSource = self
         productImgView.delegate = self
-        
     }
     
     // 완료 버튼 클릭시 이벤트(상품 등록)
     @objc func productRegist(){
-        guard let url = URL(string: "http://localhost:3000/product/\(boardId!)/register") else {
+        guard let url = URL(string: "http://172.30.1.63:3000/product/\(boardId!)/register") else {
             print("Error: cannot create URL")
             return
         }
@@ -133,7 +136,6 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
     
     
     func dateToString(_ createdAt: Date) -> String {
-        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm" // formatter의 dateFormat 속성을 설정
         dateFormatter.locale = Locale(identifier:"ko_KR")
@@ -143,7 +145,6 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         let formatDate = dateFormatter.string(from: createdAt)
         return formatDate
     }
-    
     
     // asset 타입을 image 타입으로 변환
     func convertAssetToImages() {
@@ -174,7 +175,7 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
     // 이미지 선택
     @IBAction func openGalary(_ sender: UIButton) {
         // 이미지 피커 컨트롤러 인스턴스 생성
-        
+        print("눌림")
         let picker = ImagePickerController()
         
         if selectedCount == 5 {
@@ -203,6 +204,17 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
     }
 }
 
+extension ProductRegistrationViewController: UITextFieldDelegate {
+   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+       self.view.endEditing(true)
+   }
+   
+   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+       textField.resignFirstResponder() // TextField 비활성화
+       return true
+   }
+}
+
 // MARK: - 텍스트 뷰 관리
 extension ProductRegistrationViewController: UITextViewDelegate {
     
@@ -219,6 +231,14 @@ extension ProductRegistrationViewController: UITextViewDelegate {
             descriptionField.textColor = .lightGray
         }
     }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+      if (text == "\n") {
+        textView.resignFirstResponder()
+      } else {
+      }
+      return true
+    }
 }
 
 
@@ -233,7 +253,6 @@ extension ProductRegistrationViewController: UICollectionViewDataSource {
         
         let cellId = String(describing: "SelectedImageCell")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SelectedImageCell
-        
         cell.selectedImg.image = self.userSelectedImages[indexPath.row]
         cell.index = indexPath
         cell.delegate = self

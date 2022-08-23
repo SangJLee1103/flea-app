@@ -55,11 +55,9 @@ class ProductPostViewController: UIViewController {
         
         rankingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         rankingView.dataSource = self
-        rankingView.delegate = self
         
         productView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         productView.dataSource = self
-        productView.delegate = self
         
         productView.collectionViewLayout = createCompositional()
         
@@ -79,7 +77,7 @@ class ProductPostViewController: UIViewController {
     
     // 상품 Top10 정보 가져오기
     func getTopRanking(callBack: @escaping () -> Void) {
-            guard let url =  URL(string: "http://localhost:3000/product/\(boardId!)/popular") else { return }
+            guard let url =  URL(string: "http://172.30.1.63:3000/product/\(boardId!)/popular") else { return }
         
             //URLRequest 객체를 정의
             var request = URLRequest(url: url)
@@ -124,7 +122,7 @@ class ProductPostViewController: UIViewController {
     // 전체 상품 조회 API 호출 함수
     func getProduct(callBack: @escaping () -> Void){
         do{
-            guard let url =  URL(string: "http://localhost:3000/product/\(boardId!)/all") else { return }
+            guard let url =  URL(string: "http://172.30.1.63:3000/product/\(boardId!)/all") else { return }
         
             //URLRequest 객체를 정의
             var request = URLRequest(url: url)
@@ -232,7 +230,7 @@ extension ProductPostViewController: UICollectionViewDataSource {
             let row = self.rankList[indexPath.row]
             let imgParse = row.productImg!.split(separator:",")
             
-            cell.productImg?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(imgParse[0])")!))
+            cell.productImg?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://172.30.1.63:3000/\(imgParse[0])")!))
             cell.sellerName?.text = row.sellerName
             cell.sellingPrice?.text = String (row.price!) + "원"
             
@@ -250,7 +248,7 @@ extension ProductPostViewController: UICollectionViewDataSource {
             cell.productId = row.id! // 상품 ID
             let imgParse = row.imgPath!.split(separator:",")
             
-            cell.img?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(imgParse[0])")!))
+            cell.img?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://172.30.1.63:3000/\(imgParse[0])")!))
             cell.sellerName?.text = row.sellerName
             cell.name?.text = row.productName
             cell.sellingPrice?.text = String(row.sellingPrice!) + "원"
@@ -284,14 +282,6 @@ extension ProductPostViewController: UICollectionViewDataSource {
             guard let productDetailVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
             productDetailVC.productId = id!
             self.navigationController?.pushViewController(productDetailVC, animated: true)
-            
         }
     }
-}
-    
-    
-
-//컬렉션 뷰 델리게이트 - 액션 관련
-extension ProductPostViewController: UICollectionViewDelegate {
-
 }

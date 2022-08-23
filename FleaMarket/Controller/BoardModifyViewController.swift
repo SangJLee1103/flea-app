@@ -85,7 +85,7 @@ class BoardModifyViewController: UIViewController {
         if let savedImage = board.thumbnailImage {
             return savedImage
         } else {
-            let url: URL! = URL(string: "http://localhost:3000/\(board.imgPath!)")
+            let url: URL! = URL(string: "http://172.30.1.63:3000/\(board.imgPath!)")
             let imageData = try! Data(contentsOf: url)
             board.thumbnailImage = UIImage(data: imageData)
             
@@ -106,7 +106,7 @@ class BoardModifyViewController: UIViewController {
     
     // MARK: - 작성 버튼 이벤트
     @objc func onUpdateBtn(_ sender: Any) {
-        guard let url = URL(string: "http://localhost:3000/board/\(boardInfo.writer!)/\(boardInfo.id!)") else { return }
+        guard let url = URL(string: "http://172.30.1.63:3000/board/\(boardInfo.writer!)/\(boardInfo.id!)") else { return }
         
         let topic = self.titleField?.text
         let place = self.placeField?.text
@@ -207,8 +207,28 @@ extension BoardModifyViewController: UITextViewDelegate {
             descriptionField.textColor = #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1)
         } 
     }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+      if (text == "\n") {
+        textView.resignFirstResponder()
+      } else {
+      }
+      return true
+    } 
 }
 
+extension BoardModifyViewController: UITextFieldDelegate {
+    
+    //화면 터치시 키보드 내림
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder() // TextField 비활성화
+        return true
+    }
+}
 
 // MARK: - 이미지 선택 클릭시 밑에서 올라오는 팝오버 프리젠테이션 델리게이트
 extension BoardModifyViewController: UIPopoverPresentationControllerDelegate {
@@ -272,7 +292,6 @@ extension BoardModifyViewController: UIImagePickerControllerDelegate, UINavigati
         self.thumbnail.addGestureRecognizer(tapGestureRecognizer)
         self.thumbnail.isUserInteractionEnabled = true
     }
-    
     
     // 이미지 뷰 탭 했을 때 이벤트
     @objc func tappedUIImageView(_ gesture: UITapGestureRecognizer) {

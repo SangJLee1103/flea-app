@@ -46,7 +46,7 @@ class MainViewController: UIViewController {
     
     func getBoardAll(callback: @escaping () -> Void) {
         list = [] //데이터를 한번 비워줌
-        guard let url =  URL(string: "http://localhost:3000/board/read-all") else { return }
+        guard let url =  URL(string: "http://172.30.1.63:3000/board/read-all") else { return }
             //URLRequest 객체를 정의
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -145,7 +145,7 @@ extension MainViewController: UICollectionViewDataSource {
         let url: URL! = URL(string: row.imgPath!)
         
         if (url != nil) {
-            cell.image?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://localhost:3000/\(String(describing: url!))")!))
+            cell.image?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://172.30.1.63:3000/\(String(describing: url!))")!))
         } else {
             cell.image?.image = UIImage(named: fleamarket[Int.random(in: 0..<2)])
         }
@@ -162,8 +162,7 @@ extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //게시글 아이디
         
-        let row = self.list[indexPath.row]
-        let id = row.id
+        let id = indexPath.row + 1
         //게시글 아이디 전달 및 게시글페이지로 이동
         guard let boardElement = self.storyboard?.instantiateViewController(withIdentifier: "boardElement") as? ProductPostViewController else { return }
         boardElement.boardId = id
