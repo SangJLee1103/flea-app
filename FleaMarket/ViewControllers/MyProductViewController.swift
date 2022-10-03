@@ -53,7 +53,7 @@ class MyProductViewController: UITableViewController {
             return savedImage
         } else {
             let imgParse = item.imgPath!.split(separator:",")
-            let url: URL! = URL(string: "http://172.30.1.63:3000/\(imgParse[0])")
+            let url: URL! = URL(string: "\(Network.url)/\(imgParse[0])")
             let imageData = try! Data(contentsOf: url)
             item.thumbnailImage = UIImage(data: imageData)
             
@@ -71,7 +71,7 @@ class MyProductViewController: UITableViewController {
     
     // 상품 삭제 API 호출
     func callDeleteAPI(_ row: ProductModel) {
-        guard let url = URL(string: "http://172.30.1.63:3000/product/\(row.id!)") else { return }
+        guard let url = URL(string: "\(Network.url)/product/\(row.id!)") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         //HTTP 메시지 헤더

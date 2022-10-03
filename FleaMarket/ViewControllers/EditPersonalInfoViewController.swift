@@ -1,19 +1,23 @@
 //
-//  JoinViewController.swift
+//  EditPersonalInfoViewController.swift
 //  FleaMarket
 //
-//  Created by 이상준 on 2022/04/15.
+//  Created by 이상준 on 2022/08/23.
 //
 
-import UIKit
 import Foundation
+import UIKit
+import BCryptSwift
 
-class JoinViewController: UIViewController {
+class EditPersonalInfoViewController: UIViewController {
+    
+    var email: String?
+    var phoneNumber: String?
+    var nickName: String?
+    
+    let token = Keychain.read(key: "accessToken")
     
     @IBOutlet var logoImg: UIImageView!
-    
-    //이미 계정이 있으신가요? 버튼
-    @IBOutlet var btnForLoginViewController: UIButton!
     
     // 회원가입 데이터 전송 필드
     @IBOutlet var emailField: UITextField!
@@ -34,20 +38,17 @@ class JoinViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.navigationController?.isNavigationBarHidden = true
-        logoImg.image = UIImage(named:"build.png")
+        logoImg.image = UIImage(named:"MainLogo.png")
         
         self.emailField.delegate = self
         self.pwField.delegate = self
         self.nicknameField.delegate = self
         self.phoneField.delegate = self
-    }
-    
-     
-    // 로그인 페이지 이동 버튼
-    @IBAction func onLoginViewControllerClicked(_ sender: UIButton) {
-        //네비게이션 뷰 컨트롤러 POP
-        self.navigationController?.popViewController(animated: true)
+        
+        self.emailField.text = email
+        self.pwError.text = "비밀 번호는 다시 설정해주세요."
+        self.nicknameField.text = nickName
+        self.phoneField.text = phoneNumber
     }
     
     //회원가입 다음 로직 -> 로그인
@@ -68,7 +69,7 @@ class JoinViewController: UIViewController {
     // 회원가입 로직
     func callJoinAPI() {
         do{
-            guard let url = URL(string: "http://172.30.1.63:3000/member/join") else {
+            guard let url = URL(string: "\(Network.url)/member/update") else {
                 print("Cannot create URL!")
                 return
             }
@@ -80,8 +81,9 @@ class JoinViewController: UIViewController {
 
             //URLRequest 객체를 정의
             var request = URLRequest(url: url)
-            request.httpMethod = "POST"
+            request.httpMethod = "PUT"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
 
 
             //URLSession 객체를 통해 전송, 응답값 처리
@@ -124,14 +126,6 @@ class JoinViewController: UIViewController {
 
                         }else {
                             self.clearLabel()
-
-                            for i in 0 ..< (error?.count)! {
-                                if((error?[i])?["param"] as? String == "id"){
-                                    self.emailError.text = (((error?[i])?["msg"]) as? String)
-                                    break;
-                                }
-                            }
-
                             for i in 0 ..< (error?.count)! {
                                 if((error?[i])?["param"] as? String == "password"){
                                     self.pwError.text = (((error?[i])?["msg"]) as? String)
@@ -169,7 +163,7 @@ class JoinViewController: UIViewController {
     }
 }
 
-extension JoinViewController: UITextFieldDelegate {
+extension EditPersonalInfoViewController: UITextFieldDelegate {
     
     //화면 터치시 키보드 내림
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

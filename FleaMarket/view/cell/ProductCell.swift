@@ -23,9 +23,13 @@ class ProductCell: UICollectionViewCell {
     // 상품 좋아요 UI 적용
     func likeUI() {
         if(likeBtn.tag == 1){
-            likeBtn.configuration?.image = UIImage(systemName: "heart.fill")
+            DispatchQueue.main.async {
+                self.likeBtn.configuration?.image = UIImage(systemName: "heart.fill")
+            }
         }else {
-            likeBtn.configuration?.image = UIImage(systemName: "heart")
+            DispatchQueue.main.async {
+                self.likeBtn.configuration?.image = UIImage(systemName: "heart")
+            }
         }
     }
     
@@ -36,7 +40,7 @@ class ProductCell: UICollectionViewCell {
             likeBtn.configuration?.image = UIImage(systemName: "heart.fill")
             likeBtn.tag = 1
             do{
-                guard let url =  URL(string: "http://172.30.1.63:3000/likes/\(productId)/count") else { return }
+                guard let url =  URL(string: "\(Network.url)/likes/\(productId)/count") else { return }
 
                 //URLRequest 객체를 정의
                 var request = URLRequest(url: url)
@@ -60,7 +64,7 @@ class ProductCell: UICollectionViewCell {
             likeBtn.tag = 0
             
             do{
-                guard let url =  URL(string: "http://172.30.1.63:3000/likes/\(productId)/count") else { return }
+                guard let url =  URL(string: "\(Network.url)/likes/\(productId)/count") else { return }
 
                 //URLRequest 객체를 정의
                 var request = URLRequest(url: url)

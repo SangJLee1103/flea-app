@@ -23,7 +23,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        logoImg.image = UIImage(named:"build.png")
+        logoImg.image = UIImage(named:"MainLogo.png")
         
         // 화면 터치 시 키보드 숨김
         self.emailField.delegate = self
@@ -42,7 +42,7 @@ class LoginViewController: UIViewController {
     func callLoginAPI(){
         do{
             
-            guard let url = URL(string: "http://172.30.1.63:3000/member/login") else
+            guard let url = URL(string: "\(Network.url)/member/login") else
             {
                 print("Cannot create URL!")
                 return

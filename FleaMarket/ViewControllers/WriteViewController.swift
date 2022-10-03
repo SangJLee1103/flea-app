@@ -91,7 +91,7 @@ class WriteViewController: UIViewController {
     
     // MARK: -작성 버튼 이벤트
     @IBAction func onWriteBtn(_ sender: Any) {
-        guard let url = URL(string: "http://172.30.1.63:3000/board/write") else { return }
+        guard let url = URL(string: "\(Network.url)/board/write") else { return }
         
         let topic = self.titleField?.text
         let place = self.placeField?.text

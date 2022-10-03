@@ -7,6 +7,7 @@ target 'FleaMarket' do
 
   pod "BSImagePicker", "~> 3.1"	
   pod 'IQKeyboardManagerSwift'
+  pod "BCryptSwift"
   # Pods for FleaMarket
 
 end

@@ -14,8 +14,8 @@ class MainViewController: UIViewController {
     
     let token = Keychain.read(key: "accessToken")
     let fleamarket = ["flea1.png", "flea2.png"]
+    var boardId: Int? = 0
     
-
     // lazy 키워드 사용이유
     // 1.미리 생성하지 않고 변수가 참조되는 시점에 맞추어 초기화되므로 메모리 낭비를 줄여줌
     // 2. lazy 키워드를 붙이지 않은 프로퍼티는 다른 프로퍼티를 참조할 수 없기 때문
@@ -46,50 +46,50 @@ class MainViewController: UIViewController {
     
     func getBoardAll(callback: @escaping () -> Void) {
         list = [] //데이터를 한번 비워줌
-        guard let url =  URL(string: "http://172.30.1.63:3000/board/read-all") else { return }
-            //URLRequest 객체를 정의
+        guard let url =  URL(string: "\(Network.url)/board/read-all") else { return }
+        //URLRequest 객체를 정의
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-
-            
+        
+        
         //HTTP 메시지 헤더
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
-            
+        
         //URLSession 객체를 통해 전송, 응답값 처리
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let e = error{
                 NSLog("An error has occured: \(e.localizedDescription)")
                 return
             }
-                // 서버로부터 응답된 스트링 표시
-                do {
-                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                    guard let jsonObject = object else { return }
-                    //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
-                    // JSON 결과값을 추출
-                    let data = jsonObject["data"] as! NSArray
+            // 서버로부터 응답된 스트링 표시
+            do {
+                let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+                guard let jsonObject = object else { return }
+                //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
+                // JSON 결과값을 추출
+                let data = jsonObject["data"] as! NSArray
+                
+                for row in data{
+                    let r = row as! NSDictionary
+                    let boardVO = BoardModel()
                     
-                    for row in data{
-                        let r = row as! NSDictionary
-                        let boardVO = BoardModel()
-                        
-                        boardVO.id = r["id"] as? Int
-                        boardVO.date = r["start"] as? String
-                        boardVO.topic = r["topic"] as? String
-                        boardVO.place = r["place"] as? String
-                        boardVO.description = r["description"] as? String
-                        boardVO.imgPath = r["thumbnail"] as? String
-                        let writer = r["User"] as! NSDictionary
-                        boardVO.writer = writer["nickname"] as? String
-                        self.list.append(boardVO)
-                        callback()
-                    }
-                } catch let e as NSError {
-                    print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+                    boardVO.id = r["id"] as? Int
+                    boardVO.date = r["start"] as? String
+                    boardVO.topic = r["topic"] as? String
+                    boardVO.place = r["place"] as? String
+                    boardVO.description = r["description"] as? String
+                    boardVO.imgPath = r["thumbnail"] as? String
+                    let writer = r["User"] as! NSDictionary
+                    boardVO.writer = writer["nickname"] as? String
+                    self.list.append(boardVO)
+                    callback()
                 }
+            } catch let e as NSError {
+                print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
             }
-            task.resume()
+        }
+        task.resume()
     }
     
     //새로고침
@@ -121,18 +121,17 @@ class MainViewController: UIViewController {
                 self?.boardCollection.reloadData()
             }
         }
-        print("writeVC에서 호출됨")
     }
 }
 
 // MARK: 데이터 소스 설정: 데이터 관련된 것들
 extension MainViewController: UICollectionViewDataSource {
-
+    
     // 각 섹션에 들어가는 아이템 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.list.count
     }
-
+    
     //각 컬렉션 뷰 셀에 대한 설정
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellId = String(describing: MainSceneBoardCell.self)
@@ -145,24 +144,21 @@ extension MainViewController: UICollectionViewDataSource {
         let url: URL! = URL(string: row.imgPath!)
         
         if (url != nil) {
-            cell.image?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://172.30.1.63:3000/\(String(describing: url!))")!))
+            cell.image?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(String(describing: url!))")!))
         } else {
-            cell.image?.image = UIImage(named: fleamarket[Int.random(in: 0..<2)])
+            cell.image?.image = UIImage(named: self.fleamarket[Int.random(in: 0..<2)])
         }
-        
         cell.topic?.text = row.topic
         cell.date?.text = row.date
         cell.place?.text = "장소:\(String(describing: row.place!))"
         
-      
         return cell
     }
     
     // 셀 클릭 시 이동
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //게시글 아이디
-        
-        let id = indexPath.row + 1
+        let id = self.list[indexPath.row].id
         //게시글 아이디 전달 및 게시글페이지로 이동
         guard let boardElement = self.storyboard?.instantiateViewController(withIdentifier: "boardElement") as? ProductPostViewController else { return }
         boardElement.boardId = id

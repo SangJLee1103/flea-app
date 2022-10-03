@@ -50,7 +50,7 @@ class MyWriteViewController: UITableViewController {
         if let savedImage = board.thumbnailImage {
             return savedImage
         } else {
-            let url: URL! = URL(string: "http://172.30.1.63:3000/\(board.imgPath!)")
+            let url: URL! = URL(string: "\(Network.url)/\(board.imgPath!)")
             let imageData = try! Data(contentsOf: url)
             board.thumbnailImage = UIImage(data: imageData)
             
@@ -68,7 +68,7 @@ class MyWriteViewController: UITableViewController {
     // MARK: - 삭제 API 호출 함수
     func callDeleteAPI(_ row: BoardModel) {
         
-        guard let url = URL(string: "http://172.30.1.63:3000/board/\(row.writer!)/\(row.id!)") else { return }
+        guard let url = URL(string: "\(Network.url)/board/\(row.writer!)/\(row.id!)") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         //HTTP 메시지 헤더

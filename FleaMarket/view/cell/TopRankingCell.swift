@@ -13,6 +13,7 @@ class TopRankingCell: UICollectionViewCell {
     @IBOutlet var rankingLbl: UILabel!
     @IBOutlet var productImg: UIImageView!
     @IBOutlet var sellerName: UILabel!
+    @IBOutlet var productName: UILabel!
     @IBOutlet var sellingPrice: UILabel!
     
 }

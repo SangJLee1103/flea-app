@@ -1,15 +1,16 @@
 //
-//  productDetailVC.swift
+//  ItemModifyViewController.swift
 //  FleaMarket
 //
-//  Created by 이상준 on 2022/05/19.
+//  Created by 이상준 on 2022/08/08.
 //
 
+import Foundation
 import UIKit
 import Photos
 import BSImagePicker
 
-class ProductRegistrationViewController: UIViewController, UICollectionViewDelegate {
+class ProductModifyViewController: UIViewController {
     
     @IBOutlet var productImgView: UICollectionView!
     @IBOutlet var productName: UITextField!
@@ -17,13 +18,12 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
     @IBOutlet var costPrice: UITextField!
     @IBOutlet var descriptionField: UITextView!
     
-    
     let token = Keychain.read(key: "accessToken")
     
     let placeholder = "상품에 대해서 설명을 적어주세요(상품 사용 기간, 상품의 흠집 여부 및 특징 등)"
-    var boardId: Int?
     
-    // 상품 업로드 날짜
+    var productInfo = ProductModel()
+    
     var selectedData: [Data] = [Data]()
     var selectedAssets = [PHAsset]()
     var userSelectedImages = [UIImage]()
@@ -37,22 +37,84 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(productRegist))
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.systemYellow
         
-        productName.delegate = self
-        sellingPrice.delegate = self
-        costPrice.delegate = self
-        
         descriptionField.delegate = self
         descriptionField.text = placeholder
-        descriptionField.textColor = .lightGray
+        descriptionField.textColor = .black
         
         productImgView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         productImgView.dataSource = self
         productImgView.delegate = self
+        
+        configureProductUI()
+    }
+    
+    
+    // MARK: - 선택 이미지 셀에 이미지를 넣어주는 함수
+    func imgIntoUserSelectedImg() {
+        let imgPath = self.productInfo.imgPath
+        let imgParse = imgPath!.split(separator:",")
+        
+        for i in 0..<imgParse.count {
+            let url: URL! = URL(string: "\(Network.url)/\(imgParse[i])")
+            let imageData = try! Data(contentsOf: url)
+            self.userSelectedImages.append(UIImage(data: imageData)!)
+            self.selectedData.append(imageData)
+            self.selectedCount = imgParse.count
+        }
+    }
+    
+    // MARK: - 현재 상품 UI 구성
+    func configureProductUI() {
+        self.imgIntoUserSelectedImg()
+        self.productName.text = self.productInfo.productName
+        self.sellingPrice.text = "\(String(describing: self.productInfo.sellingPrice!))"
+        self.costPrice.text = "\(String(describing: self.productInfo.costPrice!))"
+        self.descriptionField.text = self.productInfo.description
+    }
+    
+    
+    // asset 타입을 image 타입으로 변환
+    func convertAssetToImages() {
+        if selectedAssets.count != 0 {
+            for i in 0..<selectedAssets.count {
+                
+                let imageManager = PHImageManager.default()
+                let option = PHImageRequestOptions()
+                var thumbnail = UIImage()
+                option.isSynchronous = true
+                imageManager.requestImage(for: selectedAssets[i],
+                                             targetSize: CGSize(width: 400, height: 400),
+                                             contentMode: .aspectFill,
+                                             options: option) { (result, info) in
+                    thumbnail = result!
+                }
+                
+                let data = thumbnail.jpegData(compressionQuality: 1.0)
+                let newImage = UIImage(data: data!)
+                
+                self.userSelectedImages.append(newImage! as UIImage)
+                self.selectedData.append(data!)
+            }
+            self.productImgView.reloadData()
+        }
+    }
+    
+    func dateToString(_ createdAt: Date) -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm" // formatter의 dateFormat 속성을 설정
+        dateFormatter.locale = Locale(identifier:"ko_KR")
+        
+        print("날짜 포멧 함수\(dateFormatter.string(from: createdAt))")
+        
+        let formatDate = dateFormatter.string(from: createdAt)
+        return formatDate
     }
     
     // 완료 버튼 클릭시 이벤트(상품 등록)
     @objc func productRegist(){
-        guard let url = URL(string: "http://172.30.1.63:3000/product/\(boardId!)/register") else {
+        guard let productId = self.productInfo.id else { return }
+        guard let url = URL(string: "\(Network.url)/product/\(productId)") else {
             print("Error: cannot create URL")
             return
         }
@@ -75,7 +137,7 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         let boundary = "Boundary-\(UUID().uuidString)"
         
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = "PUT"
         request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
@@ -134,48 +196,10 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         }.resume()
     }
     
-    
-    func dateToString(_ createdAt: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm" // formatter의 dateFormat 속성을 설정
-        dateFormatter.locale = Locale(identifier:"ko_KR")
-        
-        print("날짜 포멧 함수\(dateFormatter.string(from: createdAt))")
-        
-        let formatDate = dateFormatter.string(from: createdAt)
-        return formatDate
-    }
-    
-    // asset 타입을 image 타입으로 변환
-    func convertAssetToImages() {
-        if selectedAssets.count != 0 {
-            for i in 0..<selectedAssets.count {
-                
-                let imageManager = PHImageManager.default()
-                let option = PHImageRequestOptions()
-                var thumbnail = UIImage()
-                option.isSynchronous = true
-                imageManager.requestImage(for: selectedAssets[i],
-                                             targetSize: CGSize(width: 400, height: 400),
-                                             contentMode: .aspectFill,
-                                             options: option) { (result, info) in
-                    thumbnail = result!
-                }
-                
-                let data = thumbnail.jpegData(compressionQuality: 1.0)
-                let newImage = UIImage(data: data!)
-                
-                self.userSelectedImages.append(newImage! as UIImage)
-                self.selectedData.append(data!)
-            }
-            self.productImgView.reloadData()
-        }
-    }
-    
     // 이미지 선택
     @IBAction func openGalary(_ sender: UIButton) {
         // 이미지 피커 컨트롤러 인스턴스 생성
-        print("눌림")
+        
         let picker = ImagePickerController()
         
         if selectedCount == 5 {
@@ -204,22 +228,10 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
     }
 }
 
-extension ProductRegistrationViewController: UITextFieldDelegate {
-   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-       self.view.endEditing(true)
-   }
-   
-   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-       textField.resignFirstResponder() // TextField 비활성화
-       return true
-   }
-}
-
 // MARK: - 텍스트 뷰 관리
-extension ProductRegistrationViewController: UITextViewDelegate {
-    
+extension ProductModifyViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if descriptionField.textColor == .lightGray {
+        if descriptionField.textColor == #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1) {
             descriptionField.text = ""
             descriptionField.textColor = .black
         }
@@ -228,7 +240,7 @@ extension ProductRegistrationViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if descriptionField.text == "" {
             descriptionField.text = placeholder
-            descriptionField.textColor = .lightGray
+            descriptionField.textColor = #colorLiteral(red: 0.8209919333, green: 0.8216187358, blue: 0.8407624364, alpha: 1)
         }
     }
     
@@ -238,12 +250,24 @@ extension ProductRegistrationViewController: UITextViewDelegate {
       } else {
       }
       return true
+    } 
+}
+
+extension ProductModifyViewController: UITextFieldDelegate {
+    
+    //화면 터치시 키보드 내림
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder() // TextField 비활성화
+        return true
     }
 }
 
-
 // MARK: - 컬렉션 뷰 데이터소스 관리
-extension ProductRegistrationViewController: UICollectionViewDataSource {
+extension ProductModifyViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return selectedData.count
     }
@@ -253,6 +277,7 @@ extension ProductRegistrationViewController: UICollectionViewDataSource {
         
         let cellId = String(describing: "SelectedImageCell")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SelectedImageCell
+        
         cell.selectedImg.image = self.userSelectedImages[indexPath.row]
         cell.index = indexPath
         cell.delegate = self
@@ -262,7 +287,7 @@ extension ProductRegistrationViewController: UICollectionViewDataSource {
 }
 
 // MARK: - 등록할 이미지 셀에 대한 프로토콜
-extension ProductRegistrationViewController: DataCollectionProtocol {
+extension ProductModifyViewController: DataCollectionProtocol {
     func deleteData(index: Int) {
         self.selectedCount = self.selectedCount - 1
         self.selectedData.remove(at: index)
@@ -270,3 +295,4 @@ extension ProductRegistrationViewController: DataCollectionProtocol {
         self.productImgView.reloadData()
     }
 }
+

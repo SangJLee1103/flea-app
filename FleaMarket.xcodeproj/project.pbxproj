@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		D6894292900C07156061A175 /* Pods_FleaMarket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A8DFDC4EF8BB87EC537EA61 /* Pods_FleaMarket.framework */; };
 		F407D029280EBB2C00E36491 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D028280EBB2C00E36491 /* MyTabBarController.swift */; };
-		F407D02B280EBBD900E36491 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02A280EBBD900E36491 /* AlarmViewController.swift */; };
+		F407D02B280EBBD900E36491 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02A280EBBD900E36491 /* MapViewController.swift */; };
 		F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02C280EBF6E00E36491 /* MyPageViewController.swift */; };
 		F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407D02E280EC39E00E36491 /* MainViewController.swift */; };
 		F414AE09281CEAB6002D9221 /* ProductPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414AE08281CEAB6002D9221 /* ProductPostViewController.swift */; };
@@ -23,9 +23,6 @@
 		F449FD1B283A861B00DAACB0 /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F449FD1A283A861B00DAACB0 /* BSImagePicker */; };
 		F449FD1D283B79D900DAACB0 /* SelectedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */; };
 		F4651A8E28489AA800D7FE63 /* BoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651A8D28489AA800D7FE63 /* BoardModel.swift */; };
-		F4651A912848B4E700D7FE63 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F4651A902848B4E700D7FE63 /* logo.png */; };
-		F4651A952848F65500D7FE63 /* build.png in Resources */ = {isa = PBXBuildFile; fileRef = F4651A942848F65500D7FE63 /* build.png */; };
-		F4651A97284A148D00D7FE63 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = F4651A96284A148C00D7FE63 /* account.png */; };
 		F4651A99284B175C00D7FE63 /* MypageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651A98284B175C00D7FE63 /* MypageCell.swift */; };
 		F4651A9B284B79E600D7FE63 /* MyWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651A9A284B79E600D7FE63 /* MyWriteViewController.swift */; };
 		F4651A9D284B7A1C00D7FE63 /* MyProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4651A9C284B7A1C00D7FE63 /* MyProductViewController.swift */; };
@@ -36,10 +33,13 @@
 		F4779FAE2856B56200CA19F9 /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4779FAD2856B56200CA19F9 /* UserInfoModel.swift */; };
 		F4779FB028577A6D00CA19F9 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4779FAF28577A6D00CA19F9 /* ItemCell.swift */; };
 		F4779FB22857824700CA19F9 /* MyLikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4779FB12857824700CA19F9 /* MyLikeViewController.swift */; };
+		F478D9EF28BB39DD003C686A /* account@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F478D9EE28BB39DD003C686A /* account@2x.jpg */; };
+		F478D9F128BB3E9C003C686A /* MainLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = F478D9F028BB3E9C003C686A /* MainLogo.png */; };
 		F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1C2833E370004BA7FE /* ProductCell.swift */; };
 		F49CAF1F28360EC3004BA7FE /* ProductRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */; };
 		F4A69D692881732C000E6FC6 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A69D682881732C000E6FC6 /* LoginModel.swift */; };
 		F4B9CE6228B3D789007A1DFF /* EditPersonalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B9CE6128B3D789007A1DFF /* EditPersonalInfoViewController.swift */; };
+		F4C8D24228B6795400C8EDBE /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C8D24128B6795400C8EDBE /* Network.swift */; };
 		F4D5E7AF28087E5A001A97AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */; };
 		F4D5E7B128087E5A001A97AD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */; };
 		F4D5E7B328087E5A001A97AD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7B228087E5A001A97AD /* LoginViewController.swift */; };
@@ -68,7 +68,7 @@
 		5A8DFDC4EF8BB87EC537EA61 /* Pods_FleaMarket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FleaMarket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A393FA3C4A609ABB509023 /* Pods-FleaMarket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FleaMarket.debug.xcconfig"; path = "Target Support Files/Pods-FleaMarket/Pods-FleaMarket.debug.xcconfig"; sourceTree = "<group>"; };
 		F407D028280EBB2C00E36491 /* MyTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
-		F407D02A280EBBD900E36491 /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
+		F407D02A280EBBD900E36491 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		F407D02C280EBF6E00E36491 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		F407D02E280EC39E00E36491 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F414AE08281CEAB6002D9221 /* ProductPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPostViewController.swift; sourceTree = "<group>"; };
@@ -81,9 +81,6 @@
 		F43B4B20289E6D5C008EFDC7 /* BoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardCell.swift; sourceTree = "<group>"; };
 		F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageCell.swift; sourceTree = "<group>"; };
 		F4651A8D28489AA800D7FE63 /* BoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardModel.swift; sourceTree = "<group>"; };
-		F4651A902848B4E700D7FE63 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		F4651A942848F65500D7FE63 /* build.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = build.png; sourceTree = "<group>"; };
-		F4651A96284A148C00D7FE63 /* account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account.png; sourceTree = "<group>"; };
 		F4651A98284B175C00D7FE63 /* MypageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageCell.swift; sourceTree = "<group>"; };
 		F4651A9A284B79E600D7FE63 /* MyWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWriteViewController.swift; sourceTree = "<group>"; };
 		F4651A9C284B7A1C00D7FE63 /* MyProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProductViewController.swift; sourceTree = "<group>"; };
@@ -94,10 +91,13 @@
 		F4779FAD2856B56200CA19F9 /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
 		F4779FAF28577A6D00CA19F9 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 		F4779FB12857824700CA19F9 /* MyLikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikeViewController.swift; sourceTree = "<group>"; };
+		F478D9EE28BB39DD003C686A /* account@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "account@2x.jpg"; sourceTree = "<group>"; };
+		F478D9F028BB3E9C003C686A /* MainLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MainLogo.png; sourceTree = "<group>"; };
 		F49CAF1C2833E370004BA7FE /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegistrationViewController.swift; sourceTree = "<group>"; };
 		F4A69D682881732C000E6FC6 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		F4B9CE6128B3D789007A1DFF /* EditPersonalInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPersonalInfoViewController.swift; sourceTree = "<group>"; };
+		F4C8D24128B6795400C8EDBE /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		F4D5E7AB28087E5A001A97AD /* FleaMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FleaMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -154,22 +154,29 @@
 			path = cell;
 			sourceTree = "<group>";
 		};
-		F42D2B102812AD2C00564B26 /* security */ = {
+		F42D2B102812AD2C00564B26 /* Security */ = {
 			isa = PBXGroup;
 			children = (
 				F42D2B112812AD4100564B26 /* Keychain.swift */,
 			);
-			path = security;
+			path = Security;
 			sourceTree = "<group>";
 		};
-		F4651A8F2848B4D300D7FE63 /* resources */ = {
+		F4651A8F2848B4D300D7FE63 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F4651A96284A148C00D7FE63 /* account.png */,
-				F4651A942848F65500D7FE63 /* build.png */,
-				F4651A902848B4E700D7FE63 /* logo.png */,
+				F478D9F028BB3E9C003C686A /* MainLogo.png */,
+				F478D9EE28BB39DD003C686A /* account@2x.jpg */,
 			);
-			path = resources;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F4C8D24028B6792500C8EDBE /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				F4C8D24128B6795400C8EDBE /* Network.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		F4D5E7A228087E5A001A97AD = {
@@ -193,11 +200,12 @@
 		F4D5E7AD28087E5A001A97AD /* FleaMarket */ = {
 			isa = PBXGroup;
 			children = (
+				F4C8D24028B6792500C8EDBE /* Network */,
 				F4D5E7C52808919A001A97AD /* Model */,
 				F4D5E7C6280891A2001A97AD /* view */,
-				F4D5E7C228087E9A001A97AD /* Controller */,
-				F4651A8F2848B4D300D7FE63 /* resources */,
-				F42D2B102812AD2C00564B26 /* security */,
+				F4D5E7C228087E9A001A97AD /* ViewControllers */,
+				F4651A8F2848B4D300D7FE63 /* Resources */,
+				F42D2B102812AD2C00564B26 /* Security */,
 				F4D5E7AE28087E5A001A97AD /* AppDelegate.swift */,
 				F4D5E7B028087E5A001A97AD /* SceneDelegate.swift */,
 				F4D5E7B728087E5C001A97AD /* Assets.xcassets */,
@@ -206,7 +214,7 @@
 			path = FleaMarket;
 			sourceTree = "<group>";
 		};
-		F4D5E7C228087E9A001A97AD /* Controller */ = {
+		F4D5E7C228087E9A001A97AD /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				F4D5E7B228087E5A001A97AD /* LoginViewController.swift */,
@@ -215,7 +223,7 @@
 				F407D02E280EC39E00E36491 /* MainViewController.swift */,
 				F414AE08281CEAB6002D9221 /* ProductPostViewController.swift */,
 				F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */,
-				F407D02A280EBBD900E36491 /* AlarmViewController.swift */,
+				F407D02A280EBBD900E36491 /* MapViewController.swift */,
 				F42D5AB0282661300081FF12 /* WriteViewController.swift */,
 				F407D02C280EBF6E00E36491 /* MyPageViewController.swift */,
 				F4651A9A284B79E600D7FE63 /* MyWriteViewController.swift */,
@@ -226,7 +234,7 @@
 				F419E6B8285C89B000D02F4F /* ProductDetailViewController.swift */,
 				F4B9CE6128B3D789007A1DFF /* EditPersonalInfoViewController.swift */,
 			);
-			path = Controller;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		F4D5E7C52808919A001A97AD /* Model */ = {
@@ -320,11 +328,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4651A912848B4E700D7FE63 /* logo.png in Resources */,
-				F4651A97284A148D00D7FE63 /* account.png in Resources */,
+				F478D9EF28BB39DD003C686A /* account@2x.jpg in Resources */,
 				F4D5E7BB28087E5C001A97AD /* LaunchScreen.storyboard in Resources */,
+				F478D9F128BB3E9C003C686A /* MainLogo.png in Resources */,
 				F4D5E7B828087E5C001A97AD /* Assets.xcassets in Resources */,
-				F4651A952848F65500D7FE63 /* build.png in Resources */,
 				F4D5E7B628087E5A001A97AD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -388,6 +395,7 @@
 				F4D5E7C4280885FE001A97AD /* JoinViewController.swift in Sources */,
 				F4651AA1284B7CFB00D7FE63 /* ProductModel.swift in Sources */,
 				F4B9CE6228B3D789007A1DFF /* EditPersonalInfoViewController.swift in Sources */,
+				F4C8D24228B6795400C8EDBE /* Network.swift in Sources */,
 				F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */,
 				F43B4B21289E6D5C008EFDC7 /* BoardCell.swift in Sources */,
 				F4651A9D284B7A1C00D7FE63 /* MyProductViewController.swift in Sources */,
@@ -402,7 +410,7 @@
 				F407D02F280EC39E00E36491 /* MainViewController.swift in Sources */,
 				F4779FAE2856B56200CA19F9 /* UserInfoModel.swift in Sources */,
 				F4779FB028577A6D00CA19F9 /* ItemCell.swift in Sources */,
-				F407D02B280EBBD900E36491 /* AlarmViewController.swift in Sources */,
+				F407D02B280EBBD900E36491 /* MapViewController.swift in Sources */,
 				F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */,
 				F4A69D692881732C000E6FC6 /* LoginModel.swift in Sources */,
 				F472554428A0CF14008F6C3A /* BoardModifyViewController.swift in Sources */,

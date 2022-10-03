@@ -85,7 +85,7 @@ class BoardModifyViewController: UIViewController {
         if let savedImage = board.thumbnailImage {
             return savedImage
         } else {
-            let url: URL! = URL(string: "http://172.30.1.63:3000/\(board.imgPath!)")
+            let url: URL! = URL(string: "\(Network.url)/\(board.imgPath!)")
             let imageData = try! Data(contentsOf: url)
             board.thumbnailImage = UIImage(data: imageData)
             
@@ -106,7 +106,7 @@ class BoardModifyViewController: UIViewController {
     
     // MARK: - 작성 버튼 이벤트
     @objc func onUpdateBtn(_ sender: Any) {
-        guard let url = URL(string: "http://172.30.1.63:3000/board/\(boardInfo.writer!)/\(boardInfo.id!)") else { return }
+        guard let url = URL(string: "\(Network.url)/board/\(boardInfo.writer!)/\(boardInfo.id!)") else { return }
         
         let topic = self.titleField?.text
         let place = self.placeField?.text

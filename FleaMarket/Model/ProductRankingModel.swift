@@ -7,6 +7,7 @@
 class ProductRankingModel {
     var id: Int?
     var productImg: String?
+    var productName: String?
     var sellerName: String?
     var price: Int?
 }

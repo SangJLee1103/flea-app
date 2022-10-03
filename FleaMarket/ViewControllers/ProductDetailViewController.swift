@@ -31,7 +31,7 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate {
     
     
     func productDetailAPI() {
-        guard let url =  URL(string: "http://172.30.1.63:3000/product/\(productId)") else { return }
+        guard let url =  URL(string: "\(Network.url)/product/\(productId)") else { return }
         
         //URLRequest 객체를 정의
         var request = URLRequest(url: url)
@@ -58,7 +58,7 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate {
                     let imgParse = (data["img"] as? String)!.split(separator:",")
                     
                     for i in 0..<imgParse.count {
-                        self.images.append(UIImage(data: try! Data(contentsOf: URL(string: "http://172.30.1.63:3000/\(imgParse[i])")!))!)
+                        self.images.append(UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(imgParse[i])")!))!)
                         
                         let imageView = UIImageView()
                         let xPos = self.view.frame.width * CGFloat(i)

@@ -14,6 +14,7 @@ class ProductPostViewController: UIViewController {
     var boardId: Int?
     let token = Keychain.read(key: "accessToken")
     
+    @IBOutlet var rankingLbl: UILabel!
     // 상품 랭킹 컬렉션 뷰
     @IBOutlet var rankingView: UICollectionView!
     // 전체 상품 컬렉션 뷰
@@ -36,10 +37,8 @@ class ProductPostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationItem.title = "상품"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(goProductRegisterVC))
-        
         
         self.getTopRanking {
             DispatchQueue.main.async {
@@ -55,14 +54,15 @@ class ProductPostViewController: UIViewController {
         
         rankingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         rankingView.dataSource = self
+        rankingView.delegate = self
         
         productView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         productView.dataSource = self
+        productView.delegate = self
         
         productView.collectionViewLayout = createCompositional()
-        
     }
-
+    
     // 상품 등록 페이지 이동 함수
     @objc func goProductRegisterVC(){
         guard let productRegister = self.storyboard?.instantiateViewController(withIdentifier: "productRegister") as? ProductRegistrationViewController else { return }
@@ -77,53 +77,58 @@ class ProductPostViewController: UIViewController {
     
     // 상품 Top10 정보 가져오기
     func getTopRanking(callBack: @escaping () -> Void) {
-            guard let url =  URL(string: "http://172.30.1.63:3000/product/\(boardId!)/popular") else { return }
+        guard let url =  URL(string: "\(Network.url)/product/\(boardId!)/popular") else { return }
         
-            //URLRequest 객체를 정의
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            
-            //HTTP 메시지 헤더
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            //URLSession 객체를 통해 전송, 응답값 처리
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                if let e = error{
-                    NSLog("An error has occured: \(e.localizedDescription)")
-                    return
-                }
-                // 서버로부터 응답된 스트링 표시
-                do {
-                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                    guard let jsonObject = object else { return }
-                    //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
-                    // JSON 결과값을 추출
-                    let data = jsonObject["data"] as! NSArray
-                    
-                    for row in data {
-                        let r = row as! NSDictionary
-                        let rankVO = ProductRankingModel()
-                        
-                        rankVO.id = r["product_id"] as? Int
-                        rankVO.price = r["selling_price"] as? Int
-                        rankVO.sellerName = r["nickname"] as? String
-                        rankVO.productImg = r["img"] as? String
-                        
-                        self.rankList.append(rankVO)
-                        callBack()
-                    }
-                } catch let e as NSError {
-                    print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
-                }
+        //URLRequest 객체를 정의
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        //HTTP 메시지 헤더
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        //URLSession 객체를 통해 전송, 응답값 처리
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let e = error{
+                NSLog("An error has occured: \(e.localizedDescription)")
+                return
             }
-            task.resume()
+            // 서버로부터 응답된 스트링 표시
+            do {
+                let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+                guard let jsonObject = object else { return }
+                //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
+                // JSON 결과값을 추출
+                let data = jsonObject["data"] as! NSArray
+                
+                for row in data {
+                    let r = row as! NSDictionary
+                    let rankVO = ProductRankingModel()
+                    
+                    rankVO.id = r["product_id"] as? Int
+                    rankVO.price = r["selling_price"] as? Int
+                    rankVO.productName = r["name"] as? String
+                    rankVO.sellerName = r["nickname"] as? String
+                    rankVO.productImg = r["img"] as? String
+                    
+                    self.rankList.append(rankVO)
+                    callBack()
+                }
+                if self.rankList.count <= 0 {
+                    DispatchQueue.main.async {
+                        self.rankingLbl.layer.isHidden = true
+                    }
+                }
+            } catch let e as NSError {
+                print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+            }
+        }
+        task.resume()
     }
     
     // 전체 상품 조회 API 호출 함수
     func getProduct(callBack: @escaping () -> Void){
         do{
-            guard let url =  URL(string: "http://172.30.1.63:3000/product/\(boardId!)/all") else { return }
-        
+            guard let url =  URL(string: "\(Network.url)/product/\(boardId!)/all") else { return }
             //URLRequest 객체를 정의
             var request = URLRequest(url: url)
             request.httpMethod = "GET"
@@ -142,7 +147,7 @@ class ProductPostViewController: UIViewController {
                 do {
                     let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                     guard let jsonObject = object else { return }
-                   
+                    
                     let data = jsonObject["data"] as! NSArray
                     
                     for row in data {
@@ -158,12 +163,19 @@ class ProductPostViewController: UIViewController {
                         
                         let seller = r["User"] as! NSDictionary
                         productVO.sellerName = seller["nickname"] as? String
-        
+                        
                         productVO.like =  r["Likes"] as? NSArray
                         
                         self.productList.append(productVO)
                         callBack()
                     }
+                    
+                    if self.productList.count <= 0 {
+                        DispatchQueue.main.async {
+                            self.productNumber.center = CGPoint(x: self.view.frame.size.width / 2, y: self.view.frame.size.height / 2 - 100)
+                        }
+                    }
+                    
                 } catch let e as NSError {
                     print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                 }
@@ -180,7 +192,7 @@ extension ProductPostViewController {
     fileprivate func createCompositional() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout{
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
+            
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .absolute(270))
             
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -201,8 +213,8 @@ extension ProductPostViewController {
 
 
 //데이터 소스 설정 - 데이터 관련
-extension ProductPostViewController: UICollectionViewDataSource {
-
+extension ProductPostViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    
     //Top10 컬렉션 뷰 부분
     //아이템 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -226,20 +238,20 @@ extension ProductPostViewController: UICollectionViewDataSource {
             cell.rankingLbl.text = "\(indexPath.row + 1)위"
             
             // top 10 상품 이미지 출력 부분
-            
             let row = self.rankList[indexPath.row]
             let imgParse = row.productImg!.split(separator:",")
             
-            cell.productImg?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://172.30.1.63:3000/\(imgParse[0])")!))
+            cell.productImg?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(imgParse[0])")!))
             cell.sellerName?.text = row.sellerName
+            cell.productName?.text = row.productName
             cell.sellingPrice?.text = String (row.price!) + "원"
-            
             return cell
         } else if collectionView == productView{
             if productList.count > 0 {
                 productNumber.text = "총 \(productList.count)건"
+                productNumber.textColor = .black
             }
-    
+            
             let cellId = String(describing: ProductCell.self)
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProductCell
             
@@ -248,7 +260,7 @@ extension ProductPostViewController: UICollectionViewDataSource {
             cell.productId = row.id! // 상품 ID
             let imgParse = row.imgPath!.split(separator:",")
             
-            cell.img?.image = UIImage(data: try! Data(contentsOf: URL(string: "http://172.30.1.63:3000/\(imgParse[0])")!))
+            cell.img?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(imgParse[0])")!))
             cell.sellerName?.text = row.sellerName
             cell.name?.text = row.productName
             cell.sellingPrice?.text = String(row.sellingPrice!) + "원"
@@ -267,7 +279,7 @@ extension ProductPostViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView ==  rankingView {
+        if collectionView == rankingView {
             let row = self.rankList[indexPath.row]
             let id = row.id
             
