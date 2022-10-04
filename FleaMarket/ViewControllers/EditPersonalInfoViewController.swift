@@ -45,8 +45,15 @@ class EditPersonalInfoViewController: UIViewController {
         self.nicknameField.delegate = self
         self.phoneField.delegate = self
         
+        emailField.backgroundColor = .systemGray5
+        let imageView = UIImageView(frame: CGRect(x: self.emailField.frame.width - 35, y: 8, width: 20, height: 20))
+        let image = UIImage(systemName: "lock.fill")
+        imageView.image = image
+        
+        emailField.addSubview(imageView)
+        
         self.emailField.text = email
-        self.pwError.text = "비밀 번호는 다시 설정해주세요."
+        self.pwError.text = "비밀 번호 수정은 필수입니다."
         self.nicknameField.text = nickName
         self.phoneField.text = phoneNumber
     }

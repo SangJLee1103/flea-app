@@ -34,7 +34,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="lsj2486512!" borderStyle="roundedRect" placeholder="비밀번호" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i3r-ya-ZmH">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="lsj2486512!!" borderStyle="roundedRect" placeholder="비밀번호" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i3r-ya-ZmH">
                                                 <rect key="frame" x="0.0" y="64" width="313" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="HKi-cT-YbG" userLabel="height = 50"/>
@@ -305,7 +305,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eBr-I3-qzv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1856.9230769230769" y="2610.4265402843603"/>
+            <point key="canvasLocation" x="1833" y="2611"/>
         </scene>
         <!--My Product View Controller-->
         <scene sceneID="oXD-Ry-akn">
@@ -1022,7 +1022,7 @@
                                                 </cells>
                                             </collectionView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="아직 등록된 상품이 존재하지 않습니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diX-te-3lN">
-                                                <rect key="frame" x="20" y="410" width="257.33333333333331" height="46"/>
+                                                <rect key="frame" x="20" y="427" width="257.33333333333331" height="46"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="103" id="jll-9v-DKL"/>
                                                 </constraints>
@@ -1039,7 +1039,7 @@
                                             <constraint firstItem="fxE-kB-7tc" firstAttribute="leading" secondItem="RFj-wC-6Nr" secondAttribute="leading" id="IcR-Om-WZw"/>
                                             <constraint firstItem="9C0-gF-0a0" firstAttribute="trailing" secondItem="fxE-kB-7tc" secondAttribute="trailing" id="M0l-4n-k2M"/>
                                             <constraint firstItem="K4K-ph-WYJ" firstAttribute="leading" secondItem="fxE-kB-7tc" secondAttribute="leading" constant="20" id="PZs-tk-q68"/>
-                                            <constraint firstItem="9C0-gF-0a0" firstAttribute="top" secondItem="diX-te-3lN" secondAttribute="bottom" constant="25" id="Z4J-Px-ANu"/>
+                                            <constraint firstItem="9C0-gF-0a0" firstAttribute="top" secondItem="diX-te-3lN" secondAttribute="bottom" constant="8" id="Z4J-Px-ANu"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="diX-te-3lN" secondAttribute="trailing" constant="20" symbolic="YES" id="ZRf-YQ-dTD"/>
                                             <constraint firstAttribute="height" constant="2280" id="bhI-eI-2NL"/>
                                             <constraint firstItem="K4K-ph-WYJ" firstAttribute="top" secondItem="RFj-wC-6Nr" secondAttribute="top" constant="22" id="eOF-GV-Kak"/>
@@ -1048,7 +1048,7 @@
                                             <constraint firstAttribute="trailing" secondItem="fxE-kB-7tc" secondAttribute="trailing" id="mSH-WF-3At"/>
                                             <constraint firstItem="fxE-kB-7tc" firstAttribute="trailing" secondItem="RFj-wC-6Nr" secondAttribute="trailingMargin" constant="8" id="mes-FT-pgY"/>
                                             <constraint firstItem="fxE-kB-7tc" firstAttribute="top" secondItem="K4K-ph-WYJ" secondAttribute="bottom" constant="8" symbolic="YES" id="t26-9U-b1F"/>
-                                            <constraint firstItem="diX-te-3lN" firstAttribute="top" secondItem="fxE-kB-7tc" secondAttribute="bottom" constant="30" id="vRU-j4-gbb"/>
+                                            <constraint firstItem="diX-te-3lN" firstAttribute="top" secondItem="fxE-kB-7tc" secondAttribute="bottom" constant="47" id="vRU-j4-gbb"/>
                                         </constraints>
                                     </view>
                                     <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5xG-Bp-gRO">
@@ -1123,7 +1123,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="OEc-K9-nx6">
                                         <rect key="frame" x="40" y="160" width="313" height="368"/>
                                         <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="이메일" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kva-Nx-Xne">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="이메일" textAlignment="natural" minimumFontSize="17" background="lock" translatesAutoresizingMaskIntoConstraints="NO" id="kva-Nx-Xne">
                                                 <rect key="frame" x="0.0" y="0.0" width="313" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="pIy-N4-4bb"/>
@@ -2073,7 +2073,6 @@
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="이메일" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NWM-ZQ-C28">
                                                 <rect key="frame" x="0.0" y="0.0" width="313" height="40"/>
-                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="Auf-DJ-gne"/>
                                                 </constraints>
@@ -2195,6 +2194,7 @@
         <image name="camera.fill" catalog="system" width="128" height="93"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="house.fill" catalog="system" width="128" height="104"/>
+        <image name="lock" width="128" height="128"/>
         <image name="map.fill" catalog="system" width="128" height="110"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="123"/>
