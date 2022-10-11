@@ -74,7 +74,8 @@ class BoardModifyViewController: UIViewController {
         let datePickerView = sender
         
         let formatter = DateFormatter() // DateFormatter 클래스 상수 선언
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss EEE" // formatter의 dateFormat 속성을 설정
+        formatter.dateFormat = "yy.MM.dd.(EEEEEE) a hh시 mm분" // formatter의 dateFormat 속성을 설정
+        formatter.locale = Locale(identifier:"ko_KR")
         startTime = formatter.string(from: datePickerView.date)
     }
 

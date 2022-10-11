@@ -12,21 +12,25 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet var pageControl: UIPageControl!
     @IBOutlet var itemScrollView: UIScrollView!
-    @IBOutlet var itemPrice: UILabel!
     @IBOutlet var itemName: UILabel!
+    @IBOutlet var itemPrice: UILabel!
     @IBOutlet var itemDesc: UITextView!
     
     var productId = 0
     let token = Keychain.read(key: "accessToken")
     var images = [UIImage]()
-    //    var imageViews = [UIImageView]()
     var imageCount = 0
+    var boardName: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         itemScrollView.delegate = self
         productDetailAPI()
+        
+        if let boardName = boardName {
+            self.navigationItem.title = boardName
+        }
     }
     
     
@@ -64,7 +68,7 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate {
                         let xPos = self.view.frame.width * CGFloat(i)
                         
                         imageView.contentMode = .scaleToFill
-                        imageView.frame = CGRect(x: xPos, y: 0, width: self.itemScrollView.bounds.width, height: self.itemScrollView.bounds.height - 70)
+                        imageView.frame = CGRect(x: xPos, y: 0, width: self.itemScrollView.bounds.width, height: self.itemScrollView.bounds.height - 90)
                         imageView.image = self.images[i]
                         
                         self.itemScrollView.addSubview(imageView)

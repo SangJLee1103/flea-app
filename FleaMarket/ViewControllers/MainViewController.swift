@@ -150,7 +150,7 @@ extension MainViewController: UICollectionViewDataSource {
         }
         cell.topic?.text = row.topic
         cell.date?.text = row.date
-        cell.place?.text = "장소:\(String(describing: row.place!))"
+        cell.place?.text = "장소: \(String(describing: row.place!))"
         
         return cell
     }
@@ -159,9 +159,11 @@ extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //게시글 아이디
         let id = self.list[indexPath.row].id
+        let boardName = self.list[indexPath.row].topic
         //게시글 아이디 전달 및 게시글페이지로 이동
         guard let boardElement = self.storyboard?.instantiateViewController(withIdentifier: "boardElement") as? ProductPostViewController else { return }
         boardElement.boardId = id
+        boardElement.boardName = boardName
         self.navigationController?.pushViewController(boardElement, animated: true)
     }
 }

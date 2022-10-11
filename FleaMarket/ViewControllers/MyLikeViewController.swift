@@ -10,6 +10,7 @@ import UIKit
 
 class MyLikeViewController: UITableViewController {
     
+    let token = Keychain.read(key: "accessToken")
     var likeItem: Array<NSDictionary> = []
     
     lazy var productList: [ProductModel] = {
@@ -60,6 +61,37 @@ class MyLikeViewController: UITableViewController {
         }
     }
     
+    // 좋아요 취소
+    func callDeleteLike(_ row: ProductModel) {
+        do{
+            guard let url =  URL(string: "\(Network.url)/likes/\(row.id!)/count") else { return }
+            
+            //URLRequest 객체를 정의
+            var request = URLRequest(url: url)
+            request.httpMethod = "DELETE"
+
+            //HTTP 메시지 헤더
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+
+            //URLSession 객체를 통해 전송, 응답값 처리
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let e = error{
+                    NSLog("An error has occured: \(e.localizedDescription)")
+                    return
+                }
+            }
+            task.resume()
+            
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Flea Market", message: "좋아요 취소되었습니다.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "확인", style: .default, handler: nil)
+                alert.addAction(action)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
     
     // MARK: - 테이블 뷰가 생성해야 할 행의 개수를 반환하는 메소드
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -80,5 +112,24 @@ class MyLikeViewController: UITableViewController {
         cell.likeCount?.text = "\(String(describing: (row.like?.count)!))"
         
         return cell
+    }
+    
+    // MARK: - 테이블 뷰 스와이핑 버튼(좋아요 취소 기능)
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let row = self.productList[indexPath.row]
+        let delete = UIContextualAction(style: .normal, title: "Delete") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
+            self.callDeleteLike(row)
+            
+            DispatchQueue.main.async {
+                self.productList.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+            success(true)
+        }
+        delete.backgroundColor = .systemRed
+        
+        //actions배열 인덱스 0이 오른쪽에 붙어서 나옴
+        return UISwipeActionsConfiguration(actions:[delete])
     }
 }

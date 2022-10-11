@@ -38,6 +38,7 @@ class EditPersonalInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.navigationItem.title = "개인정보수정"
         logoImg.image = UIImage(named:"MainLogo.png")
         
         self.emailField.delegate = self

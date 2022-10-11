@@ -109,6 +109,10 @@ class MyWriteViewController: UITableViewController {
         return boardList.count
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 140
+    }
+    
     // MARK: -  각 행이 화면에 표현해야 할 내용을 구성하는 메소드
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row: BoardModel = self.boardList[indexPath.row]
@@ -117,9 +121,16 @@ class MyWriteViewController: UITableViewController {
         cell.img.layer.cornerRadius = 5
         cell.img?.image = self.getThumbnailImage(indexPath.row)
         cell.topic?.text = row.topic
+        cell.place?.text = "장소: \(row.place!)"
         cell.date?.text = row.date
-        cell.place?.text = row.place
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let boardId = self.boardList[indexPath.row].id
+        guard let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "boardElement") as? ProductPostViewController else { return }
+        nextVC.boardId = boardId
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // MARK: - 테이블 뷰 스와이핑 버튼(수정, 삭제 기능)

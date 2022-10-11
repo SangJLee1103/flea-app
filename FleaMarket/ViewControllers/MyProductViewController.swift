@@ -158,20 +158,12 @@ class MyProductViewController: UITableViewController {
         return UISwipeActionsConfiguration(actions:[delete, modify])
     }
     
-    // MARK: - 행을 삭제하는 메소드
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            
-            
-            
-            
-        } else if editingStyle == .insert {
-            
-        }
-    }
-    
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
+        
+        guard let productId = self.productList[indexPath.row].id else { return }
+        guard let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
+        nextVC.productId = productId
+        self.navigationController?.pushViewController(nextVC, animated: true)
+        
     }
 }

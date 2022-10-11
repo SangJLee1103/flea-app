@@ -33,7 +33,7 @@ class ProductModifyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "상품 등록하기"
+        self.navigationItem.title = "상품정보 수정"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(productRegist))
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.systemYellow
         

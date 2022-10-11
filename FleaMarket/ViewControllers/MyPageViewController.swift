@@ -30,6 +30,9 @@ class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 1, green: 0.8705882353, blue: 0.2392156863, alpha: 0.8470588235)
+        
         activityTableView.dataSource = self
         activityTableView.delegate = self
         activityTableView.isScrollEnabled = false
@@ -82,19 +85,25 @@ class MyPageViewController: UIViewController {
                     //guard let jsonObject = object else { return }
                     //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
                     // JSON 결과값을 추출
-                    let data = object["list"] as! Array<NSDictionary>
+                    let data = object["list"] as? Array<NSDictionary>
                     
-                    self.userInfoVO.email = data[0]["id"] as? String
-                    self.userInfoVO.password = data[0]["password"] as? String
-                    self.userInfoVO.phoneNumber = data[0]["phone"] as? String
-                    self.userInfoVO.nickname = data[0]["nickname"] as? String
-                    self.userInfoVO.boards = data[0]["Boards"] as? NSArray
-                    self.userInfoVO.products = data[0]["Products"] as? NSArray
-                    self.userInfoVO.likes = data[0]["Likes"] as? Array<NSDictionary>
+                    self.userInfoVO.email = data?[0]["id"] as? String
+                    self.userInfoVO.password = data?[0]["password"] as? String
+                    self.userInfoVO.phoneNumber = data?[0]["phone"] as? String
+                    self.userInfoVO.nickname = data?[0]["nickname"] as? String
+                    self.userInfoVO.boards = data?[0]["Boards"] as? NSArray
+                    self.userInfoVO.products = data?[0]["Products"] as? NSArray
+                    self.userInfoVO.likes = data?[0]["Likes"] as? Array<NSDictionary>
                     
                     self.list.append(self.userInfoVO)
                     
-                    self.nickname.text = "닉네임: \(self.userInfoVO.nickname!)"
+                    if let nickname = self.userInfoVO.nickname {
+                        self.nickname.text = "닉네임: \(nickname)"
+                    }
+                    
+                    if let phone = self.userInfoVO.phoneNumber {
+                        self.phone.text = "휴대폰 번호: \(phone.pretty())"
+                    }
                     
                     self.phone.text = "휴대폰 번호: \(self.userInfoVO.phoneNumber!.pretty())"
                     

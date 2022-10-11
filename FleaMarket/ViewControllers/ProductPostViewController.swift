@@ -11,16 +11,17 @@ import BSImagePicker
 
 class ProductPostViewController: UIViewController {
     
-    var boardId: Int?
     let token = Keychain.read(key: "accessToken")
+    var boardId: Int?
+    var boardName: String?
     
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var rankingLbl: UILabel!
     // 상품 랭킹 컬렉션 뷰
     @IBOutlet var rankingView: UICollectionView!
     // 전체 상품 컬렉션 뷰
     @IBOutlet var productView: UICollectionView!
     @IBOutlet var productNumber: UILabel!
-    
     
     // 랭킹 데이터 리스트
     lazy var rankList: [ProductRankingModel] = {
@@ -39,6 +40,8 @@ class ProductPostViewController: UIViewController {
         super.viewDidLoad()
         self.navigationItem.title = "상품"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(goProductRegisterVC))
+        
+        self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 1, green: 0.8705882353, blue: 0.2392156863, alpha: 0.8470588235)
         
         self.getTopRanking {
             DispatchQueue.main.async {
@@ -60,6 +63,8 @@ class ProductPostViewController: UIViewController {
         productView.dataSource = self
         productView.delegate = self
         
+
+        rankingView.collectionViewLayout = createCompositional1()
         productView.collectionViewLayout = createCompositional()
     }
     
@@ -174,6 +179,8 @@ class ProductPostViewController: UIViewController {
                         DispatchQueue.main.async {
                             self.productNumber.center = CGPoint(x: self.view.frame.size.width / 2, y: self.view.frame.size.height / 2 - 100)
                         }
+                        
+                        self.scrollView.isScrollEnabled = false
                     }
                     
                 } catch let e as NSError {
@@ -185,32 +192,51 @@ class ProductPostViewController: UIViewController {
     }
 }
 
-
-
 // 컴포지셔널 레이아웃 관련
 extension ProductPostViewController {
     fileprivate func createCompositional() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout{
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .absolute(270))
-            
+
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .absolute(279))
+
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = NSDirectionalEdgeInsets(top: CGFloat(1.0), leading: CGFloat(1.0), bottom: CGFloat(1.0), trailing: CGFloat(1.0))
-            
+            item.contentInsets = NSDirectionalEdgeInsets(top: CGFloat(0.0), leading: CGFloat(0.0), bottom: CGFloat(0.0), trailing: CGFloat(0.0))
+
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: itemSize.heightDimension)
-            
+
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
-            
+
             let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 1)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
             return section
         }
         return layout
     }
+    
+    fileprivate func createCompositional1() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout{
+            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .absolute(299))
+
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: CGFloat(0.0), leading: CGFloat(0.0), bottom: CGFloat(0.0), trailing: CGFloat(0.0))
+
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: itemSize.heightDimension)
+
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
+
+            let section = NSCollectionLayoutSection(group: group)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+            section.orthogonalScrollingBehavior = .groupPaging
+            return section
+        }
+        return layout
+    }
+    
+    
 }
-
-
 
 //데이터 소스 설정 - 데이터 관련
 extension ProductPostViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -234,11 +260,13 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             let cellId = String(describing: TopRankingCell.self)
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TopRankingCell
             
-            cell.contentView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            
             cell.rankingLbl.text = "\(indexPath.row + 1)위"
             
             // top 10 상품 이미지 출력 부분
             let row = self.rankList[indexPath.row]
+            cell.productImg.layer.cornerRadius = 10
+            
             let imgParse = row.productImg!.split(separator:",")
             
             cell.productImg?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(imgParse[0])")!))
@@ -249,6 +277,7 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
         } else if collectionView == productView{
             if productList.count > 0 {
                 productNumber.text = "총 \(productList.count)건"
+                productNumber.font = .systemFont(ofSize: 14)
                 productNumber.textColor = .black
             }
             
@@ -257,6 +286,7 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             
             let row = self.productList[indexPath.row]
             
+            cell.img.layer.cornerRadius = 10
             cell.productId = row.id! // 상품 ID
             let imgParse = row.imgPath!.split(separator:",")
             
@@ -285,6 +315,7 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             
             guard let productDetailVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
             productDetailVC.productId = id!
+            productDetailVC.boardName = boardName
             self.navigationController?.pushViewController(productDetailVC, animated: true)
             
         }else if collectionView == productView{
@@ -293,6 +324,7 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             
             guard let productDetailVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
             productDetailVC.productId = id!
+            productDetailVC.boardName = boardName
             self.navigationController?.pushViewController(productDetailVC, animated: true)
         }
     }
