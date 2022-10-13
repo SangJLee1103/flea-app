@@ -64,7 +64,7 @@ class ProductPostViewController: UIViewController {
         productView.delegate = self
         
 
-        rankingView.collectionViewLayout = createCompositional1()
+        rankingView.collectionViewLayout = createCompositionalRankingView()
         productView.collectionViewLayout = createCompositional()
     }
     
@@ -214,7 +214,7 @@ extension ProductPostViewController {
         return layout
     }
     
-    fileprivate func createCompositional1() -> UICollectionViewLayout {
+    fileprivate func createCompositionalRankingView() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout{
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             
@@ -255,6 +255,9 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
     //각 컬렉션뷰 셀에 대한 설정
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        
         // top 10 뷰
         if collectionView == rankingView {
             let cellId = String(describing: TopRankingCell.self)
@@ -272,7 +275,9 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             cell.productImg?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(imgParse[0])")!))
             cell.sellerName?.text = row.sellerName
             cell.productName?.text = row.productName
-            cell.sellingPrice?.text = String (row.price!) + "원"
+            
+            let priceDecimal = numberFormatter.string(from: NSNumber(value: row.price!))
+            cell.sellingPrice?.text = "\(priceDecimal ?? "0")원"
             return cell
         } else if collectionView == productView{
             if productList.count > 0 {
@@ -293,7 +298,9 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             cell.img?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(imgParse[0])")!))
             cell.sellerName?.text = row.sellerName
             cell.name?.text = row.productName
-            cell.sellingPrice?.text = String(row.sellingPrice!) + "원"
+            
+            let priceDecimal = numberFormatter.string(from: NSNumber(value: row.sellingPrice!))
+            cell.sellingPrice?.text = "\(priceDecimal ?? "0")원"
             
             let like = row.like
             if((like?.count) != 0){ // LIKES 데이터가 있으면

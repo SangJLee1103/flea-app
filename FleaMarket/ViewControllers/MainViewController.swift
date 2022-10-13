@@ -95,6 +95,7 @@ class MainViewController: UIViewController {
     //새로고침
     func initRefresh(){
         let refresh = UIRefreshControl()
+        refresh.tintColor = #colorLiteral(red: 1, green: 0.8705882353, blue: 0.2392156863, alpha: 1)
         refresh.addTarget(self, action: #selector(updateUI(refresh:)), for: .valueChanged)
         
         // iOS 10.0 버전 이후부터

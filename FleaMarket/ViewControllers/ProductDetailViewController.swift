@@ -14,7 +14,10 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet var itemScrollView: UIScrollView!
     @IBOutlet var itemName: UILabel!
     @IBOutlet var itemPrice: UILabel!
+    @IBOutlet var topic: UILabel!
     @IBOutlet var itemDesc: UITextView!
+    @IBOutlet var likeCount: UILabel!
+    
     
     var productId = 0
     let token = Keychain.read(key: "accessToken")
@@ -28,9 +31,6 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate {
         itemScrollView.delegate = self
         productDetailAPI()
         
-        if let boardName = boardName {
-            self.navigationItem.title = boardName
-        }
     }
     
     
@@ -75,9 +75,28 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate {
                         self.itemScrollView.contentSize.width = imageView.frame.width * CGFloat(i + 1)
                     }
                     self.pageControl.numberOfPages = imgParse.count
-                    self.itemPrice.text = "₩ \(String((data["selling_price"] as? Int)!))"
+                    
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.numberStyle = .decimal
+                    
+                    guard let price = data["selling_price"] as? Int else {return}
+                    let priceDecimal = numberFormatter.string(from: NSNumber(value: price))
+
+                    self.itemPrice.text = "\(priceDecimal ?? "0")원"
                     self.itemName.text = data["name"] as? String
                     self.itemDesc.text = data["description"] as? String
+                    
+                    guard let topic = data["Board"] as? NSDictionary else { return }
+                    self.topic.text = "장소: \(topic["place"] as? String ?? "미정")"
+                    
+                    guard let startParsing = data["Board"] as? NSDictionary else { return }
+                    var start = startParsing["start"] as? String
+                    self.navigationItem.title = "\(start?.prefix(12) ?? "")"
+                    
+                    guard let likeCount = data["Likes"] as? NSArray else { return }
+                    self.likeCount.text = "\(likeCount.count)개"
+                    
+                    
                 } catch let e as NSError {
                     print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
                 }
