@@ -8,6 +8,7 @@
 import UIKit
 import Foundation
 import BSImagePicker
+import SnapKit
 
 class ProductPostViewController: UIViewController {
     
@@ -16,6 +17,7 @@ class ProductPostViewController: UIViewController {
     var boardName: String?
     
     @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var contentView: UIView!
     @IBOutlet var rankingLbl: UILabel!
     // 상품 랭킹 컬렉션 뷰
     @IBOutlet var rankingView: UICollectionView!
@@ -38,10 +40,6 @@ class ProductPostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "상품"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(goProductRegisterVC))
-        
-        self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 1, green: 0.8705882353, blue: 0.2392156863, alpha: 0.8470588235)
         
         self.getTopRanking {
             DispatchQueue.main.async {
@@ -52,8 +50,16 @@ class ProductPostViewController: UIViewController {
         self.getProduct {
             DispatchQueue.main.async {
                 self.productView.reloadData()
+                self.updateScrollView()
             }
         }
+        
+        self.navigationItem.title = "상품"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(goProductRegisterVC))
+        
+        self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 1, green: 0.8705882353, blue: 0.2392156863, alpha: 0.8470588235)
+        
+        scrollView.delegate = self
         
         rankingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         rankingView.dataSource = self
@@ -63,7 +69,6 @@ class ProductPostViewController: UIViewController {
         productView.dataSource = self
         productView.delegate = self
         
-
         rankingView.collectionViewLayout = createCompositionalRankingView()
         productView.collectionViewLayout = createCompositional()
     }
@@ -190,6 +195,14 @@ class ProductPostViewController: UIViewController {
             task.resume()
         }
     }
+        func updateScrollView() {
+            let height: CGFloat = 450 + CGFloat(((productList.count * 279)/2))
+            contentView.snp.remakeConstraints {
+                $0.edges.equalTo(scrollView)
+                $0.width.equalTo(self.view.frame.width)
+                $0.height.equalTo(height)
+            }
+        }
 }
 
 // 컴포지셔널 레이아웃 관련
@@ -197,16 +210,16 @@ extension ProductPostViewController {
     fileprivate func createCompositional() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout{
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
+            
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .absolute(279))
-
+            
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             item.contentInsets = NSDirectionalEdgeInsets(top: CGFloat(0.0), leading: CGFloat(0.0), bottom: CGFloat(0.0), trailing: CGFloat(0.0))
-
+            
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: itemSize.heightDimension)
-
+            
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
-
+            
             let section = NSCollectionLayoutSection(group: group)
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
             return section
@@ -219,14 +232,14 @@ extension ProductPostViewController {
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .absolute(299))
-
+            
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             item.contentInsets = NSDirectionalEdgeInsets(top: CGFloat(0.0), leading: CGFloat(0.0), bottom: CGFloat(0.0), trailing: CGFloat(0.0))
-
+            
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: itemSize.heightDimension)
-
+            
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
-
+            
             let section = NSCollectionLayoutSection(group: group)
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
             section.orthogonalScrollingBehavior = .groupPaging
@@ -234,8 +247,6 @@ extension ProductPostViewController {
         }
         return layout
     }
-    
-    
 }
 
 //데이터 소스 설정 - 데이터 관련
@@ -335,4 +346,8 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             self.navigationController?.pushViewController(productDetailVC, animated: true)
         }
     }
+}
+
+extension ProductPostViewController: UIScrollViewDelegate {
+
 }

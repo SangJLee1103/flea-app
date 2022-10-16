@@ -28,15 +28,10 @@ class MainViewController: UIViewController {
         boardCollection.dataSource = self
         boardCollection.delegate = self
         
-        self.getBoardAll{
-            DispatchQueue.main.async { [weak self] in
-                self?.boardCollection.reloadData()
-            }
-        }
         self.initRefresh()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.getBoardAll {
             DispatchQueue.main.async { [weak self] in
                 self?.boardCollection.reloadData()

@@ -60,8 +60,12 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         let name = self.productName?.text
         let cost_price = self.costPrice?.text
         let selling_price = self.sellingPrice?.text
-        let description = self.descriptionField?.text
+        var description = self.descriptionField?.text
         let createdAt = dateToString(Date())
+        
+        if description == placeholder {
+            description = ""
+        }
         
         let parameters = [
             "name" : name!,
@@ -163,11 +167,11 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
                     thumbnail = result!
                 }
                 
-                let data = thumbnail.jpegData(compressionQuality: 1.0)
-                let newImage = UIImage(data: data!)
+                guard let data = thumbnail.jpegData(compressionQuality: 1.0) else { return }
+                let newImage = UIImage(data: data)
                 
                 self.userSelectedImages.append(newImage! as UIImage)
-                self.selectedData.append(data!)
+                self.selectedData.append(data)
             }
             self.productImgView.reloadData()
         }
@@ -220,7 +224,7 @@ extension ProductRegistrationViewController: UITextFieldDelegate {
 extension ProductRegistrationViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if descriptionField.textColor == .lightGray {
+        if descriptionField.text == placeholder {
             descriptionField.text = ""
             descriptionField.textColor = .black
         }
