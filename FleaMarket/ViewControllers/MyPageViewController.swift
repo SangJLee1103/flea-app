@@ -11,7 +11,7 @@ import Foundation
 
 class MyPageViewController: UIViewController {
     
-    var activityList = ["게시글", "판매목록", "관심목록"]
+    var activityList = ["플리마켓", "판매목록", "관심목록"]
     var imageList = ["square.and.pencil", "cart.fill", "suit.heart.fill"]
     let token = Keychain.read(key: "accessToken")
     

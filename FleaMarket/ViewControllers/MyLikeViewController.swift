@@ -35,6 +35,7 @@ class MyLikeViewController: UITableViewController {
             myLikeItem.description = item["description"] as? String
             myLikeItem.productName = item["name"] as? String
             myLikeItem.costPrice = item["cost_price"] as? Int
+            myLikeItem.boardTitle = item["board_title"] as? String
             myLikeItem.sellerName = item["user_id"] as? String
             myLikeItem.createdAt = item["created_at"] as? String
             myLikeItem.like = item["Likes"] as? NSArray
@@ -102,13 +103,19 @@ class MyLikeViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let row: ProductModel = self.productList[indexPath.row]
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell") as! ItemCell
         
         cell.itemImg.layer.cornerRadius = 5
         cell.itemImg?.image = self.getThumbnailImage(indexPath.row)
         cell.itemName?.text = row.productName
-        cell.price?.text = "\(row.sellingPrice!)원"
-        cell.createdAt?.text = "\(String(describing: row.createdAt!))"
+        
+        let priceDecimal = numberFormatter.string(from: NSNumber(value: row.sellingPrice!))
+        cell.price?.text = "\(priceDecimal ?? "0")원"
+        
+        cell.createdAt?.text = "\(String(describing: row.boardTitle!))"
         cell.likeCount?.text = "\(String(describing: (row.like?.count)!))"
         
         return cell
@@ -131,5 +138,13 @@ class MyLikeViewController: UITableViewController {
         
         //actions배열 인덱스 0이 오른쪽에 붙어서 나옴
         return UISwipeActionsConfiguration(actions:[delete])
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        guard let productId = self.productList[indexPath.row].id else { return }
+        guard let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
+        nextVC.productId = productId
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
 }

@@ -16,6 +16,7 @@ class ProductModel {
     var createdAt: String? // 생성날짜
     var costPrice: Int? // 시가
     var boardId: Int? // 게시글 아이디
+    var boardTitle: String?
     var description: String? // 상품 상세 설명
     var like: NSArray? // 좋아요
     var thumbnailImage: UIImage? // 이미지

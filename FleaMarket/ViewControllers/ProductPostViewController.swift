@@ -196,7 +196,9 @@ class ProductPostViewController: UIViewController {
         }
     }
         func updateScrollView() {
-            let height: CGFloat = 450 + CGFloat(((productList.count * 279)/2))
+            print(productList.count)
+            print(round(Double(productList.count) / 2.0))
+            let height: CGFloat = 450 + CGFloat(round(Double(productList.count) / 2.0) * 280)
             contentView.snp.remakeConstraints {
                 $0.edges.equalTo(scrollView)
                 $0.width.equalTo(self.view.frame.width)

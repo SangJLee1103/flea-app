@@ -36,6 +36,7 @@ class MyProductViewController: UITableViewController {
             myItem.description = r["description"] as? String
             myItem.productName = r["name"] as? String
             myItem.boardId = r["board_id"] as? Int
+            myItem.boardTitle = r["board_title"] as? String
             myItem.sellerName = r["user_id"] as? String
             myItem.createdAt = r["created_at"] as? String
             myItem.like = r["Likes"] as? NSArray
@@ -117,13 +118,18 @@ class MyProductViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let row: ProductModel = self.productList[indexPath.row]
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell") as! ItemCell
         
         cell.itemImg.layer.cornerRadius = 5
         cell.itemImg?.image = self.getThumbnailImage(indexPath.row)
         cell.itemName?.text = row.productName
-        cell.price?.text = "\(row.sellingPrice!)원"
-        cell.createdAt?.text = "\(row.createdAt!)"
+        
+        let priceDecimal = numberFormatter.string(from: NSNumber(value: row.sellingPrice!))
+        cell.price?.text = "\(priceDecimal ?? "0")원"
+        cell.createdAt?.text = "\(row.boardTitle!)"
         cell.likeCount?.text = "\(String(describing: (row.like?.count)!))"
         
         return cell
@@ -164,6 +170,5 @@ class MyProductViewController: UITableViewController {
         guard let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
         nextVC.productId = productId
         self.navigationController?.pushViewController(nextVC, animated: true)
-        
     }
 }
