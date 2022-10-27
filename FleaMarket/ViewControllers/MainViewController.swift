@@ -140,7 +140,9 @@ extension MainViewController: UICollectionViewDataSource {
         let url: URL! = URL(string: row.imgPath!)
         
         if (url != nil) {
-            cell.image?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(String(describing: url!))")!))
+            DispatchQueue.main.async {
+                cell.image?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(String(describing: url!))")!))
+            }
         } else {
             cell.image?.image = UIImage(named: self.fleamarket[Int.random(in: 0..<2)])
         }

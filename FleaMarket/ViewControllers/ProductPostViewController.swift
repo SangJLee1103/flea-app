@@ -24,6 +24,7 @@ class ProductPostViewController: UIViewController {
     // 전체 상품 컬렉션 뷰
     @IBOutlet var productView: UICollectionView!
     @IBOutlet var productNumber: UILabel!
+    @IBOutlet var llineLbl: UILabel!
     
     // 랭킹 데이터 리스트
     lazy var rankList: [ProductRankingModel] = {
@@ -183,9 +184,9 @@ class ProductPostViewController: UIViewController {
                     if self.productList.count <= 0 {
                         DispatchQueue.main.async {
                             self.productNumber.center = CGPoint(x: self.view.frame.size.width / 2, y: self.view.frame.size.height / 2 - 100)
+                            self.llineLbl.layer.isHidden = true
+                            self.scrollView.isScrollEnabled = false
                         }
-                        
-                        self.scrollView.isScrollEnabled = false
                     }
                     
                 } catch let e as NSError {
@@ -276,7 +277,6 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             let cellId = String(describing: TopRankingCell.self)
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TopRankingCell
             
-            
             cell.rankingLbl.text = "\(indexPath.row + 1)위"
             
             // top 10 상품 이미지 출력 부분
@@ -284,7 +284,6 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             cell.productImg.layer.cornerRadius = 10
             
             let imgParse = row.productImg!.split(separator:",")
-            
             cell.productImg?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(imgParse[0])")!))
             cell.sellerName?.text = row.sellerName
             cell.productName?.text = row.productName

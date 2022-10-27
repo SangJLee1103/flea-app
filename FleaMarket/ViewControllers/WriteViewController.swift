@@ -51,13 +51,9 @@ class WriteViewController: UIViewController {
             (action) in
             self.openAlbum()
         }
-        let cameraAlertAction = UIAlertAction(title: "카메라", style: .default) {(action) in
-            self.openCamera()
-        }
         let cancelAlertAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         
         self.alertController.addAction(photoLibraryAlertAction)
-        self.alertController.addAction(cameraAlertAction)
         self.alertController.addAction(cancelAlertAction)
         
         guard let alertControllerPopoverPresentationController

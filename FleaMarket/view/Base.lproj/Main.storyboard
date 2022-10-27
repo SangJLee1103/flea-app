@@ -919,13 +919,13 @@
                                                     <outlet property="delegate" destination="gOY-6H-Hcf" id="EV4-82-CyX"/>
                                                 </connections>
                                             </collectionView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="상품 랭킹👑" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K4K-ph-WYJ">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TOP10 👑" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K4K-ph-WYJ">
                                                 <rect key="frame" x="20" y="22" width="126" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="126" id="7TN-2J-PSm"/>
                                                     <constraint firstAttribute="height" constant="34" id="JKy-Pg-VzK"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -1093,6 +1093,7 @@
                     <size key="freeformSize" width="393" height="900"/>
                     <connections>
                         <outlet property="contentView" destination="RFj-wC-6Nr" id="4K7-cq-9WS"/>
+                        <outlet property="llineLbl" destination="uXD-4a-Bfb" id="pzk-Ec-U4J"/>
                         <outlet property="productNumber" destination="diX-te-3lN" id="X8d-sm-HWx"/>
                         <outlet property="productView" destination="9C0-gF-0a0" id="Lqv-Y3-CXw"/>
                         <outlet property="rankingLbl" destination="K4K-ph-WYJ" id="UDQ-cs-rpZ"/>
