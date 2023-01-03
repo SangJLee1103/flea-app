@@ -23,8 +23,6 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        logoImg.image = UIImage(named:"MainLogo.png")
-        
         // 화면 터치 시 키보드 숨김
         self.emailField.delegate = self
         self.pwField.delegate = self
@@ -33,72 +31,40 @@ class LoginViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
     }
     
-    // MARK: - 로그인 버튼 액션 함수
+    // MARK: - 로그인 버튼 액션
     @IBAction func onLoginBtn(_ sender: UIButton) {
-        callLoginAPI()
-    }
-    
-    // MARK: - 로그인 API 호출 함수
-    func callLoginAPI(){
-        do{
-            
-            guard let url = URL(string: "\(Network.url)/member/login") else
-            {
-                print("Cannot create URL!")
-                return
-            }
-            
-            let loginUser = LoginModel(id: self.emailField.text!, password: self.pwField.text!)
-            guard let uploadData = try? JSONEncoder().encode(loginUser)
-            else { return }
-            
-            //URLRequest 객체를 정의
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            //URLSession 객체를 통해 전송, 응답값 처리
-            let task = URLSession.shared.uploadTask(with: request, from: uploadData) { (data, response, error) in
-                if let e = error{
-                    NSLog("An error has occured: \(e.localizedDescription)")
-                    return
-                }
-                DispatchQueue.main.async() {
-                    // 서버로부터 응답된 스트링 표시
-                    do {
-                        let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                        guard let jsonObject = object else { return }
+        guard let email = emailField.text else { return }
+        guard let password = pwField.text else { return }
+        
+        MemberService.login(email: email, password: password) { response in
+            switch response {
+            case .success(let result):
+                guard let message = result.message else { return }
+                if let accessToken = result.accessToken {
+                    DispatchQueue.main.async {
+                        let loginAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
                         
-                        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+                        let action = UIAlertAction(title: "OK", style: .default, handler: { _ in
+                            self.performSegue(withIdentifier: "mainSegue", sender: self)
+                        })
+                        loginAlert.addAction(action)
+                        UserDefaults.standard.set(accessToken, forKey: "accessToken")
+                        Keychain.create(key: "accessToken", token: accessToken)
+                        self.present(loginAlert, animated: true, completion: nil)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let checkAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
                         
-                        // JSON 결과값을 추출
-                        let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
-                        let accessToken = jsonObject["accessToken"] as? String
-                        
-                        
-                        if (status == 200) {
-                            let loginAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
-                            
-                            let action = UIAlertAction(title: "OK", style: .default, handler: { _ in
-                                self.performSegue(withIdentifier: "mainSegue", sender: self)
-                            })
-                            loginAlert.addAction(action)
-                            UserDefaults.standard.set(accessToken!, forKey: "accessToken")
-                            Keychain.create(key: "accessToken", token: accessToken!)
-                            self.present(loginAlert, animated: true, completion: nil)
-                        } else {
-                            let checkAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
-                            
-                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-                            checkAlert.addAction(action)
-                            self.present(checkAlert, animated: true, completion: nil)
-                        }
-                    } catch let e as NSError {
-                        print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        checkAlert.addAction(action)
+                        self.present(checkAlert, animated: true, completion: nil)
                     }
                 }
+                
+            case .failure(_):
+                print("Error")
             }
-            task.resume()
         }
     }
 }

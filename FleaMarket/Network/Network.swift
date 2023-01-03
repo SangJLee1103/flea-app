@@ -8,5 +8,5 @@
 import Foundation
 
 class Network {
-    static let url = "http:192.210.172.77:3000"
+    static let url = "http:localhost:3000"
 }

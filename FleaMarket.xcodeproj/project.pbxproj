@@ -19,6 +19,7 @@
 		F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AB0282661300081FF12 /* WriteViewController.swift */; };
 		F42D5AC72827EC210081FF12 /* TopRankingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D5AC62827EC210081FF12 /* TopRankingCell.swift */; };
 		F434175E284CC234008EF15C /* ProductRegistrationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F434175D284CC234008EF15C /* ProductRegistrationModel.swift */; };
+		F4395CE5295ED222001CAF6F /* MemberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4395CE4295ED222001CAF6F /* MemberService.swift */; };
 		F43B4B21289E6D5C008EFDC7 /* BoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43B4B20289E6D5C008EFDC7 /* BoardCell.swift */; };
 		F449FD1B283A861B00DAACB0 /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = F449FD1A283A861B00DAACB0 /* BSImagePicker */; };
 		F449FD1D283B79D900DAACB0 /* SelectedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */; };
@@ -34,7 +35,7 @@
 		F4779FB028577A6D00CA19F9 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4779FAF28577A6D00CA19F9 /* ItemCell.swift */; };
 		F4779FB22857824700CA19F9 /* MyLikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4779FB12857824700CA19F9 /* MyLikeViewController.swift */; };
 		F478D9EF28BB39DD003C686A /* account@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F478D9EE28BB39DD003C686A /* account@2x.jpg */; };
-		F478D9F128BB3E9C003C686A /* MainLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = F478D9F028BB3E9C003C686A /* MainLogo.png */; };
+		F495206E2964176A00B5DEEC /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F495206D2964176A00B5DEEC /* LoginResponse.swift */; };
 		F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1C2833E370004BA7FE /* ProductCell.swift */; };
 		F49CAF1F28360EC3004BA7FE /* ProductRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */; };
 		F4A69D692881732C000E6FC6 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A69D682881732C000E6FC6 /* LoginModel.swift */; };
@@ -51,14 +52,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		F42587FF2813B06400B16782 /* Embed App Extensions */ = {
+		F42587FF2813B06400B16782 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -78,6 +79,7 @@
 		F42D5AB0282661300081FF12 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		F42D5AC62827EC210081FF12 /* TopRankingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRankingCell.swift; sourceTree = "<group>"; };
 		F434175D284CC234008EF15C /* ProductRegistrationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegistrationModel.swift; sourceTree = "<group>"; };
+		F4395CE4295ED222001CAF6F /* MemberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberService.swift; sourceTree = "<group>"; };
 		F43B4B20289E6D5C008EFDC7 /* BoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardCell.swift; sourceTree = "<group>"; };
 		F449FD1C283B79D900DAACB0 /* SelectedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageCell.swift; sourceTree = "<group>"; };
 		F4651A8D28489AA800D7FE63 /* BoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardModel.swift; sourceTree = "<group>"; };
@@ -92,7 +94,7 @@
 		F4779FAF28577A6D00CA19F9 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 		F4779FB12857824700CA19F9 /* MyLikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikeViewController.swift; sourceTree = "<group>"; };
 		F478D9EE28BB39DD003C686A /* account@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "account@2x.jpg"; sourceTree = "<group>"; };
-		F478D9F028BB3E9C003C686A /* MainLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MainLogo.png; sourceTree = "<group>"; };
+		F495206D2964176A00B5DEEC /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		F49CAF1C2833E370004BA7FE /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegistrationViewController.swift; sourceTree = "<group>"; };
 		F4A69D682881732C000E6FC6 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -162,13 +164,30 @@
 			path = Security;
 			sourceTree = "<group>";
 		};
+		F4395CE3295ED20A001CAF6F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				F4395CE4295ED222001CAF6F /* MemberService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		F4651A8F2848B4D300D7FE63 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F478D9F028BB3E9C003C686A /* MainLogo.png */,
 				F478D9EE28BB39DD003C686A /* account@2x.jpg */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		F495206C2964165D00B5DEEC /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				F4A69D682881732C000E6FC6 /* LoginModel.swift */,
+				F495206D2964176A00B5DEEC /* LoginResponse.swift */,
+				F4D5E7C7280891DE001A97AD /* JoinModel.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		F4C8D24028B6792500C8EDBE /* Network */ = {
@@ -200,6 +219,7 @@
 		F4D5E7AD28087E5A001A97AD /* FleaMarket */ = {
 			isa = PBXGroup;
 			children = (
+				F4395CE3295ED20A001CAF6F /* Service */,
 				F4C8D24028B6792500C8EDBE /* Network */,
 				F4D5E7C52808919A001A97AD /* Model */,
 				F4D5E7C6280891A2001A97AD /* view */,
@@ -240,8 +260,7 @@
 		F4D5E7C52808919A001A97AD /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				F4A69D682881732C000E6FC6 /* LoginModel.swift */,
-				F4D5E7C7280891DE001A97AD /* JoinModel.swift */,
+				F495206C2964165D00B5DEEC /* Auth */,
 				F4651A8D28489AA800D7FE63 /* BoardModel.swift */,
 				F4651A9E284B7CEE00D7FE63 /* ProductRankingModel.swift */,
 				F4651AA0284B7CFB00D7FE63 /* ProductModel.swift */,
@@ -272,7 +291,7 @@
 				F4D5E7A728087E5A001A97AD /* Sources */,
 				F4D5E7A828087E5A001A97AD /* Frameworks */,
 				F4D5E7A928087E5A001A97AD /* Resources */,
-				F42587FF2813B06400B16782 /* Embed App Extensions */,
+				F42587FF2813B06400B16782 /* Embed Foundation Extensions */,
 				2C94431AD064841AFB4D9D11 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -295,7 +314,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					F4D5E7AA28087E5A001A97AD = {
 						CreatedOnToolsVersion = 13.2;
@@ -330,7 +349,6 @@
 			files = (
 				F478D9EF28BB39DD003C686A /* account@2x.jpg in Resources */,
 				F4D5E7BB28087E5C001A97AD /* LaunchScreen.storyboard in Resources */,
-				F478D9F128BB3E9C003C686A /* MainLogo.png in Resources */,
 				F4D5E7B828087E5C001A97AD /* Assets.xcassets in Resources */,
 				F4D5E7B628087E5A001A97AD /* Main.storyboard in Resources */,
 			);
@@ -411,11 +429,13 @@
 				F4779FAE2856B56200CA19F9 /* UserInfoModel.swift in Sources */,
 				F4779FB028577A6D00CA19F9 /* ItemCell.swift in Sources */,
 				F407D02B280EBBD900E36491 /* MapViewController.swift in Sources */,
+				F495206E2964176A00B5DEEC /* LoginResponse.swift in Sources */,
 				F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */,
 				F4A69D692881732C000E6FC6 /* LoginModel.swift in Sources */,
 				F472554428A0CF14008F6C3A /* BoardModifyViewController.swift in Sources */,
 				F49CAF1F28360EC3004BA7FE /* ProductRegistrationViewController.swift in Sources */,
 				F449FD1D283B79D900DAACB0 /* SelectedImageCell.swift in Sources */,
+				F4395CE5295ED222001CAF6F /* MemberService.swift in Sources */,
 				F42D5AC72827EC210081FF12 /* TopRankingCell.swift in Sources */,
 				F4651A8E28489AA800D7FE63 /* BoardModel.swift in Sources */,
 				F407D02D280EBF6E00E36491 /* MyPageViewController.swift in Sources */,

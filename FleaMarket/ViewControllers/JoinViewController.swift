@@ -35,7 +35,6 @@ class JoinViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.navigationController?.isNavigationBarHidden = true
-        logoImg.image = UIImage(named:"MainLogo.png")
         
         self.emailField.delegate = self
         self.pwField.delegate = self
