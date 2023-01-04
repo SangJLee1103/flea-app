@@ -36,6 +36,7 @@
 		F4779FB22857824700CA19F9 /* MyLikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4779FB12857824700CA19F9 /* MyLikeViewController.swift */; };
 		F478D9EF28BB39DD003C686A /* account@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F478D9EE28BB39DD003C686A /* account@2x.jpg */; };
 		F495206E2964176A00B5DEEC /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F495206D2964176A00B5DEEC /* LoginResponse.swift */; };
+		F4952071296430C800B5DEEC /* JoinError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4952070296430C800B5DEEC /* JoinError.swift */; };
 		F49CAF1D2833E370004BA7FE /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1C2833E370004BA7FE /* ProductCell.swift */; };
 		F49CAF1F28360EC3004BA7FE /* ProductRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */; };
 		F4A69D692881732C000E6FC6 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A69D682881732C000E6FC6 /* LoginModel.swift */; };
@@ -95,6 +96,7 @@
 		F4779FB12857824700CA19F9 /* MyLikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikeViewController.swift; sourceTree = "<group>"; };
 		F478D9EE28BB39DD003C686A /* account@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "account@2x.jpg"; sourceTree = "<group>"; };
 		F495206D2964176A00B5DEEC /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
+		F4952070296430C800B5DEEC /* JoinError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinError.swift; sourceTree = "<group>"; };
 		F49CAF1C2833E370004BA7FE /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegistrationViewController.swift; sourceTree = "<group>"; };
 		F4A69D682881732C000E6FC6 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -186,6 +188,16 @@
 				F4A69D682881732C000E6FC6 /* LoginModel.swift */,
 				F495206D2964176A00B5DEEC /* LoginResponse.swift */,
 				F4D5E7C7280891DE001A97AD /* JoinModel.swift */,
+				F4952070296430C800B5DEEC /* JoinError.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		F495206F29642EA600B5DEEC /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				F4D5E7B228087E5A001A97AD /* LoginViewController.swift */,
+				F4D5E7C3280885FE001A97AD /* JoinViewController.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -237,8 +249,7 @@
 		F4D5E7C228087E9A001A97AD /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				F4D5E7B228087E5A001A97AD /* LoginViewController.swift */,
-				F4D5E7C3280885FE001A97AD /* JoinViewController.swift */,
+				F495206F29642EA600B5DEEC /* Auth */,
 				F407D028280EBB2C00E36491 /* MyTabBarController.swift */,
 				F407D02E280EC39E00E36491 /* MainViewController.swift */,
 				F414AE08281CEAB6002D9221 /* ProductPostViewController.swift */,
@@ -435,6 +446,7 @@
 				F472554428A0CF14008F6C3A /* BoardModifyViewController.swift in Sources */,
 				F49CAF1F28360EC3004BA7FE /* ProductRegistrationViewController.swift in Sources */,
 				F449FD1D283B79D900DAACB0 /* SelectedImageCell.swift in Sources */,
+				F4952071296430C800B5DEEC /* JoinError.swift in Sources */,
 				F4395CE5295ED222001CAF6F /* MemberService.swift in Sources */,
 				F42D5AC72827EC210081FF12 /* TopRankingCell.swift in Sources */,
 				F4651A8E28489AA800D7FE63 /* BoardModel.swift in Sources */,

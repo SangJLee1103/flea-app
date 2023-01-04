@@ -164,7 +164,32 @@ class JoinViewController: UIViewController {
     
     //회원가입 기능 액션 함수
     @IBAction func onJoinBtn(_ sender: UIButton) {
-        callJoinAPI()
+        guard let email = emailField.text else { return }
+        guard let password = pwField.text else { return }
+        guard let nickname = nicknameField.text else { return }
+        guard let phone = phoneField.text else { return }
+        
+        MemberService.join(email: email, password: password, nickname: nickname, phone: phone) { response in
+            switch response {
+            case.success((let result, let status)):
+                
+                if status == 201 {
+                    DispatchQueue.main.async {
+                        self.clearLabel()
+                        let joinAlert = UIAlertController(title: "Flea Market", message: result.message[0].msg, preferredStyle: .alert)
+
+                        let action = UIAlertAction(title: "OK", style: .default, handler: { _ in self.navigationController?.popViewController(animated: true)})
+                        joinAlert.addAction(action)
+                        self.present(joinAlert, animated: true, completion: nil)
+                    }
+                } else {
+                    print("ㅗ")
+                }
+                
+            case.failure(_):
+                print("Error")
+            }
+        }
     }
 }
 

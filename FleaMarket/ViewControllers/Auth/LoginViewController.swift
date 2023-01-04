@@ -32,7 +32,7 @@ class LoginViewController: UIViewController {
     }
     
     // MARK: - 로그인 버튼 액션
-    @IBAction func onLoginBtn(_ sender: UIButton) {
+    @IBAction func handleLogin(_ sender: UIButton) {
         guard let email = emailField.text else { return }
         guard let password = pwField.text else { return }
         
@@ -61,7 +61,6 @@ class LoginViewController: UIViewController {
                         self.present(checkAlert, animated: true, completion: nil)
                     }
                 }
-                
             case .failure(_):
                 print("Error")
             }

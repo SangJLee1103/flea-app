@@ -51,7 +51,7 @@
                                                     <color key="baseBackgroundColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </buttonConfiguration>
                                                 <connections>
-                                                    <action selector="onLoginBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oVe-z7-goI"/>
+                                                    <action selector="handleLogin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hd4-cp-HVu"/>
                                                 </connections>
                                             </button>
                                         </subviews>
