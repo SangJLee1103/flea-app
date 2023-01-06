@@ -11,7 +11,7 @@ struct MemberService {
     
     // MARK: - 로그인 API 호출 로직
     static func login(email: String, password: String, completion: @escaping(Result<LoginResponse, Error>) -> Void) {
-        do{
+        do {
             guard let url = URL(string: "\(Network.url)/member/login") else {
                 print("Cannot create URL!")
                 return
@@ -55,8 +55,8 @@ struct MemberService {
     }
     
     // MARK: - 회원가입 API 호출 로직
-    static func join(email: String, password: String, nickname: String, phone: String, completion: @escaping(Result<(JoinErrArr, Int), Error>) -> Void) {
-        do{
+    static func join(email: String, password: String, nickname: String, phone: String, completion: @escaping(Result<(ResponseMsgArr, Int), Error>) -> Void) {
+        do {
             guard let url = URL(string: "\(Network.url)/member/join") else {
                 print("Cannot create URL!")
                 return
@@ -84,7 +84,7 @@ struct MemberService {
                 
                 if let safeData = data {
                     do {
-                        let result = try JSONDecoder().decode(JoinErrArr.self, from: safeData)
+                        let result = try JSONDecoder().decode(ResponseMsgArr.self, from: safeData)
                         completion(.success((result, status)))
                         
                     } catch {

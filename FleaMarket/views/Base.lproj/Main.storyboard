@@ -691,7 +691,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MainSceneBoardCell" id="VPo-e3-gIN" customClass="MainSceneBoardCell" customModule="FleaMarket" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MainBoardCell" id="VPo-e3-gIN" customClass="MainBoardCell" customModule="FleaMarket" customModuleProvider="target">
                                         <rect key="frame" x="21" y="0.0" width="351" height="140"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="2JY-HF-ctz">
@@ -767,10 +767,10 @@
                                         <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         <size key="customSize" width="351" height="140"/>
                                         <connections>
-                                            <outlet property="date" destination="vij-kc-EMi" id="ZIc-1s-VMZ"/>
-                                            <outlet property="image" destination="dxg-43-3eT" id="x7W-ao-pMr"/>
-                                            <outlet property="place" destination="khM-3S-V5T" id="S0o-c3-4Bw"/>
-                                            <outlet property="topic" destination="vB7-dg-o8Q" id="glQ-uY-htt"/>
+                                            <outlet property="date" destination="khM-3S-V5T" id="ywG-N4-7js"/>
+                                            <outlet property="image" destination="dxg-43-3eT" id="Plr-8X-UKR"/>
+                                            <outlet property="place" destination="vij-kc-EMi" id="vNP-ev-y3i"/>
+                                            <outlet property="topic" destination="vB7-dg-o8Q" id="9iK-4Z-buG"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -812,7 +812,7 @@
                     </tabBarItem>
                     <navigationItem key="navigationItem" title="플리마켓" largeTitleDisplayMode="always" id="fye-hG-yWy"/>
                     <connections>
-                        <outlet property="boardCollection" destination="Fwn-G3-fqP" id="tyB-NM-rJ4"/>
+                        <outlet property="boardCollectionView" destination="Fwn-G3-fqP" id="tyB-NM-rJ4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uoe-vg-aiw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

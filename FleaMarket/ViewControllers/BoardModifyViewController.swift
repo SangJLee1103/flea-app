@@ -17,7 +17,7 @@ class BoardModifyViewController: UIViewController {
     @IBOutlet var placeField: UITextField!
     
     let token = Keychain.read(key: "accessToken")
-    var boardInfo = BoardModel()
+//    var boardInfo = BoardModel()
     
     var startTime: String = ""
     var photo: Data? = Data()
@@ -31,8 +31,8 @@ class BoardModifyViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.title = "게시글 수정"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onUpdateBtn(_:)))
-        
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onUpdateBtn(_:)))
+//        
         thumbnail.layer.cornerRadius = 15
         startField.contentHorizontalAlignment = .center
         
@@ -44,7 +44,7 @@ class BoardModifyViewController: UIViewController {
         descriptionField.delegate = self
         
         // 초기 UI 함수 호출
-        configureBoardUI()
+//        configureBoardUI()
     }
     
     // MARK: -카메라 혹은 사진 앨범 라이브러리 선택 Alert
@@ -80,117 +80,117 @@ class BoardModifyViewController: UIViewController {
     }
 
     // MARK: - 이미지를 추출하는 함수
-    func getThumbnailImage() -> UIImage {
-        let board = self.boardInfo
-        
-        if let savedImage = board.thumbnailImage {
-            return savedImage
-        } else {
-            let url: URL! = URL(string: "\(Network.url)/\(board.imgPath!)")
-            let imageData = try! Data(contentsOf: url)
-            board.thumbnailImage = UIImage(data: imageData)
-            
-            return board.thumbnailImage!
-        }
-    }
+//    func getThumbnailImage() -> UIImage {
+//        let board = self.boardInfo
+//
+//        if let savedImage = board.thumbnailImage {
+//            return savedImage
+//        } else {
+//            let url: URL! = URL(string: "\(Network.url)/\(board.imgPath!)")
+//            let imageData = try! Data(contentsOf: url)
+//            board.thumbnailImage = UIImage(data: imageData)
+//
+//            return board.thumbnailImage!
+//        }
+//    }
     
     // MARK: - 현재 게시글 UI 구성
-    func configureBoardUI() {
-        let data = self.getThumbnailImage().jpegData(compressionQuality: 1.0)
-            
-        self.photo = data!
-        self.thumbnail.image = self.getThumbnailImage()
-        self.titleField.text = self.boardInfo.topic
-        self.placeField.text = self.boardInfo.place
-        self.descriptionField.text = self.boardInfo.description
-    }
+//    func configureBoardUI() {
+//        let data = self.getThumbnailImage().jpegData(compressionQuality: 1.0)
+//
+//        self.photo = data!
+//        self.thumbnail.image = self.getThumbnailImage()
+//        self.titleField.text = self.boardInfo.topic
+//        self.placeField.text = self.boardInfo.place
+//        self.descriptionField.text = self.boardInfo.description
+//    }
     
     // MARK: - 작성 버튼 이벤트
-    @objc func onUpdateBtn(_ sender: Any) {
-        guard let url = URL(string: "\(Network.url)/board/\(boardInfo.writer!)/\(boardInfo.id!)") else { return }
-        
-        let topic = self.titleField?.text
-        let place = self.placeField?.text
-        let start = startTime
-        let description = self.descriptionField?.text
-        
-        //Json 객체로 전송할 딕셔너리
-        let parameters = [
-            "topic" : topic!,
-            "place" : place!,
-            "start" : start,
-            "description" : description!
-        ] as [String : Any]
-        
-        let boundary = "Boundary-\(UUID().uuidString)"
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "PUT"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
-        
-        
-        var uploadData = Data()
-        let imgDataKey = "img"
-        let boundaryPrefix = "--\(boundary)\r\n"
-        
-        for (key, value) in parameters {
-            uploadData.append(boundaryPrefix.data(using: .utf8)!)
-            uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-            uploadData.append("\(value)\r\n".data(using: .utf8)!)
-        }
-        
-        uploadData.append(boundaryPrefix.data(using: .utf8)!)
-        uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
-        uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
-        uploadData.append(photo!)
-        uploadData.append("\r\n".data(using: .utf8)!)
-        uploadData.append("--\(boundary)--".data(using: .utf8)!)
-        
-        do{
-            //URLSession 객체를 통해 전송, 응답값 처리
-            URLSession.shared.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
-                DispatchQueue.main.async() {
-                    // 서버로부터 응답된 스트링 표시
-                    do {
-                        let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                        guard let jsonObject = object else { return }
-                        
-                        //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
-                        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-                        
-                        // JSON 결과값을 추출
-                        let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
-                        let errorArray = jsonObject["message"] as? Array<NSDictionary>
-                        let error = errorArray?[0]["msg"] as? String
-                        
-                        // 성공
-                        if (status == 201) {
-                            let writeAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
-                            let action = UIAlertAction(title: "OK", style: .default){ (_) in
-                                self.navigationController?.popToRootViewController(animated: true)
-                            }
-                            writeAlert.addAction(action)
-                            self.present(writeAlert, animated: true, completion: nil)
-                        } else if (status == 403) {
-                            let duplicationAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
-                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-                            duplicationAlert.addAction(action)
-                            self.present(duplicationAlert, animated: true, completion: nil)
-                        }else { // 실패
-                            let checkAlert = UIAlertController(title: "Flea Market", message: error, preferredStyle: .alert)
-                            
-                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-                            checkAlert.addAction(action)
-                            self.present(checkAlert, animated: true, completion: nil)
-                        }
-                    } catch let e as NSError {
-                        print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
-                    }
-                }
-            }.resume()
-        }
-    }
+//    @objc func onUpdateBtn(_ sender: Any) {
+//        guard let url = URL(string: "\(Network.url)/board/\(boardInfo.writer!)/\(boardInfo.id!)") else { return }
+//
+//        let topic = self.titleField?.text
+//        let place = self.placeField?.text
+//        let start = startTime
+//        let description = self.descriptionField?.text
+//
+//        //Json 객체로 전송할 딕셔너리
+//        let parameters = [
+//            "topic" : topic!,
+//            "place" : place!,
+//            "start" : start,
+//            "description" : description!
+//        ] as [String : Any]
+//
+//        let boundary = "Boundary-\(UUID().uuidString)"
+//
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "PUT"
+//        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+//        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+//
+//
+//        var uploadData = Data()
+//        let imgDataKey = "img"
+//        let boundaryPrefix = "--\(boundary)\r\n"
+//
+//        for (key, value) in parameters {
+//            uploadData.append(boundaryPrefix.data(using: .utf8)!)
+//            uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+//            uploadData.append("\(value)\r\n".data(using: .utf8)!)
+//        }
+//
+//        uploadData.append(boundaryPrefix.data(using: .utf8)!)
+//        uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
+//        uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
+//        uploadData.append(photo!)
+//        uploadData.append("\r\n".data(using: .utf8)!)
+//        uploadData.append("--\(boundary)--".data(using: .utf8)!)
+//
+//        do{
+//            //URLSession 객체를 통해 전송, 응답값 처리
+//            URLSession.shared.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
+//                DispatchQueue.main.async() {
+//                    // 서버로부터 응답된 스트링 표시
+//                    do {
+//                        let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+//                        guard let jsonObject = object else { return }
+//
+//                        //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
+//                        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+//
+//                        // JSON 결과값을 추출
+//                        let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
+//                        let errorArray = jsonObject["message"] as? Array<NSDictionary>
+//                        let error = errorArray?[0]["msg"] as? String
+//
+//                        // 성공
+//                        if (status == 201) {
+//                            let writeAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
+//                            let action = UIAlertAction(title: "OK", style: .default){ (_) in
+//                                self.navigationController?.popToRootViewController(animated: true)
+//                            }
+//                            writeAlert.addAction(action)
+//                            self.present(writeAlert, animated: true, completion: nil)
+//                        } else if (status == 403) {
+//                            let duplicationAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
+//                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+//                            duplicationAlert.addAction(action)
+//                            self.present(duplicationAlert, animated: true, completion: nil)
+//                        }else { // 실패
+//                            let checkAlert = UIAlertController(title: "Flea Market", message: error, preferredStyle: .alert)
+//
+//                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+//                            checkAlert.addAction(action)
+//                            self.present(checkAlert, animated: true, completion: nil)
+//                        }
+//                    } catch let e as NSError {
+//                        print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+//                    }
+//                }
+//            }.resume()
+//        }
+//    }
 }
 
 // MARK: - 텍스트 뷰 델리게이트

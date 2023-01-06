@@ -36,7 +36,7 @@ class LoginViewController: UIViewController {
         guard let email = emailField.text else { return }
         guard let password = pwField.text else { return }
         
-        MemberService.login(email: email, password: password) { response in
+        MemberService.login(email: email, password: password) { [weak self] response in
             switch response {
             case .success(let result):
                 guard let message = result.message else { return }
@@ -45,12 +45,12 @@ class LoginViewController: UIViewController {
                         let loginAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
                         
                         let action = UIAlertAction(title: "OK", style: .default, handler: { _ in
-                            self.performSegue(withIdentifier: "mainSegue", sender: self)
+                            self?.performSegue(withIdentifier: "mainSegue", sender: self)
                         })
                         loginAlert.addAction(action)
                         UserDefaults.standard.set(accessToken, forKey: "accessToken")
                         Keychain.create(key: "accessToken", token: accessToken)
-                        self.present(loginAlert, animated: true, completion: nil)
+                        self?.present(loginAlert, animated: true, completion: nil)
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -58,7 +58,7 @@ class LoginViewController: UIViewController {
                         
                         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                         checkAlert.addAction(action)
-                        self.present(checkAlert, animated: true, completion: nil)
+                        self?.present(checkAlert, animated: true, completion: nil)
                     }
                 }
             case .failure(_):

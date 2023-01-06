@@ -17,7 +17,6 @@ class WriteViewController: UIViewController {
     @IBOutlet var placeField: UITextField!
     @IBOutlet var btnForWrite: UIBarButtonItem!
     
-    
     let token = Keychain.read(key: "accessToken")
     var startTime: String = ""
     var photo: Data? = Data()
@@ -87,84 +86,36 @@ class WriteViewController: UIViewController {
     
     // MARK: -작성 버튼 이벤트
     @IBAction func onWriteBtn(_ sender: Any) {
-        guard let url = URL(string: "\(Network.url)/board/write") else { return }
-        
-        let topic = self.titleField?.text
-        let place = self.placeField?.text
+        guard let topic = self.titleField.text else { return }
+        guard let place = self.placeField.text else { return }
         let start = startTime
-        let description = self.descriptionField?.text
+        guard let description = self.descriptionField.text else { return }
+        guard let photo = self.photo else { return }
         
-        
-        //Json 객체로 전송할 딕셔너리
-        let parameters = [
-            "topic" : topic!,
-            "place" : place!,
-            "start" : start,
-            "description" : description!
-        ] as [String : Any]
-        
-        let boundary = "Boundary-\(UUID().uuidString)"
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
-        
-        
-        var uploadData = Data()
-        let imgDataKey = "img"
-        let boundaryPrefix = "--\(boundary)\r\n"
-        
-        for (key, value) in parameters {
-            uploadData.append(boundaryPrefix.data(using: .utf8)!)
-            uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-            uploadData.append("\(value)\r\n".data(using: .utf8)!)
-        }
-        
-        uploadData.append(boundaryPrefix.data(using: .utf8)!)
-        uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
-        uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
-        uploadData.append(photo!)
-        uploadData.append("\r\n".data(using: .utf8)!)
-        uploadData.append("--\(boundary)--".data(using: .utf8)!)
-        
-        do{
-            //URLSession 객체를 통해 전송, 응답값 처리
-            URLSession.shared.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
-                DispatchQueue.main.async() {
-                    // 서버로부터 응답된 스트링 표시
-                    do {
-                        let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                        guard let jsonObject = object else { return }
-                        
-                        //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
-                        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-                        
-                        // JSON 결과값을 추출
-                        let message = jsonObject["message"] as? String //String 타입으로 다운캐스팅
-                        let errorArray = jsonObject["message"] as? Array<NSDictionary>
-                        let error = errorArray?[0]["msg"] as? String
-                        
-                        // 성공
-                        if (status == 201) {
-                            let writeAlert = UIAlertController(title: "Flea Market", message: message, preferredStyle: .alert)
-                            let action = UIAlertAction(title: "OK", style: .default){ (_) in
-                                self.navigationController?.popToRootViewController(animated: true)
-                            }
-                            writeAlert.addAction(action)
-                            self.present(writeAlert, animated: true, completion: nil)
-                        } else { // 실패
-                            let checkAlert = UIAlertController(title: "Flea Market", message: error, preferredStyle: .alert)
-                            
-                            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-                            checkAlert.addAction(action)
-                            self.present(checkAlert, animated: true, completion: nil)
+        BoardService.writeBoard(topic: topic, place: place, start: start, description: description, photo: photo) { [weak self] response in
+            switch response {
+            case.success((let result, let status)):
+                if status == 201 {
+                    DispatchQueue.main.async {
+                        let writeAlert = UIAlertController(title: "Flea Market", message: result.message[0].msg, preferredStyle: .alert)
+                        let action = UIAlertAction(title: "OK", style: .default){ (_) in
+                            self?.navigationController?.popToRootViewController(animated: true)
                         }
-                    } catch let e as NSError {
-                        print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+                        writeAlert.addAction(action)
+                        self?.present(writeAlert, animated: true, completion: nil)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let checkAlert = UIAlertController(title: "Flea Market", message: result.message[0].msg, preferredStyle: .alert)
+                        
+                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        checkAlert.addAction(action)
+                        self?.present(checkAlert, animated: true, completion: nil)
                     }
                 }
-            }.resume()
+            case.failure(_):
+                print("Error")
+            }
         }
     }
 }
@@ -200,12 +151,12 @@ extension WriteViewController: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-      if (text == "\n") {
-        textView.resignFirstResponder()
-      } else {
-      }
-      return true
-    } 
+        if (text == "\n") {
+            textView.resignFirstResponder()
+        } else {
+        }
+        return true
+    }
 }
 
 

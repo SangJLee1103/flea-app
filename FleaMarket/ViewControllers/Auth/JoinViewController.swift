@@ -75,33 +75,33 @@ class JoinViewController: UIViewController {
         guard let nickname = nicknameField.text else { return }
         guard let phone = phoneField.text else { return }
         
-        MemberService.join(email: email, password: password, nickname: nickname, phone: phone) { response in
+        MemberService.join(email: email, password: password, nickname: nickname, phone: phone) { [weak self] response in
             switch response {
             case.success((let result, let status)):
                 if status == 201 {
                     DispatchQueue.main.async {
-                        self.clearLabel()
+                        self?.clearLabel()
                         let joinAlert = UIAlertController(title: "Flea Market", message: result.message[0].msg, preferredStyle: .alert)
 
-                        let action = UIAlertAction(title: "OK", style: .default, handler: { _ in self.navigationController?.popViewController(animated: true)})
+                        let action = UIAlertAction(title: "OK", style: .default, handler: { _ in self?.navigationController?.popViewController(animated: true)})
                         joinAlert.addAction(action)
-                        self.present(joinAlert, animated: true, completion: nil)
+                        self?.present(joinAlert, animated: true, completion: nil)
                     }
                 } else {
-                    self.clearLabel()
+                    self?.clearLabel()
                     DispatchQueue.main.async {
                         for i in 0 ..< result.message.count {
                             if result.message[i].param == "id" {
-                                self.emailError.text = result.message[i].msg
+                                self?.emailError.text = result.message[i].msg
                                 continue
                             } else if result.message[i].param == "password" {
-                                self.pwError.text = result.message[i].msg
+                                self?.pwError.text = result.message[i].msg
                                 continue
                             } else if result.message[i].param == "nickname" {
-                                self.nicknameError.text = result.message[i].msg
+                                self?.nicknameError.text = result.message[i].msg
                                 continue
                             } else {
-                                self.phoneError.text = result.message[i].msg
+                                self?.phoneError.text = result.message[i].msg
                                 break
                             }
                         }

@@ -7,12 +7,13 @@
 
 import Foundation
 
-struct JoinError: Decodable {
+// 회원가입 response 모델
+struct ResponseMsg: Decodable {
     let msg: String
     let param: String?
 }
 
-struct JoinErrArr: Decodable {
-    var message: [JoinError]
+struct ResponseMsgArr: Decodable {
+    var message: [ResponseMsg]
 }
 
