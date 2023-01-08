@@ -61,7 +61,7 @@ class MyWriteViewController: UITableViewController {
     // MARK: - 게시글 수정 페이지 이동 함수
     func moveModifyViewController(_ row: BoardModel) {
         guard let boardModifyVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardModifyViewController") as? BoardModifyViewController else { return }
-//        boardModifyVC.boardInfo = row
+        boardModifyVC.boardInfo = row
         self.navigationController?.pushViewController(boardModifyVC, animated: true)
     }
     

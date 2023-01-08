@@ -84,7 +84,7 @@ class WriteViewController: UIViewController {
         self.present(alert, animated: false)
     }
     
-    // MARK: -작성 버튼 이벤트
+    // MARK: - 작성 버튼 이벤트
     @IBAction func onWriteBtn(_ sender: Any) {
         guard let topic = self.titleField.text else { return }
         guard let place = self.placeField.text else { return }
@@ -92,13 +92,15 @@ class WriteViewController: UIViewController {
         guard let description = self.descriptionField.text else { return }
         guard let photo = self.photo else { return }
         
-        BoardService.writeBoard(topic: topic, place: place, start: start, description: description, photo: photo) { [weak self] response in
+        BoardService.postBoard(topic: topic, place: place, start: start, description: description, photo: photo) { [weak self] response in
             switch response {
             case.success((let result, let status)):
                 if status == 201 {
                     DispatchQueue.main.async {
                         let writeAlert = UIAlertController(title: "Flea Market", message: result.message[0].msg, preferredStyle: .alert)
                         let action = UIAlertAction(title: "OK", style: .default){ (_) in
+                            let mainVC = self?.navigationController!.viewControllers.first as? MainViewController
+                            mainVC?.updateUI()
                             self?.navigationController?.popToRootViewController(animated: true)
                         }
                         writeAlert.addAction(action)

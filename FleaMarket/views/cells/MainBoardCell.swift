@@ -26,15 +26,6 @@ class MainBoardCell: UICollectionViewCell{
         image.layer.cornerRadius = 10
     }
     
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
-    
     func configure() {
         guard let viewModel = viewModel else { return }
         image.sd_setImage(with: viewModel.imageUrl)

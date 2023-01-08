@@ -29,6 +29,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         boardCollectionView.dataSource = self
         boardCollectionView.delegate = self
+        initRefresh()
         fetchBoards()
     }
     
@@ -38,7 +39,9 @@ class MainViewController: UIViewController {
             switch response {
             case.success(let result):
                 self?.boards = result.data
-                self?.boardCollectionView.refreshControl?.endRefreshing()
+                DispatchQueue.main.async {
+                    self?.boardCollectionView.refreshControl?.endRefreshing()
+                }
             case.failure(_):
                 print("Error")
             }

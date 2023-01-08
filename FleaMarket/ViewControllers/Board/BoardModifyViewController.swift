@@ -17,7 +17,7 @@ class BoardModifyViewController: UIViewController {
     @IBOutlet var placeField: UITextField!
     
     let token = Keychain.read(key: "accessToken")
-//    var boardInfo = BoardModel()
+    var boardInfo: BoardModel?
     
     var startTime: String = ""
     var photo: Data? = Data()

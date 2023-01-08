@@ -7,12 +7,12 @@
 
 import Foundation
 
-class UserInfoModel {
-    var email: String?
-    var password: String?
-    var nickname: String?
-    var phoneNumber: String?
-    var boards: NSArray? // 자신이 작성한 플리마켓 리스트
-    var products: NSArray? // 자신이 올린 상품 리스트
-    var likes: Array<NSDictionary>? // 자신이 좋아효 한 상품 리스트
+struct UserInfoModel: Decodable {
+    let email: String?
+    let password: String?
+    let nickname: String?
+    let phoneNumber: String?
+    let boards: [BoardModel] // 자신이 작성한 플리마켓 리스트
+    let products: [ProductModel] // 자신이 올린 상품 리스트
+    let likes: [LikesModel]// 자신이 좋아효 한 상품 리스트
 }
