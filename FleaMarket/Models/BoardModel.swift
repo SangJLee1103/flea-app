@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct BoardModel: Codable {
+struct BoardModel: Decodable {
     let id: Int // 게시글 아이디
-    let user: String // 게시글 작성자
+    let user: User // 게시글 작성자
     let topic: String
     let start: String // 플리마켓 날짜
     let place: String // 플리마켓 장소
@@ -24,6 +24,10 @@ struct BoardModel: Codable {
 
 struct BoardArray: Decodable {
     let data: [BoardModel]
+}
+
+struct User: Decodable {
+    let nickname : String
 }
 
 

@@ -13,8 +13,8 @@ import SnapKit
 class ProductPostViewController: UIViewController {
     
     let token = Keychain.read(key: "accessToken")
-    var boardId: Int?
-    var boardName: String?
+    var boardId: Int? = 0
+    var boardName: String? = ""
     
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var contentView: UIView!
@@ -26,34 +26,27 @@ class ProductPostViewController: UIViewController {
     @IBOutlet var productNumber: UILabel!
     @IBOutlet var llineLbl: UILabel!
     
-    // 랭킹 데이터 리스트
-    lazy var rankList: [ProductRankingModel] = {
-        var datalist = [ProductRankingModel]()
-        return datalist
-    }()
+    // top 10
+    private var rankList = [ProductRankingModel]() {
+        didSet {
+            DispatchQueue.main.async { [weak self] in
+                self?.rankingView.reloadData()
+            }
+        }
+    }
     
-    //상품 데이터 리스트
-    lazy var productList: [ProductModel] = {
-        var datalist = [ProductModel]()
-        return datalist
-    }()
-    
+    // 전체 상품
+    private var productList = [ProductModel]() {
+        didSet {
+            DispatchQueue.main.async { [weak self] in
+                self?.productView.reloadData()
+                self?.updateScrollView()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.getTopRanking {
-            DispatchQueue.main.async {
-                self.rankingView.reloadData()
-            }
-        }
-        
-        self.getProduct {
-            DispatchQueue.main.async {
-                self.productView.reloadData()
-                self.updateScrollView()
-            }
-        }
         
         self.navigationItem.title = "상품"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(goProductRegisterVC))
@@ -70,8 +63,16 @@ class ProductPostViewController: UIViewController {
         productView.dataSource = self
         productView.delegate = self
         
+        fetchTop10()
+        fetchProducts()
+        
         rankingView.collectionViewLayout = createCompositionalRankingView()
         productView.collectionViewLayout = createCompositional()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        updateScrollView()
+        productView.reloadData()
     }
     
     // 상품 등록 페이지 이동 함수
@@ -87,125 +88,58 @@ class ProductPostViewController: UIViewController {
     
     
     // 상품 Top10 정보 가져오기
-    func getTopRanking(callBack: @escaping () -> Void) {
-        guard let url =  URL(string: "\(Network.url)/product/\(boardId!)/popular") else { return }
-        
-        //URLRequest 객체를 정의
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        //HTTP 메시지 헤더
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        //URLSession 객체를 통해 전송, 응답값 처리
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let e = error{
-                NSLog("An error has occured: \(e.localizedDescription)")
-                return
-            }
-            // 서버로부터 응답된 스트링 표시
-            do {
-                let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                guard let jsonObject = object else { return }
-                //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
-                // JSON 결과값을 추출
-                let data = jsonObject["data"] as! NSArray
-                
-                for row in data {
-                    let r = row as! NSDictionary
-                    let rankVO = ProductRankingModel()
-                    
-                    rankVO.id = r["product_id"] as? Int
-                    rankVO.price = r["selling_price"] as? Int
-                    rankVO.productName = r["name"] as? String
-                    rankVO.sellerName = r["nickname"] as? String
-                    rankVO.productImg = r["img"] as? String
-                    
-                    self.rankList.append(rankVO)
-                    callBack()
-                }
-                if self.rankList.count <= 0 {
-                    DispatchQueue.main.async {
-                        self.rankingLbl.layer.isHidden = true
-                    }
-                }
-            } catch let e as NSError {
-                print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+    func fetchTop10() {
+        guard let boardId = boardId else { return }
+        ProductService.fetchTop10(boardId: boardId) { [weak self] response in
+            switch response {
+            case .success(let result):
+                self?.rankList = result.data
+            case .failure(_):
+                print("Error")
             }
         }
-        task.resume()
+        
+        if self.rankList.count <= 0 {
+            DispatchQueue.main.async {
+                self.rankingLbl.layer.isHidden = true
+            }
+        }
     }
     
     // 전체 상품 조회 API 호출 함수
-    func getProduct(callBack: @escaping () -> Void){
-        do{
-            guard let url =  URL(string: "\(Network.url)/product/\(boardId!)/all") else { return }
-            //URLRequest 객체를 정의
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            
-            //HTTP 메시지 헤더
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
-            
-            //URLSession 객체를 통해 전송, 응답값 처리
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                if let e = error{
-                    NSLog("An error has occured: \(e.localizedDescription)")
-                    return
-                }
-                // 서버로부터 응답된 스트링 표시
-                do {
-                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                    guard let jsonObject = object else { return }
-                    
-                    let data = jsonObject["data"] as! NSArray
-                    
-                    for row in data {
-                        let r = row as! NSDictionary
-                        let productVO = ProductModel()
-                        
-                        productVO.id = r["id"] as? Int
-                        productVO.productName = r["name"] as? String
-                        productVO.sellingPrice = r["selling_price"] as? Int
-                        productVO.costPrice = r["cost_price"] as? Int
-                        productVO.description = r["description"] as? String
-                        productVO.imgPath = r["img"] as? String
-                        
-                        let seller = r["User"] as! NSDictionary
-                        productVO.sellerName = seller["nickname"] as? String
-                        
-                        productVO.like =  r["Likes"] as? NSArray
-                        
-                        self.productList.append(productVO)
-                        callBack()
-                    }
-                    
-                    if self.productList.count <= 0 {
-                        DispatchQueue.main.async {
-                            self.productNumber.center = CGPoint(x: self.view.frame.size.width / 2, y: self.view.frame.size.height / 2 - 100)
-                            self.llineLbl.layer.isHidden = true
-                            self.scrollView.isScrollEnabled = false
-                        }
-                    }
-                    
-                } catch let e as NSError {
-                    print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
-                }
+    func fetchProducts(){
+        guard let boardId = boardId else { return }
+        ProductService.fetchProducts(boardId: boardId) { [weak self] response in
+            switch response {
+            case .success(let result):
+                self?.productList = result.data
+            case.failure(_):
+                print("Error")
             }
-            task.resume()
+        }
+        
+        if self.productList.count <= 0 {
+            DispatchQueue.main.async {
+                self.productNumber.center = CGPoint(x: self.view.frame.size.width / 2, y: self.view.frame.size.height / 2 - 100)
+                self.llineLbl.layer.isHidden = true
+                self.scrollView.isScrollEnabled = false
+            }
         }
     }
-        func updateScrollView() {
-            print(productList.count)
-            print(round(Double(productList.count) / 2.0))
-            let height: CGFloat = 450 + CGFloat(round(Double(productList.count) / 2.0) * 280)
+    
+    func updateScrollView() {
+        print("실행됨")
+        let height: CGFloat = 450 + CGFloat(round(Double(productList.count) / 2.0) * 280)
+        print(productList.count)
+        print(height)
+        DispatchQueue.main.async { [self] in
             contentView.snp.remakeConstraints {
                 $0.edges.equalTo(scrollView)
                 $0.width.equalTo(self.view.frame.width)
                 $0.height.equalTo(height)
             }
         }
+    }
 }
 
 // 컴포지셔널 레이아웃 관련
@@ -259,9 +193,9 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
     //아이템 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == rankingView {
-            return self.rankList.count
+            return rankList.count
         }else if collectionView == productView {
-            return self.productList.count
+            return productList.count
         }
         return 0
     }
@@ -269,27 +203,11 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
     //각 컬렉션뷰 셀에 대한 설정
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        
         // top 10 뷰
         if collectionView == rankingView {
-            let cellId = String(describing: TopRankingCell.self)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TopRankingCell
-            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopRankingCell", for: indexPath) as! TopRankingCell
             cell.rankingLbl.text = "\(indexPath.row + 1)위"
-            
-            // top 10 상품 이미지 출력 부분
-            let row = self.rankList[indexPath.row]
-            cell.productImg.layer.cornerRadius = 10
-            
-            let imgParse = row.productImg!.split(separator:",")
-            cell.productImg?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(imgParse[0])")!))
-            cell.sellerName?.text = row.sellerName
-            cell.productName?.text = row.productName
-            
-            let priceDecimal = numberFormatter.string(from: NSNumber(value: row.price!))
-            cell.sellingPrice?.text = "\(priceDecimal ?? "0")원"
+            cell.viewModel = RankingViewModel(ranker: rankList[indexPath.row])
             return cell
         } else if collectionView == productView{
             if productList.count > 0 {
@@ -298,24 +216,11 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
                 productNumber.textColor = .black
             }
             
-            let cellId = String(describing: ProductCell.self)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProductCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
+            cell.viewModel = ProductViewModel(product: productList[indexPath.row])
             
-            let row = self.productList[indexPath.row]
-            
-            cell.img.layer.cornerRadius = 10
-            cell.productId = row.id! // 상품 ID
-            let imgParse = row.imgPath!.split(separator:",")
-            
-            cell.img?.image = UIImage(data: try! Data(contentsOf: URL(string: "\(Network.url)/\(imgParse[0])")!))
-            cell.sellerName?.text = row.sellerName
-            cell.name?.text = row.productName
-            
-            let priceDecimal = numberFormatter.string(from: NSNumber(value: row.sellingPrice!))
-            cell.sellingPrice?.text = "\(priceDecimal ?? "0")원"
-            
-            let like = row.like
-            if((like?.count) != 0){ // LIKES 데이터가 있으면
+            let like = cell.viewModel?.likesCnt
+            if(like != 0){ // LIKES 데이터가 있으면
                 cell.likeBtn?.tag = 1
             }else {
                 cell.likeBtn?.tag = 0
@@ -327,13 +232,14 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
         return UICollectionViewCell()
     }
     
+    // MARK: - 컬렉션 뷰 셀 선택
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == rankingView {
             let row = self.rankList[indexPath.row]
             let id = row.id
             
             guard let productDetailVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
-            productDetailVC.productId = id!
+            productDetailVC.productId = id
             productDetailVC.boardName = boardName
             self.navigationController?.pushViewController(productDetailVC, animated: true)
             
@@ -342,7 +248,7 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             let id = row.id
             
             guard let productDetailVC = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return }
-            productDetailVC.productId = id!
+            productDetailVC.productId = id
             productDetailVC.boardName = boardName
             self.navigationController?.pushViewController(productDetailVC, animated: true)
         }
@@ -350,5 +256,5 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
 }
 
 extension ProductPostViewController: UIScrollViewDelegate {
-
+    
 }

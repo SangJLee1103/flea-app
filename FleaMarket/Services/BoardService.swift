@@ -151,7 +151,6 @@ struct BoardService {
             let session = URLSession(configuration: .default)
             request.httpMethod = "GET"
             
-            
             //HTTP 메시지 헤더
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

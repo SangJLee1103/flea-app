@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Foundation
 
 class MainViewController: UIViewController {
     
@@ -23,8 +22,6 @@ class MainViewController: UIViewController {
             }
         }
     }
-    
-    var board: BoardModel?
     
     override func viewDidLoad() {
         boardCollectionView.dataSource = self
@@ -67,18 +64,13 @@ extension MainViewController: UICollectionViewDataSource {
     
     // 각 섹션에 들어가는 아이템 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return board == nil ? boards.count : 1
+        return boards.count
     }
     
     //각 컬렉션 뷰 셀에 대한 설정
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainBoardCell", for: indexPath) as! MainBoardCell
-        
-        if let board = board {
-            cell.viewModel = BoardViewModel(board: board)
-        } else {
-            cell.viewModel = BoardViewModel(board: boards[indexPath.row])
-        }
+        cell.viewModel = BoardViewModel(board: boards[indexPath.row])
         return cell
     }
     

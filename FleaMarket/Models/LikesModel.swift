@@ -9,7 +9,7 @@ import Foundation
 
 struct LikesModel: Decodable {
     let productId: Int
-    let product: String
+    let product: ProductModel
     let likes: [String]
     
     enum CodingKeys: String, CodingKey {

@@ -21,7 +21,7 @@ class MyPageViewController: UIViewController {
     @IBOutlet var phone: UILabel!
     @IBOutlet var img: UIImageView!
     
-    let userInfoVO = UserInfoModel()
+//    let userInfoVO = UserInfoModel()
     
     lazy var list: [UserInfoModel] = {
         var datalist = [UserInfoModel]()
@@ -47,91 +47,91 @@ class MyPageViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.callUserInfoAPI()
+//        self.callUserInfoAPI()
     }
     
     @objc func moveEditPersonalInfoVC(sender : UITapGestureRecognizer) {
         // Do what you want
         guard let editPersonalInfoVC = self.storyboard?.instantiateViewController(withIdentifier: "EditPersonalInfoViewController") as? EditPersonalInfoViewController else { return }
-        editPersonalInfoVC.email = self.userInfoVO.email
-        editPersonalInfoVC.phoneNumber = self.userInfoVO.phoneNumber
-        editPersonalInfoVC.nickName = self.userInfoVO.nickname
-        
+//        editPersonalInfoVC.email = self.userInfoVO.email
+//        editPersonalInfoVC.phoneNumber = self.userInfoVO.phoneNumber
+//        editPersonalInfoVC.nickName = self.userInfoVO.nickname
+//
         self.navigationController?.pushViewController(editPersonalInfoVC, animated: true)
     }
     
     
     // 회원 정보 가져옴(회원 개인정보, 게시글, 상품)
-    func callUserInfoAPI() {
-        guard let url =  URL(string: "\(Network.url)/member/info") else { return }
-        //URLRequest 객체를 정의
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        //HTTP 메시지 헤더
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
-        
-        //URLSession 객체를 통해 전송, 응답값 처리
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let e = error{
-                NSLog("An error has occured: \(e.localizedDescription)")
-                return
-            }
-            // 서버로부터 응답된 스트링 표시
-            DispatchQueue.main.async {
-                do {
-                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as! NSDictionary
-                    //guard let jsonObject = object else { return }
-                    //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
-                    // JSON 결과값을 추출
-                    let data = object["list"] as? Array<NSDictionary>
-                    
-                    self.userInfoVO.email = data?[0]["id"] as? String
-                    self.userInfoVO.password = data?[0]["password"] as? String
-                    self.userInfoVO.phoneNumber = data?[0]["phone"] as? String
-                    self.userInfoVO.nickname = data?[0]["nickname"] as? String
-                    self.userInfoVO.boards = data?[0]["Boards"] as? NSArray
-                    self.userInfoVO.products = data?[0]["Products"] as? NSArray
-                    self.userInfoVO.likes = data?[0]["Likes"] as? Array<NSDictionary>
-                    
-                    self.list.append(self.userInfoVO)
-                    
-                    if let nickname = self.userInfoVO.nickname {
-                        self.nickname.text = "닉네임: \(nickname)"
-                    }
-                    
-                    if let phone = self.userInfoVO.phoneNumber {
-                        self.phone.text = "휴대폰 번호: \(phone.pretty())"
-                    }
-                    
-                    self.phone.text = "휴대폰 번호: \(self.userInfoVO.phoneNumber!.pretty())"
-                    
-                } catch let e as NSError {
-                    print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
-                }
-            }
-        }
-        task.resume()
+//    func callUserInfoAPI() {
+//        guard let url =  URL(string: "\(Network.url)/member/info") else { return }
+//        //URLRequest 객체를 정의
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//
+//        //HTTP 메시지 헤더
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+//
+//        //URLSession 객체를 통해 전송, 응답값 처리
+//        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+//            if let e = error{
+//                NSLog("An error has occured: \(e.localizedDescription)")
+//                return
+//            }
+//            // 서버로부터 응답된 스트링 표시
+//            DispatchQueue.main.async {
+//                do {
+//                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as! NSDictionary
+//                    //guard let jsonObject = object else { return }
+//                    //response 데이터 획득, utf8인코딩을 통해 string형태로 변환
+//                    // JSON 결과값을 추출
+//                    let data = object["list"] as? Array<NSDictionary>
+//
+//                    self.userInfoVO.email = data?[0]["id"] as? String
+//                    self.userInfoVO.password = data?[0]["password"] as? String
+//                    self.userInfoVO.phoneNumber = data?[0]["phone"] as? String
+//                    self.userInfoVO.nickname = data?[0]["nickname"] as? String
+//                    self.userInfoVO.boards = data?[0]["Boards"] as? NSArray
+//                    self.userInfoVO.products = data?[0]["Products"] as? NSArray
+//                    self.userInfoVO.likes = data?[0]["Likes"] as? Array<NSDictionary>
+//
+//                    self.list.append(self.userInfoVO)
+//
+//                    if let nickname = self.userInfoVO.nickname {
+//                        self.nickname.text = "닉네임: \(nickname)"
+//                    }
+//
+//                    if let phone = self.userInfoVO.phoneNumber {
+//                        self.phone.text = "휴대폰 번호: \(phone.pretty())"
+//                    }
+//
+//                    self.phone.text = "휴대폰 번호: \(self.userInfoVO.phoneNumber!.pretty())"
+//
+//                } catch let e as NSError {
+//                    print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+//                }
+//            }
+//        }
+//        task.resume()
     }
     
-    @IBAction func logout(_ sender: UIButton) {
-        let appDelegate = AppDelegate()
-        if Keychain.read(key: "accessToken") != nil {
-            let alert = UIAlertController(title: "FleaMarket", message: "정말 로그아웃 하시겠습니까?", preferredStyle: .alert)
-            let alertLogoutAction = UIAlertAction(title: "로그아웃", style: .default) {_ in
-                appDelegate.resetApp()
-            }
-            let alertCanceAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-            alert.addAction(alertLogoutAction)
-            alert.addAction(alertCanceAction)
-            
-            self.present(alert, animated: false)
-        } else {
-            return
-        }
-    }
-}
+//    @IBAction func logout(_ sender: UIButton) {
+//        let appDelegate = AppDelegate()
+//        if Keychain.read(key: "accessToken") != nil {
+//            let alert = UIAlertController(title: "FleaMarket", message: "정말 로그아웃 하시겠습니까?", preferredStyle: .alert)
+//            let alertLogoutAction = UIAlertAction(title: "로그아웃", style: .default) {_ in
+//                appDelegate.resetApp()
+//            }
+//            let alertCanceAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+//            alert.addAction(alertLogoutAction)
+//            alert.addAction(alertCanceAction)
+//
+//            self.present(alert, animated: false)
+//        } else {
+//            return
+//        }
+//    }
+//}
 
 extension MyPageViewController: UITableViewDataSource {
     
@@ -153,25 +153,25 @@ extension MyPageViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        switch indexPath.row{
-        case 0:
-            guard let myWriteVC = self.storyboard?.instantiateViewController(withIdentifier: "MyWriteViewController") as? MyWriteViewController else { return }
-            myWriteVC.boards = self.userInfoVO.boards!
-            self.navigationController?.pushViewController(myWriteVC, animated: true)
-            
-        case 1:
-            guard let myuploadItemVC = self.storyboard?.instantiateViewController(withIdentifier: "MyProductViewController") as? MyProductViewController else { return }
-            myuploadItemVC.item = self.userInfoVO.products!
-            self.navigationController?.pushViewController(myuploadItemVC, animated: true)
-            
-        case 2:
-            guard let myLikeVC = self.storyboard?.instantiateViewController(withIdentifier:    "MyLikeItemViewController") as? MyLikeViewController else { return }
-            myLikeVC.likeItem = self.userInfoVO.likes!
-            self.navigationController?.pushViewController(myLikeVC, animated: true)
-            
-        default:
-            return
-        }
+//        switch indexPath.row{
+//        case 0:
+//            guard let myWriteVC = self.storyboard?.instantiateViewController(withIdentifier: "MyWriteViewController") as? MyWriteViewController else { return }
+//            myWriteVC.boards = self.userInfoVO.boards!
+//            self.navigationController?.pushViewController(myWriteVC, animated: true)
+//            
+//        case 1:
+//            guard let myuploadItemVC = self.storyboard?.instantiateViewController(withIdentifier: "MyProductViewController") as? MyProductViewController else { return }
+//            myuploadItemVC.item = self.userInfoVO.products!
+//            self.navigationController?.pushViewController(myuploadItemVC, animated: true)
+//            
+//        case 2:
+//            guard let myLikeVC = self.storyboard?.instantiateViewController(withIdentifier:    "MyLikeItemViewController") as? MyLikeViewController else { return }
+//            myLikeVC.likeItem = self.userInfoVO.likes!
+//            self.navigationController?.pushViewController(myLikeVC, animated: true)
+//            
+//        default:
+//            return
+//        }
     }
 }
 

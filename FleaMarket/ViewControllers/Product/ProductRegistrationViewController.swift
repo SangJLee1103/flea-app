@@ -88,13 +88,11 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
         }
     }
     
-    
+    // MARK: - 날짜 포맷함수
     func dateToString(_ createdAt: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm" // formatter의 dateFormat 속성을 설정
         dateFormatter.locale = Locale(identifier:"ko_KR")
-        
-        print("날짜 포멧 함수\(dateFormatter.string(from: createdAt))")
         
         let formatDate = dateFormatter.string(from: createdAt)
         return formatDate

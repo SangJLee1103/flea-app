@@ -8,5 +8,20 @@
 import UIKit
 
 struct ProductViewModel {
+    var product: ProductModel
     
+    var boardId: Int { return product.boardId }
+    var name: String { return product.name }
+    var costPrice: String { return NumberFormat.formatPrice(price: product.costPrice) }
+    var sellingPrice: String { return NumberFormat.formatPrice(price: product.sellingPrice) }
+    var description: String { return "\(product.description)" }
+    var boardTitle: String { return product.boardTitle}
+    var img: URL? { return URL(string: "\(Network.url)/\(product.img.split(separator:",")[0])") }
+    var createdAt: String { return product.createdAt }
+    var nickname: String { return product.user.nickname }
+    var likesCnt: Int { return product.likes.count }
+    
+    init(product: ProductModel) {
+        self.product = product
+    }
 }

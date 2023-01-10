@@ -22,7 +22,7 @@ class ProductModifyViewController: UIViewController {
     
     let placeholder = "상품에 대해서 설명을 적어주세요(상품 사용 기간, 상품의 흠집 여부 및 특징 등)"
     
-    var productInfo = ProductModel()
+//    var productInfo = ProductModel()
     
     var selectedData: [Data] = [Data]()
     var selectedAssets = [PHAsset]()
@@ -45,32 +45,32 @@ class ProductModifyViewController: UIViewController {
         productImgView.dataSource = self
         productImgView.delegate = self
         
-        configureProductUI()
+//        configureProductUI()
     }
     
     
     // MARK: - 선택 이미지 셀에 이미지를 넣어주는 함수
-    func imgIntoUserSelectedImg() {
-        let imgPath = self.productInfo.imgPath
-        let imgParse = imgPath!.split(separator:",")
-        
-        for i in 0..<imgParse.count {
-            let url: URL! = URL(string: "\(Network.url)/\(imgParse[i])")
-            let imageData = try! Data(contentsOf: url)
-            self.userSelectedImages.append(UIImage(data: imageData)!)
-            self.selectedData.append(imageData)
-            self.selectedCount = imgParse.count
-        }
-    }
+//    func imgIntoUserSelectedImg() {
+//        let imgPath = self.productInfo.imgPath
+//        let imgParse = imgPath!.split(separator:",")
+//
+//        for i in 0..<imgParse.count {
+//            let url: URL! = URL(string: "\(Network.url)/\(imgParse[i])")
+//            let imageData = try! Data(contentsOf: url)
+//            self.userSelectedImages.append(UIImage(data: imageData)!)
+//            self.selectedData.append(imageData)
+//            self.selectedCount = imgParse.count
+//        }
+//    }
     
     // MARK: - 현재 상품 UI 구성
-    func configureProductUI() {
-        self.imgIntoUserSelectedImg()
-        self.productName.text = self.productInfo.productName
-        self.sellingPrice.text = "\(String(describing: self.productInfo.sellingPrice!))"
-        self.costPrice.text = "\(String(describing: self.productInfo.costPrice!))"
-        self.descriptionField.text = self.productInfo.description
-    }
+//    func configureProductUI() {
+//        self.imgIntoUserSelectedImg()
+//        self.productName.text = self.productInfo.productName
+//        self.sellingPrice.text = "\(String(describing: self.productInfo.sellingPrice!))"
+//        self.costPrice.text = "\(String(describing: self.productInfo.costPrice!))"
+//        self.descriptionField.text = self.productInfo.description
+//    }
     
     
     // asset 타입을 image 타입으로 변환
@@ -113,87 +113,87 @@ class ProductModifyViewController: UIViewController {
     
     // 완료 버튼 클릭시 이벤트(상품 등록)
     @objc func productRegist(){
-        guard let productId = self.productInfo.id else { return }
-        guard let url = URL(string: "\(Network.url)/product/\(productId)") else {
-            print("Error: cannot create URL")
-            return
-        }
-        
-        let name = self.productName?.text
-        let cost_price = self.costPrice?.text
-        let selling_price = self.sellingPrice?.text
-        let description = self.descriptionField?.text
-        let createdAt = dateToString(Date())
-        
-        let parameters = [
-            "name" : name!,
-            "selling_price" : selling_price!,
-            "cost_price" : cost_price!,
-            "description" : description!,
-            "created_at" : createdAt
-        ] as [String : Any]
-        
-        // boundary 설정
-        let boundary = "Boundary-\(UUID().uuidString)"
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "PUT"
-        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        // data
-        var uploadData = Data()
-        let imgDataKey = "img"
-        let boundaryPrefix = "--\(boundary)\r\n"
-        
-        for (key, value) in parameters {
-            uploadData.append(boundaryPrefix.data(using: .utf8)!)
-            uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-            uploadData.append("\(value)\r\n".data(using: .utf8)!)
-        }
-        
-        
-        for data in selectedData {
-            uploadData.append(boundaryPrefix.data(using: .utf8)!)
-            uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
-            uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
-            uploadData.append(data)
-            uploadData.append("\r\n".data(using: .utf8)!)
-        }
-        uploadData.append("--\(boundary)--".data(using: .utf8)!)
-        
-        
-        URLSession.shared.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
-            DispatchQueue.main.async() {
-                do {
-                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-                    
-                    guard let jsonObject = object else { return }
-                    
-                    let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-                    let data = jsonObject["message"] as? String
-                    let errorArray = jsonObject["message"] as? Array<NSDictionary>
-                    let error = errorArray?[0]["msg"] as? String
-                    
-                    if (status == 201) {
-                        let alert = UIAlertController(title: "Flea Market", message: data, preferredStyle: .alert)
-                        let action = UIAlertAction(title: "확인", style: .cancel){ (_) in
-                            self.navigationController?.popToRootViewController(animated: true)
-                        }
-                        alert.addAction(action)
-                        self.present(alert, animated: true, completion: nil)
-                    }else {
-                        let checkAlert = UIAlertController(title: "Flea Market", message: error, preferredStyle: .alert)
-                        
-                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-                        checkAlert.addAction(action)
-                        self.present(checkAlert, animated: true, completion: nil)
-                    }
-                }catch let e as NSError {
-                    print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
-                }
-            }
-        }.resume()
+//        guard let productId = self.productInfo.id else { return }
+//        guard let url = URL(string: "\(Network.url)/product/\(productId)") else {
+//            print("Error: cannot create URL")
+//            return
+//        }
+//        
+//        let name = self.productName?.text
+//        let cost_price = self.costPrice?.text
+//        let selling_price = self.sellingPrice?.text
+//        let description = self.descriptionField?.text
+//        let createdAt = dateToString(Date())
+//        
+//        let parameters = [
+//            "name" : name!,
+//            "selling_price" : selling_price!,
+//            "cost_price" : cost_price!,
+//            "description" : description!,
+//            "created_at" : createdAt
+//        ] as [String : Any]
+//        
+//        // boundary 설정
+//        let boundary = "Boundary-\(UUID().uuidString)"
+//        
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "PUT"
+//        request.setValue("Bearer \(token!)", forHTTPHeaderField: "Authorization")
+//        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+//        
+//        // data
+//        var uploadData = Data()
+//        let imgDataKey = "img"
+//        let boundaryPrefix = "--\(boundary)\r\n"
+//        
+//        for (key, value) in parameters {
+//            uploadData.append(boundaryPrefix.data(using: .utf8)!)
+//            uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+//            uploadData.append("\(value)\r\n".data(using: .utf8)!)
+//        }
+//        
+//        
+//        for data in selectedData {
+//            uploadData.append(boundaryPrefix.data(using: .utf8)!)
+//            uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
+//            uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
+//            uploadData.append(data)
+//            uploadData.append("\r\n".data(using: .utf8)!)
+//        }
+//        uploadData.append("--\(boundary)--".data(using: .utf8)!)
+//        
+//        
+//        URLSession.shared.uploadTask(with: request, from: uploadData) { (data: Data?, response: URLResponse?, error: Error?) in
+//            DispatchQueue.main.async() {
+//                do {
+//                    let object = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+//                    
+//                    guard let jsonObject = object else { return }
+//                    
+//                    let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+//                    let data = jsonObject["message"] as? String
+//                    let errorArray = jsonObject["message"] as? Array<NSDictionary>
+//                    let error = errorArray?[0]["msg"] as? String
+//                    
+//                    if (status == 201) {
+//                        let alert = UIAlertController(title: "Flea Market", message: data, preferredStyle: .alert)
+//                        let action = UIAlertAction(title: "확인", style: .cancel){ (_) in
+//                            self.navigationController?.popToRootViewController(animated: true)
+//                        }
+//                        alert.addAction(action)
+//                        self.present(alert, animated: true, completion: nil)
+//                    }else {
+//                        let checkAlert = UIAlertController(title: "Flea Market", message: error, preferredStyle: .alert)
+//                        
+//                        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+//                        checkAlert.addAction(action)
+//                        self.present(checkAlert, animated: true, completion: nil)
+//                    }
+//                }catch let e as NSError {
+//                    print("An error has occured while parsing JSONObject: \(e.localizedDescription)")
+//                }
+//            }
+//        }.resume()
     }
     
     // 이미지 선택

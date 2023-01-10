@@ -55,6 +55,8 @@
 		F4E6FEF329695C570049212B /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E6FEF229695C570049212B /* ProductViewModel.swift */; };
 		F4E6FEF529695C8C0049212B /* ProductService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E6FEF429695C8C0049212B /* ProductService.swift */; };
 		F4E6FEF8296B04760049212B /* LikesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E6FEF7296B04760049212B /* LikesModel.swift */; };
+		F4E6FEFA296D5D2C0049212B /* RankingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E6FEF9296D5D2C0049212B /* RankingViewModel.swift */; };
+		F4E6FEFC296D63BB0049212B /* NumberFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E6FEFB296D63BB0049212B /* NumberFormat.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -122,6 +124,8 @@
 		F4E6FEF229695C570049212B /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
 		F4E6FEF429695C8C0049212B /* ProductService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductService.swift; sourceTree = "<group>"; };
 		F4E6FEF7296B04760049212B /* LikesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesModel.swift; sourceTree = "<group>"; };
+		F4E6FEF9296D5D2C0049212B /* RankingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingViewModel.swift; sourceTree = "<group>"; };
+		F4E6FEFB296D63BB0049212B /* NumberFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormat.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,7 +223,6 @@
 				F407D02E280EC39E00E36491 /* MainViewController.swift */,
 				F42D5AB0282661300081FF12 /* WriteViewController.swift */,
 				F472554328A0CF14008F6C3A /* BoardModifyViewController.swift */,
-				F419E6B8285C89B000D02F4F /* ProductDetailViewController.swift */,
 			);
 			path = Board;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 			children = (
 				F49520762967EEB100B5DEEC /* BoardViewModel.swift */,
 				F4E6FEF229695C570049212B /* ProductViewModel.swift */,
+				F4E6FEF9296D5D2C0049212B /* RankingViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -322,6 +326,7 @@
 			children = (
 				F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */,
 				F414AE08281CEAB6002D9221 /* ProductPostViewController.swift */,
+				F419E6B8285C89B000D02F4F /* ProductDetailViewController.swift */,
 				F472554528A0CF3A008F6C3A /* ProductModifyViewController.swift */,
 			);
 			path = Product;
@@ -342,6 +347,7 @@
 		F4E6FEF6296ADBC00049212B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F4E6FEFB296D63BB0049212B /* NumberFormat.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -483,8 +489,10 @@
 				F4C8D24228B6795400C8EDBE /* Network.swift in Sources */,
 				F42D5AB1282661300081FF12 /* WriteViewController.swift in Sources */,
 				F43B4B21289E6D5C008EFDC7 /* BoardCell.swift in Sources */,
+				F4E6FEFA296D5D2C0049212B /* RankingViewModel.swift in Sources */,
 				F4E6FEF529695C8C0049212B /* ProductService.swift in Sources */,
 				F4E6FEF329695C570049212B /* ProductViewModel.swift in Sources */,
+				F4E6FEFC296D63BB0049212B /* NumberFormat.swift in Sources */,
 				F4651A9D284B7A1C00D7FE63 /* MyProductViewController.swift in Sources */,
 				F407D029280EBB2C00E36491 /* MyTabBarController.swift in Sources */,
 				F4651A9B284B79E600D7FE63 /* MyWriteViewController.swift in Sources */,
