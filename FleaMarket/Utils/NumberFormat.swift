@@ -8,7 +8,6 @@
 import Foundation
 
 struct NumberFormat {
-    
     static func formatPrice(price: Int) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal

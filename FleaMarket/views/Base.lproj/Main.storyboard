@@ -682,7 +682,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Fwn-G3-fqP">
-                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
+                                <rect key="frame" x="0.0" y="155" width="393" height="614"/>
                                 <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="cRY-qH-6wH">
                                     <size key="itemSize" width="351" height="133"/>
@@ -1022,8 +1022,8 @@
                                                     </collectionViewCell>
                                                 </cells>
                                             </collectionView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="아직 등록된 상품이 존재하지 않습니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diX-te-3lN">
-                                                <rect key="frame" x="20" y="427" width="257.66666666666669" height="20.333333333333314"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="아직 등록된 상품이 존재하지 않습니다." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diX-te-3lN">
+                                                <rect key="frame" x="20" y="427" width="353" height="20.333333333333314"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="103" id="jll-9v-DKL"/>
                                                 </constraints>
@@ -1048,8 +1048,8 @@
                                             <constraint firstItem="uXD-4a-Bfb" firstAttribute="leading" secondItem="RFj-wC-6Nr" secondAttribute="leading" constant="20" symbolic="YES" id="OZf-Df-FK8"/>
                                             <constraint firstItem="K4K-ph-WYJ" firstAttribute="leading" secondItem="fxE-kB-7tc" secondAttribute="leading" constant="20" id="PZs-tk-q68"/>
                                             <constraint firstItem="uXD-4a-Bfb" firstAttribute="top" secondItem="fxE-kB-7tc" secondAttribute="bottom" id="QV1-7y-KYm"/>
+                                            <constraint firstAttribute="trailing" secondItem="diX-te-3lN" secondAttribute="trailing" constant="20" id="XY6-CP-0hY"/>
                                             <constraint firstItem="9C0-gF-0a0" firstAttribute="top" secondItem="diX-te-3lN" secondAttribute="bottom" constant="8" id="Z4J-Px-ANu"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="diX-te-3lN" secondAttribute="trailing" constant="20" symbolic="YES" id="ZRf-YQ-dTD"/>
                                             <constraint firstItem="K4K-ph-WYJ" firstAttribute="top" secondItem="RFj-wC-6Nr" secondAttribute="top" constant="22" id="eOF-GV-Kak"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="K4K-ph-WYJ" secondAttribute="trailing" constant="20" symbolic="YES" id="jXw-dp-ZKI"/>
                                             <constraint firstItem="diX-te-3lN" firstAttribute="leading" secondItem="K4K-ph-WYJ" secondAttribute="leading" id="jfZ-fX-oLq"/>

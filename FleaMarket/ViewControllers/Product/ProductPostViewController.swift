@@ -70,11 +70,6 @@ class ProductPostViewController: UIViewController {
         productView.collectionViewLayout = createCompositional()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        updateScrollView()
-        productView.reloadData()
-    }
-    
     // 상품 등록 페이지 이동 함수
     @objc func goProductRegisterVC(){
         guard let productRegister = self.storyboard?.instantiateViewController(withIdentifier: "productRegister") as? ProductRegistrationViewController else { return }
@@ -122,19 +117,19 @@ class ProductPostViewController: UIViewController {
             DispatchQueue.main.async {
                 self.productNumber.center = CGPoint(x: self.view.frame.size.width / 2, y: self.view.frame.size.height / 2 - 100)
                 self.llineLbl.layer.isHidden = true
-                self.scrollView.isScrollEnabled = false
+                // 상품이 없을 경우 상품이 없다는 라벨 가운데로
+                self.llineLbl.snp.remakeConstraints {
+                    $0.centerX.centerY.equalToSuperview()
+                }
             }
-        }
+        } 
     }
     
     func updateScrollView() {
-        print("실행됨")
         let height: CGFloat = 450 + CGFloat(round(Double(productList.count) / 2.0) * 280)
-        print(productList.count)
-        print(height)
-        DispatchQueue.main.async { [self] in
-            contentView.snp.remakeConstraints {
-                $0.edges.equalTo(scrollView)
+        DispatchQueue.main.async {
+            self.contentView.snp.remakeConstraints {
+                $0.edges.equalTo(self.scrollView)
                 $0.width.equalTo(self.view.frame.width)
                 $0.height.equalTo(height)
             }
@@ -211,6 +206,7 @@ extension ProductPostViewController: UICollectionViewDataSource, UICollectionVie
             return cell
         } else if collectionView == productView{
             if productList.count > 0 {
+                self.productNumber.textAlignment = .left
                 productNumber.text = "총 \(productList.count)건"
                 productNumber.font = .systemFont(ofSize: 14)
                 productNumber.textColor = .black
