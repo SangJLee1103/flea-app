@@ -18,7 +18,7 @@ struct ProductModel: Decodable {
     let costPrice: Int // 시가
     let boardId: Int // 게시글 아이디
     let boardTitle: String
-    let user: Seller
+    let user: Seller?
     let likes: [Likes] // 좋아요
     let board: Board?
     
@@ -46,13 +46,19 @@ struct Board: Decodable {
 }
 
 struct Likes: Decodable {
-    let productId: Int
+    let productId: Int?
+    let userId: String?
     
     enum CodingKeys: String, CodingKey {
         case productId = "product_id"
+        case userId = "user_id"
     }
 }
 
 struct ProductArray: Decodable {
     let data: [ProductModel]
+}
+
+struct Product: Decodable {
+    let data: ProductModel
 }

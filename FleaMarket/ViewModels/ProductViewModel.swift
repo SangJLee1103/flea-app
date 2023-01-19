@@ -17,9 +17,11 @@ struct ProductViewModel {
     var description: String { return "\(product.description)" }
     var boardTitle: String { return product.boardTitle}
     var img: URL? { return URL(string: "\(Network.url)/\(product.img.split(separator:",")[0])") }
+    var imgArray: [String]? { return product.img.components(separatedBy: ",") } 
     var createdAt: String { return product.createdAt }
-    var nickname: String { return product.user.nickname }
+    var nickname: String { return product.user?.nickname ?? "" }
     var likesCnt: Int { return product.likes.count }
+    var start: String? { return product.board?.start }
     
     init(product: ProductModel) {
         self.product = product

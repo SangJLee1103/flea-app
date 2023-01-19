@@ -16,6 +16,7 @@ class TopRankingCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        productImg.layer.cornerRadius = 10
     }
     
     @IBOutlet var rankingLbl: UILabel!

@@ -82,7 +82,7 @@ struct ProductService {
     }
     
     // MARK: - 상품 단건조회 API 호출 로직
-    static func fetchProduct(productId: Int, completion: @escaping(Result<ProductModel, Error>) -> Void) {
+    static func fetchProduct(productId: Int, completion: @escaping(Result<Product, Error>) -> Void) {
         
         guard let token = Keychain.read(key: "accessToken") else { return }
         
@@ -105,7 +105,7 @@ struct ProductService {
                 }
                 if let safeData = data {
                     do {
-                        let result = try JSONDecoder().decode(ProductModel.self, from: safeData)
+                        let result = try JSONDecoder().decode(Product.self, from: safeData)
                         completion(.success(result))
                     } catch {
                         NSLog(error.localizedDescription)
