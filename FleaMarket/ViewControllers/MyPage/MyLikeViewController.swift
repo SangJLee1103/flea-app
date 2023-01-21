@@ -11,7 +11,7 @@ import UIKit
 class MyLikeViewController: UITableViewController {
     
     let token = Keychain.read(key: "accessToken")
-    var likeItem: Array<NSDictionary> = []
+    var likeItem: [LikesModel] = []
     
     lazy var productList: [ProductModel] = {
         var datalist = [ProductModel]()
@@ -20,13 +20,12 @@ class MyLikeViewController: UITableViewController {
     
     override func viewDidLoad() {
         self.navigationItem.title = "관심목록"
-        self.dataParsing()
+//        self.dataParsing()
     }
     
-    func dataParsing(){
-        for count in 0 ..< likeItem.count {
-            let item = likeItem[count]["Product"] as! NSDictionary
-            
+//    func dataParsing(){
+//        for count in 0 ..< likeItem.count {
+//            let item = likeItem[count]["Product"] as! NSDictionary
             //            let myLikeItem = ProductModel()
             //
             //            myLikeItem.id = item["id"] as? Int
@@ -42,9 +41,8 @@ class MyLikeViewController: UITableViewController {
             //            myLikeItem.imgPath = item["img"] as? String
             //
             //            self.productList.append(myLikeItem)
-            
-        }
-    }
+//        }
+//    }
     
     // 이미지를 추출하는 함수
 //    func getThumbnailImage(_ index: Int) -> UIImage {

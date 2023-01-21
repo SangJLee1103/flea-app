@@ -52,6 +52,7 @@
 		F4D5E7BB28087E5C001A97AD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D5E7B928087E5C001A97AD /* LaunchScreen.storyboard */; };
 		F4D5E7C4280885FE001A97AD /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7C3280885FE001A97AD /* JoinViewController.swift */; };
 		F4D5E7C8280891DE001A97AD /* JoinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5E7C7280891DE001A97AD /* JoinModel.swift */; };
+		F4DDB867297BE241004F5634 /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DDB866297BE241004F5634 /* UserInfoViewModel.swift */; };
 		F4E6FEF329695C570049212B /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E6FEF229695C570049212B /* ProductViewModel.swift */; };
 		F4E6FEF529695C8C0049212B /* ProductService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E6FEF429695C8C0049212B /* ProductService.swift */; };
 		F4E6FEF8296B04760049212B /* LikesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E6FEF7296B04760049212B /* LikesModel.swift */; };
@@ -121,6 +122,7 @@
 		F4D5E7BC28087E5C001A97AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4D5E7C3280885FE001A97AD /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
 		F4D5E7C7280891DE001A97AD /* JoinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinModel.swift; sourceTree = "<group>"; };
+		F4DDB866297BE241004F5634 /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
 		F4E6FEF229695C570049212B /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
 		F4E6FEF429695C8C0049212B /* ProductService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductService.swift; sourceTree = "<group>"; };
 		F4E6FEF7296B04760049212B /* LikesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesModel.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				F49520762967EEB100B5DEEC /* BoardViewModel.swift */,
 				F4E6FEF229695C570049212B /* ProductViewModel.swift */,
 				F4E6FEF9296D5D2C0049212B /* RankingViewModel.swift */,
+				F4DDB866297BE241004F5634 /* UserInfoViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -326,8 +329,8 @@
 			children = (
 				F49CAF1E28360EC2004BA7FE /* ProductRegistrationViewController.swift */,
 				F414AE08281CEAB6002D9221 /* ProductPostViewController.swift */,
-				F419E6B8285C89B000D02F4F /* ProductDetailViewController.swift */,
 				F472554528A0CF3A008F6C3A /* ProductModifyViewController.swift */,
+				F419E6B8285C89B000D02F4F /* ProductDetailViewController.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -477,6 +480,7 @@
 			files = (
 				F49520732966AFD900B5DEEC /* BoardService.swift in Sources */,
 				F41B61182818E01E00EC3C12 /* MainBoardCell.swift in Sources */,
+				F4DDB867297BE241004F5634 /* UserInfoViewModel.swift in Sources */,
 				F4D5E7B328087E5A001A97AD /* LoginViewController.swift in Sources */,
 				F4651A9F284B7CEE00D7FE63 /* ProductRankingModel.swift in Sources */,
 				F414AE09281CEAB6002D9221 /* ProductPostViewController.swift in Sources */,

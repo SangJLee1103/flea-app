@@ -11,7 +11,7 @@ import UIKit
 class MyWriteViewController: UITableViewController {
     
     let token = Keychain.read(key: "accessToken")
-    var boards: NSArray = []
+    var boards: [BoardModel] = []
     
     override func viewDidLoad() {
         self.navigationItem.title = "게시글"
@@ -25,8 +25,8 @@ class MyWriteViewController: UITableViewController {
     }()
     
     // MARK: - 데이터 파싱 함수
-    func dataParsing(){
-        for row in boards{
+    func dataParsing() {
+        for row in boards {
             let r = row as! NSDictionary
             
 //            let myBoard = BoardModel()

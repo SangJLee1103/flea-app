@@ -20,8 +20,8 @@ class ProductDetailViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet var likeCount: UILabel!
     
     var viewModel: ProductViewModel? {
-        didSet {
-            DispatchQueue.main.async {
+        didSet { 
+            DispatchQueue.main.async { 
                 self.configure()
             }
         }

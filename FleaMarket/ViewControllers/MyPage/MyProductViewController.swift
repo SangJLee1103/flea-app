@@ -11,7 +11,7 @@ import UIKit
 class MyProductViewController: UITableViewController {
     
     let token = Keychain.read(key: "accessToken")
-    var item: NSArray = []
+    var item: [ProductModel] = []
     
     override func viewDidLoad() {
         self.navigationItem.title = "판매목록"

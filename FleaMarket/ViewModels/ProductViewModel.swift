@@ -20,7 +20,7 @@ struct ProductViewModel {
     var imgArray: [String]? { return product.img.components(separatedBy: ",") } 
     var createdAt: String { return product.createdAt }
     var nickname: String { return product.user?.nickname ?? "" }
-    var likesCnt: Int { return product.likes.count }
+    var likesCnt: Int { return product.likes?.count ?? 0 }
     var start: String? { return product.board?.start }
     
     init(product: ProductModel) {

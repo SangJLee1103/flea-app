@@ -19,7 +19,7 @@ struct ProductModel: Decodable {
     let boardId: Int // 게시글 아이디
     let boardTitle: String
     let user: Seller?
-    let likes: [Likes] // 좋아요
+    let likes: [Likes]? // 좋아요
     let board: Board?
     
     enum CodingKeys: String, CodingKey {
@@ -47,10 +47,12 @@ struct Board: Decodable {
 
 struct Likes: Decodable {
     let productId: Int?
+    let product: ProductModel?
     let userId: String?
     
     enum CodingKeys: String, CodingKey {
         case productId = "product_id"
+        case product = "Product"
         case userId = "user_id"
     }
 }

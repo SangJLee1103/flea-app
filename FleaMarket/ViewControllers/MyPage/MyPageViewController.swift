@@ -23,10 +23,13 @@ class MyPageViewController: UIViewController {
     
 //    let userInfoVO = UserInfoModel()
     
-    lazy var list: [UserInfoModel] = {
-        var datalist = [UserInfoModel]()
-        return datalist
-    }()
+    var viewModel: UserInfoViewModel? {
+        didSet {
+            DispatchQueue.main.async {
+                self.configure()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,22 +47,37 @@ class MyPageViewController: UIViewController {
         
         let gesture = UITapGestureRecognizer(target: self, action:  #selector(self.moveEditPersonalInfoVC))
         self.topView.addGestureRecognizer(gesture)
+        fetchUser()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-//        self.callUserInfoAPI()
-    }
+
     
     @objc func moveEditPersonalInfoVC(sender : UITapGestureRecognizer) {
         // Do what you want
         guard let editPersonalInfoVC = self.storyboard?.instantiateViewController(withIdentifier: "EditPersonalInfoViewController") as? EditPersonalInfoViewController else { return }
-//        editPersonalInfoVC.email = self.userInfoVO.email
-//        editPersonalInfoVC.phoneNumber = self.userInfoVO.phoneNumber
-//        editPersonalInfoVC.nickName = self.userInfoVO.nickname
-//
+        editPersonalInfoVC.email = viewModel?.id
+        editPersonalInfoVC.phoneNumber = viewModel?.phone
+        editPersonalInfoVC.nickName = viewModel?.nickname
+
         self.navigationController?.pushViewController(editPersonalInfoVC, animated: true)
     }
     
+    
+    func fetchUser() {
+        MemberService.fetchUser { [weak self] response in
+            switch response {
+            case .success(let result):
+                self?.viewModel = UserInfoViewModel(userInfo: result.list)
+            case .failure(_):
+                print("Error")
+            }
+        }
+    }
+    
+    func configure() {
+        self.nickname.text = viewModel?.nickname
+        self.phone.text = viewModel?.phone.pretty()
+    }
     
     // 회원 정보 가져옴(회원 개인정보, 게시글, 상품)
 //    func callUserInfoAPI() {
@@ -153,25 +171,25 @@ extension MyPageViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-//        switch indexPath.row{
-//        case 0:
-//            guard let myWriteVC = self.storyboard?.instantiateViewController(withIdentifier: "MyWriteViewController") as? MyWriteViewController else { return }
-//            myWriteVC.boards = self.userInfoVO.boards!
-//            self.navigationController?.pushViewController(myWriteVC, animated: true)
-//            
-//        case 1:
-//            guard let myuploadItemVC = self.storyboard?.instantiateViewController(withIdentifier: "MyProductViewController") as? MyProductViewController else { return }
-//            myuploadItemVC.item = self.userInfoVO.products!
-//            self.navigationController?.pushViewController(myuploadItemVC, animated: true)
-//            
-//        case 2:
-//            guard let myLikeVC = self.storyboard?.instantiateViewController(withIdentifier:    "MyLikeItemViewController") as? MyLikeViewController else { return }
-//            myLikeVC.likeItem = self.userInfoVO.likes!
-//            self.navigationController?.pushViewController(myLikeVC, animated: true)
-//            
-//        default:
-//            return
-//        }
+        switch indexPath.row{
+        case 0:
+            guard let myWriteVC = self.storyboard?.instantiateViewController(withIdentifier: "MyWriteViewController") as? MyWriteViewController else { return }
+            myWriteVC.boards = self.viewModel?.boards ?? []
+            self.navigationController?.pushViewController(myWriteVC, animated: true)
+            
+        case 1:
+            guard let myuploadItemVC = self.storyboard?.instantiateViewController(withIdentifier: "MyProductViewController") as? MyProductViewController else { return }
+            myuploadItemVC.item = self.viewModel?.products ?? []
+            self.navigationController?.pushViewController(myuploadItemVC, animated: true)
+            
+        case 2:
+            guard let myLikeVC = self.storyboard?.instantiateViewController(withIdentifier:    "MyLikeItemViewController") as? MyLikeViewController else { return }
+            myLikeVC.likeItem = self.viewModel?.likes ?? []
+            self.navigationController?.pushViewController(myLikeVC, animated: true)
+            
+        default:
+            return
+        }
     }
 }
 

@@ -96,5 +96,42 @@ struct MemberService {
         }
     }
     
+    // MARK: - 회원정보 API 호출 로직(게시글, 상품, 좋아요 한 상품)
+    static func fetchUser(completion: @escaping(Result<List, Error>) -> Void) {
+        guard let token = Keychain.read(key: "accessToken") else { return }
+        guard let url =  URL(string: "\(Network.url)/member/info") else {
+            print("Cannot create URL!")
+            return
+        }
+        
+        //URLRequest 객체를 정의
+        var request = URLRequest(url: url)
+        let session = URLSession(configuration: .default)
+        request.httpMethod = "GET"
+
+        //HTTP 메시지 헤더
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        //URLSession 객체를 통해 전송, 응답값 처리
+        let task = session.dataTask(with: request) { (data, response, error) in
+            if let e = error{
+                NSLog("An error has occured: \(e.localizedDescription)")
+                return
+            }
+            
+            if let safeData = data {
+                do {
+                    let result = try JSONDecoder().decode(List.self, from: safeData)
+                    completion(.success(result))
+                } catch {
+                    NSLog(error.localizedDescription)
+                }
+            }
+            
+        }
+        task.resume()
+    }
+    
 }
 

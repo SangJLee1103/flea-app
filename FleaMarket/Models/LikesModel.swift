@@ -10,7 +10,7 @@ import Foundation
 struct LikesModel: Decodable {
     let productId: Int
     let product: ProductModel
-    let likes: [String]
+    let likes: [String]?
     
     enum CodingKeys: String, CodingKey {
         case productId = "product_id"
