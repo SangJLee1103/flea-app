@@ -15,10 +15,12 @@ struct BoardModel: Decodable {
     let place: String // 플리마켓 장소
     let description: String // 플리마켓 주제
     let thumbnail: String // 이미지 경로
+    let userId: String
     
     enum CodingKeys: String, CodingKey {
         case id, topic, start, place, description, thumbnail
         case user = "User"
+        case userId = "user_id"
     }
 }
 

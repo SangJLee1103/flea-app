@@ -141,7 +141,7 @@ struct BoardService {
         }
     }
     
-    // MARK: - 게시글 전체 조회 API 호출
+    // MARK: - 게시글 전체 조회 API 호출 로직
     static func fetchBoards(completion: @escaping(Result<BoardArray, Error>) -> Void) {
         guard let token = Keychain.read(key: "accessToken") else { return }
         do {
@@ -172,5 +172,37 @@ struct BoardService {
             }
             task.resume()
         }
+    }
+    
+    // MARK: - 게시글 삭제 API 호출 로직
+    static func deleteBoard(board: BoardModel, completion: @escaping(Result<ResponseMsgArr, Error>) -> Void) {
+        guard let token = Keychain.read(key: "accessToken") else { return }
+        guard let url = URL(string: "\(Network.url)/board/\(board.userId)/\(board.id)") else { return }
+        
+        var request = URLRequest(url: url)
+        let session = URLSession(configuration: .default)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let task = session.dataTask(with: request) { (data, response, error) in
+                // 서버로부터 응답된 스트링 표시
+            let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+            
+            if let e = error{
+                NSLog("An error has occured: \(e.localizedDescription)")
+                return
+            }
+            
+            if let safeData = data {
+                do {
+                    let result = try JSONDecoder().decode(ResponseMsgArr.self, from: safeData)
+                    completion(.success(result))
+                } catch {
+                    NSLog(error.localizedDescription)
+                }
+            }
+        }
+        task.resume()
     }
 }

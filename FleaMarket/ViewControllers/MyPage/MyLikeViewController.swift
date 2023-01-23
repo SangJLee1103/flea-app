@@ -20,45 +20,7 @@ class MyLikeViewController: UITableViewController {
     
     override func viewDidLoad() {
         self.navigationItem.title = "관심목록"
-//        self.dataParsing()
     }
-    
-//    func dataParsing(){
-//        for count in 0 ..< likeItem.count {
-//            let item = likeItem[count]["Product"] as! NSDictionary
-            //            let myLikeItem = ProductModel()
-            //
-            //            myLikeItem.id = item["id"] as? Int
-            //            myLikeItem.costPrice = item["cost_price"] as? Int
-            //            myLikeItem.sellingPrice = item["selling_price"] as? Int
-            //            myLikeItem.description = item["description"] as? String
-            //            myLikeItem.productName = item["name"] as? String
-            //            myLikeItem.costPrice = item["cost_price"] as? Int
-            //            myLikeItem.boardTitle = item["board_title"] as? String
-            //            myLikeItem.sellerName = item["user_id"] as? String
-            //            myLikeItem.createdAt = item["created_at"] as? String
-            //            myLikeItem.like = item["Likes"] as? NSArray
-            //            myLikeItem.imgPath = item["img"] as? String
-            //
-            //            self.productList.append(myLikeItem)
-//        }
-//    }
-    
-    // 이미지를 추출하는 함수
-//    func getThumbnailImage(_ index: Int) -> UIImage {
-//        let item = self.productList[index]
-        
-        //        if let savedImage = item.thumbnailImage {
-        //            return savedImage
-        //        } else {
-        //            let imgParse = item.imgPath!.split(separator:",")
-        //            let url: URL! = URL(string: "\(Network.url)/\(imgParse[0])")
-        //            let imageData = try! Data(contentsOf: url)
-        //            item.thumbnailImage = UIImage(data: imageData)
-        //
-        //            return item.thumbnailImage!
-        //        }
-//    }
     
     // 좋아요 취소
     func callDeleteLike(_ row: ProductModel) {
