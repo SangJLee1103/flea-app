@@ -81,6 +81,77 @@ struct ProductService {
         }
     }
     
+    // MARK: - 상품 수정 API 호출 로직
+    static func updateProduct(productId: Int, name: String, sellingPrice: String, costPrice: String, description: String, createdAt: String, selectedData: [Data], completion: @escaping(Result<(ResponseMsgArr, Int), Error>) -> Void) {
+        
+        guard let token = Keychain.read(key: "accessToken") else { return }
+        
+        do {
+            guard let url = URL(string: "\(Network.url)/product/\(productId)") else {
+                print("Error: cannot create URL")
+                return
+            }
+            
+            let parameters = [
+                "name" : name,
+                "selling_price" : sellingPrice,
+                "cost_price" : costPrice,
+                "description" : description,
+                "created_at" : createdAt
+            ] as [String : Any]
+            
+            let boundary = "Boundary-\(UUID().uuidString)"
+            
+            var request = URLRequest(url: url)
+            let session = URLSession(configuration: .default)
+            request.httpMethod = "PUT"
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            
+            var uploadData = Data()
+            let imgDataKey = "img"
+            let boundaryPrefix = "--\(boundary)\r\n"
+            
+            for (key, value) in parameters {
+                uploadData.append(boundaryPrefix.data(using: .utf8)!)
+                uploadData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+                uploadData.append("\(value)\r\n".data(using: .utf8)!)
+            }
+            
+            
+            for data in selectedData {
+                uploadData.append(boundaryPrefix.data(using: .utf8)!)
+                uploadData.append("Content-Disposition: form-data; name=\"\(imgDataKey)\"; filename=\"\("Img").png\"\r\n".data(using: .utf8)!)
+                uploadData.append("Content-Type: \("image/png")\r\n\r\n".data(using: .utf8)!)
+                uploadData.append(data)
+                uploadData.append("\r\n".data(using: .utf8)!)
+            }
+            uploadData.append("--\(boundary)--".data(using: .utf8)!)
+            
+            let task = session.uploadTask(with: request, from: uploadData) { (data, response, error) in
+                let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+                
+                if let e = error{
+                    NSLog("An error has occured: \(e.localizedDescription)")
+                    return
+                }
+                
+                if let safeData = data {
+                    do {
+                        let result = try JSONDecoder().decode(ResponseMsgArr.self, from: safeData)
+                        completion(.success((result, status)))
+                    } catch {
+                        NSLog(error.localizedDescription)
+                    }
+                }
+            }
+            task.resume()
+        }
+    }
+    
+    
+    
+    
     // MARK: - 상품 단건조회 API 호출 로직
     static func fetchProduct(productId: Int, completion: @escaping(Result<Product, Error>) -> Void) {
         
@@ -185,6 +256,40 @@ struct ProductService {
         }
     }
     
+    // MARK: - 상품 삭제 API 호출 로직
+    static func deleteProduct(productId: Int, completion: @escaping(Result<(ResponseMsgArr, Int), Error>) -> Void) {
+        do {
+            guard let token = Keychain.read(key: "accessToken") else { return }
+            guard let url = URL(string: "\(Network.url)/product/\(productId)") else { return }
+            var request = URLRequest(url: url)
+            let session = URLSession(configuration: .default)
+            request.httpMethod = "DELETE"
+            //HTTP 메시지 헤더
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            
+            let task = session.dataTask(with: request) { (data, response, error) in
+                let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+                
+                if let e = error {
+                    NSLog("An error has occured: \(e.localizedDescription)")
+                    return
+                }
+                
+                if let safeData = data {
+                    do {
+                        let result = try JSONDecoder().decode(ResponseMsgArr.self, from: safeData)
+                        completion(.success((result, status)))
+                    } catch {
+                        NSLog(error.localizedDescription)
+                    }
+                }
+            }
+            task.resume()
+        }
+    }
+    
+    
     // MARK: - 상품 좋아요 API 호출 로직
     static func likeProduct(productId: Int) {
         do {
@@ -216,7 +321,7 @@ struct ProductService {
         do {
             guard let token = Keychain.read(key: "accessToken") else { return }
             guard let url =  URL(string: "\(Network.url)/likes/\(productId)/count") else { return }
-
+            
             //URLRequest 객체를 정의
             var request = URLRequest(url: url)
             let session = URLSession(configuration: .default)
@@ -224,7 +329,7 @@ struct ProductService {
             //HTTP 메시지 헤더
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-
+            
             //URLSession 객체를 통해 전송, 응답값 처리
             let task = session.dataTask(with: request) { (data, response, error) in
                 if let e = error{

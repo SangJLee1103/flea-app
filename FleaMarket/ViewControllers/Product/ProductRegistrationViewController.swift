@@ -127,7 +127,6 @@ class ProductRegistrationViewController: UIViewController, UICollectionViewDeleg
     // 이미지 선택
     @IBAction func openGalary(_ sender: UIButton) {
         // 이미지 피커 컨트롤러 인스턴스 생성
-        print("눌림")
         let picker = ImagePickerController()
         
         if selectedCount == 5 {

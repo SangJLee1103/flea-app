@@ -14,8 +14,8 @@ class MyWriteViewController: UITableViewController {
     
     var boards = [BoardModel]() {
         didSet {
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
     }
@@ -84,11 +84,11 @@ class MyWriteViewController: UITableViewController {
         
         let delete = UIContextualAction(style: .normal, title: "Delete") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
             self.deleteBoard(row)
-
             DispatchQueue.main.async {
                 self.boards.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
+            print(self.boards)
             success(true)
         }
         delete.backgroundColor = .systemRed

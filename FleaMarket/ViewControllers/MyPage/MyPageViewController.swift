@@ -21,8 +21,6 @@ class MyPageViewController: UIViewController {
     @IBOutlet var phone: UILabel!
     @IBOutlet var img: UIImageView!
     
-//    let userInfoVO = UserInfoModel()
-    
     var viewModel: UserInfoViewModel? {
         didSet {
             DispatchQueue.main.async {
@@ -44,16 +42,17 @@ class MyPageViewController: UIViewController {
         img.layer.borderWidth = 0
         img.layer.masksToBounds = true
         
-        
         let gesture = UITapGestureRecognizer(target: self, action:  #selector(self.moveEditPersonalInfoVC))
         self.topView.addGestureRecognizer(gesture)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         fetchUser()
     }
     
 
     
     @objc func moveEditPersonalInfoVC(sender : UITapGestureRecognizer) {
-        // Do what you want
         guard let editPersonalInfoVC = self.storyboard?.instantiateViewController(withIdentifier: "EditPersonalInfoViewController") as? EditPersonalInfoViewController else { return }
         editPersonalInfoVC.email = viewModel?.id
         editPersonalInfoVC.phoneNumber = viewModel?.phone
@@ -61,7 +60,6 @@ class MyPageViewController: UIViewController {
 
         self.navigationController?.pushViewController(editPersonalInfoVC, animated: true)
     }
-    
     
     func fetchUser() {
         MemberService.fetchUser { [weak self] response in
@@ -126,7 +124,7 @@ extension MyPageViewController: UITableViewDelegate {
             
         case 1:
             guard let myuploadItemVC = self.storyboard?.instantiateViewController(withIdentifier: "MyProductViewController") as? MyProductViewController else { return }
-            myuploadItemVC.item = self.viewModel?.products ?? []
+            myuploadItemVC.products = self.viewModel?.products ?? []
             self.navigationController?.pushViewController(myuploadItemVC, animated: true)
             
         case 2:
